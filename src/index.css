@@ -1,64 +1,88 @@
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  --maroon-900: #3f0a16;
+  --maroon-800: #4a1020;
+  --maroon-700: #5f182a;
+  --maroon-600: #7a2a3e;
+  --maroon-500: #9b4c5f;
+  --maroon-300: #c79aa4;
+  --maroon-100: #edd9dd;
+  --maroon-50: #f8f0f1;
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+  --surface-page: #faf6f4;
+  --surface-card: #ffffff;
+  --surface-tint: #f3e9eb;
+  --border: #eadde0;
+  --ink: #2e2226;
+  --ink-muted: #6e5c61;
+  --ink-faint: #8a787d;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
+  --primary: #5f182a;
+  --primary-hover: #4a1020;
+  --on-primary: #ffffff;
+  --on-primary-muted: #e9cfd5;
+  --focus-ring: #5f182a;
+
+  --shadow-soft: 0 8px 24px rgba(63, 10, 22, 0.08);
+
+  --radius-input: 10px;
+  --radius-panel: 16px;
+  --radius-card: 20px;
+  --radius-hero: 28px;
+  --radius-pill: 999px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  --display: 'Baloo Bhaijaan 2', 'IBM Plex Sans Arabic', sans-serif;
+  --sans: 'IBM Plex Sans Arabic', system-ui, sans-serif;
+
+  font: 16px/1.6 var(--sans);
   color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
+  color: var(--ink);
+  background: var(--surface-page);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+:root[data-theme='dark'] {
+  --surface-page: #241318;
+  --surface-card: #331b23;
+  --surface-tint: #3a2029;
+  --border: #4a2830;
+  --ink: #f5edee;
+  --ink-muted: #c6aeb3;
+  --ink-faint: #a68b91;
+  --primary: #8c3e52;
+  --primary-hover: #9b4c5f;
+  --on-primary: #ffffff;
+  --on-primary-muted: #f0dde1;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
+  :root:not([data-theme='light']) {
+    --surface-page: #241318;
+    --surface-card: #331b23;
+    --surface-tint: #3a2029;
+    --border: #4a2830;
+    --ink: #f5edee;
+    --ink-muted: #c6aeb3;
+    --ink-faint: #a68b91;
+    --primary: #8c3e52;
+    --primary-hover: #9b4c5f;
+    --on-primary: #ffffff;
+    --on-primary-muted: #f0dde1;
   }
 }
 
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
+* {
   box-sizing: border-box;
 }
 
@@ -66,46 +90,53 @@ body {
   margin: 0;
 }
 
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+#root {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
-}
-p {
+h1,
+h2,
+h3 {
+  font-family: var(--display);
+  font-weight: 700;
+  color: var(--ink);
   margin: 0;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+h1 {
+  font-size: 44px;
+  line-height: 1.3;
+  font-weight: 800;
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+h2 {
+  font-size: 24px;
+  line-height: 1.3;
+}
+
+h3 {
+  font-family: var(--sans);
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+p {
+  margin: 0;
+  color: var(--ink-muted);
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+}
+
+.halftone {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1.5px, transparent 1.5px);
+  background-size: 18px 18px;
 }

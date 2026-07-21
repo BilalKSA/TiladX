@@ -1,0 +1,70 @@
+.tld-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  transition: background-color 0.2s, border-color 0.2s, opacity 0.2s;
+  white-space: nowrap;
+}
+
+.tld-button:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.tld-button:disabled {
+  cursor: not-allowed;
+  background: var(--maroon-100);
+  color: #b99ba3;
+  border-color: transparent;
+}
+
+.tld-button--lg {
+  height: 48px;
+  padding-inline: var(--space-6);
+  font-size: 16px;
+}
+
+.tld-button--md {
+  height: 40px;
+  padding-inline: var(--space-5);
+  font-size: 15px;
+}
+
+.tld-button--sm {
+  height: 32px;
+  padding-inline: var(--space-4);
+  font-size: 14px;
+}
+
+.tld-button--primary {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.tld-button--primary:not(:disabled):hover {
+  background: var(--primary-hover);
+}
+
+.tld-button--secondary {
+  background: transparent;
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.tld-button--secondary:not(:disabled):hover {
+  background: var(--maroon-50);
+}
+
+.tld-button--ghost {
+  background: transparent;
+  color: var(--ink);
+}
+
+.tld-button--ghost:not(:disabled):hover {
+  background: var(--maroon-50);
+}

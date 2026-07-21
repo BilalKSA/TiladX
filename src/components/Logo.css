@@ -1,0 +1,26 @@
+.tld-logo {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+  font-family: var(--display);
+  font-weight: 800;
+}
+
+.tld-logo__ar {
+  font-size: 20px;
+}
+
+.tld-logo__en {
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  margin-top: 2px;
+}
+
+.tld-logo--ink {
+  color: var(--primary);
+}
+
+.tld-logo--white {
+  color: #fff;
+}
