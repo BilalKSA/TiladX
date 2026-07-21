@@ -11,6 +11,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 There is no test suite configured yet.
 
+## Environment
+
+Copy `.env.example` to `.env.local` and fill in `VITE_SUPABASE_ANON_KEY` (from the Supabase project's Settings → API page) to run anything that touches `src/lib/supabase.ts`. `.env.local` is gitignored — never commit real keys.
+
 ## Architecture
 
 React + TypeScript + Vite SPA for Tilad, an Arabic-first (RTL) educational platform. Routing is via `react-router-dom` (`BrowserRouter` in `src/main.tsx`).
@@ -23,6 +27,7 @@ React + TypeScript + Vite SPA for Tilad, an Arabic-first (RTL) educational platf
 - `src/pages/Videos.tsx` — الفيديوهات والجلسات المباشرة (Videos & Live Sessions)
 - `src/pages/CourseDetail.tsx` — per-course page (looked up from `src/data/courses.ts` by `id`), with content category cards (lessons, files, study plans) and community links; all placeholder content pending real material
 - `src/data/courses.ts` — course catalog (currently ISEF, STEM Racing, ELO); course descriptions are placeholder copy pending real content
+- `src/lib/supabase.ts` — Supabase client, reads `VITE_SUPABASE_URL`/`VITE_SUPABASE_ANON_KEY` from env; not yet wired into any page (Login still mocks sign-in by navigating straight to `/home`)
 - `src/components/` — shared UI: `Button` (pill, variants `primary`/`secondary`/`ghost`, sizes `lg`/`md`/`sm`), `Logo` (renders the official PNG wordmark from `public/assets/`; defaults to an `auto` variant that CSS-swaps maroon↔white based on the active theme), `Header` (marketing header with `NavLink`s to the three section pages, used on every post-login page), `ThemeToggle` (light/dark toggle, persisted to `localStorage`), `BackLink` (pill "back" link used at the top of section/detail pages)
 
 ### Design system

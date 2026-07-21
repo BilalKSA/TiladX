@@ -33,7 +33,7 @@ function Home() {
       <Header />
 
       <section className="tld-hero halftone">
-        <h1>هلا `$name`</h1>
+        <h1>هلا صانع المستقبل `$name`</h1>
         <p>اختر القسم اللي ودّك تشوفه</p>
       </section>
 
