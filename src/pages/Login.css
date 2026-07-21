@@ -1,4 +1,17 @@
 .tld-login {
+  /* Always light — the sign-in page opts out of dark mode regardless of the global theme. */
+  --surface-page: #faf6f4;
+  --surface-card: #ffffff;
+  --surface-tint: #f3e9eb;
+  --border: #eadde0;
+  --ink: #2e2226;
+  --ink-muted: #6e5c61;
+  --ink-faint: #8a787d;
+  --primary: #5f182a;
+  --primary-hover: #4a1020;
+  --on-primary: #ffffff;
+  --on-primary-muted: #e9cfd5;
+
   flex: 1;
   min-height: 100svh;
   display: flex;

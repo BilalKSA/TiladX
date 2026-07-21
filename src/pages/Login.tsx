@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Button from '../components/Button'
 import Logo from '../components/Logo'
-import ThemeToggle from '../components/ThemeToggle'
 import './Login.css'
 
 function Login() {
@@ -17,12 +16,8 @@ function Login() {
   return (
     <div className="tld-login">
       <div className="tld-login__card">
-        <div className="tld-login__top">
-          <ThemeToggle />
-        </div>
-
         <div className="tld-login__logo">
-          <Logo />
+          <Logo variant="ink" />
         </div>
 
         <h1 className="tld-login__title">مرحباً بك في تلاد</h1>
