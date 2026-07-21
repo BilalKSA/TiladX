@@ -2,6 +2,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom'
 import Logo from './Logo'
 import ThemeToggle from './ThemeToggle'
 import Button from './Button'
+import { signOut } from '../lib/auth'
 import './Header.css'
 
 const links = [
@@ -12,6 +13,11 @@ const links = [
 
 function Header() {
   const navigate = useNavigate()
+
+  async function handleSignOut() {
+    await signOut()
+    navigate('/')
+  }
 
   return (
     <header className="tld-header">
@@ -31,7 +37,7 @@ function Header() {
       </nav>
       <div className="tld-header__actions">
         <ThemeToggle />
-        <Button variant="secondary" size="sm" onClick={() => navigate('/')}>
+        <Button variant="secondary" size="sm" onClick={handleSignOut}>
           تسجيل الخروج
         </Button>
       </div>

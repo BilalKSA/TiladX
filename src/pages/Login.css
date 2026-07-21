@@ -173,6 +173,16 @@
   width: 100%;
 }
 
+.tld-login__error {
+  background: var(--maroon-50);
+  color: var(--maroon-900);
+  font-size: 13.5px;
+  font-weight: 600;
+  border-radius: var(--radius-input);
+  padding: var(--space-3) var(--space-4);
+  margin: 0;
+}
+
 .tld-login__divider {
   display: flex;
   align-items: center;

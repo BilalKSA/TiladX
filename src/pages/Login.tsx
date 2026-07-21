@@ -1,17 +1,31 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useState, type FormEvent } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import Button from '../components/Button'
 import Logo from '../components/Logo'
 import ThemeToggle from '../components/ThemeToggle'
+import { signInWithStudentId } from '../lib/auth'
 import './Login.css'
 
 function Login() {
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
+  const [studentNumber, setStudentNumber] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
-  function handleSubmit(event: React.FormEvent) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    navigate('/home')
+    setError('')
+    setLoading(true)
+    try {
+      await signInWithStudentId(studentNumber, password)
+      navigate('/home')
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'حدث خطأ غير متوقع، حاول مرة أخرى.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -34,7 +48,6 @@ function Login() {
           </button>
           <button type="button" role="tab" aria-selected="false" className="tld-login__mode" disabled>
             حساب فردي
-
           </button>
         </div>
 
@@ -48,7 +61,15 @@ function Login() {
 
           <label className="tld-field">
             <span className="tld-field__label">الرقم الجامعي</span>
-            <input className="tld-field__input" type="text" inputMode="numeric" placeholder="202XXXXXX" required />
+            <input
+              className="tld-field__input"
+              type="text"
+              inputMode="numeric"
+              placeholder="202XXXXXX"
+              value={studentNumber}
+              onChange={(e) => setStudentNumber(e.target.value)}
+              required
+            />
           </label>
 
           <label className="tld-field">
@@ -66,6 +87,8 @@ function Login() {
                 className="tld-field__input"
                 type={showPassword ? 'text' : 'password'}
                 placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 required
               />
             </div>
@@ -76,13 +99,15 @@ function Login() {
               <input type="checkbox" />
               تذكرني
             </label>
-            <a className="tld-login__forgot" href="#">
+            <Link className="tld-login__forgot" to="/reset-password">
               نسيت كلمة المرور؟
-            </a>
+            </Link>
           </div>
 
-          <Button type="submit" variant="primary" size="lg" className="tld-login__submit">
-            تسجيل الدخول
+          {error && <p className="tld-login__error">{error}</p>}
+
+          <Button type="submit" variant="primary" size="lg" className="tld-login__submit" disabled={loading}>
+            {loading ? 'جارٍ تسجيل الدخول...' : 'تسجيل الدخول'}
           </Button>
         </form>
 
@@ -90,9 +115,9 @@ function Login() {
           <span>أو</span>
         </div>
 
-        <Button type="button" variant="secondary" size="lg" className="tld-login__submit">
+        <Link to="/activate" className="tld-button tld-button--secondary tld-button--lg tld-login__submit">
           فعّل حسابك الآن
-        </Button>
+        </Link>
       </div>
 
       <p className="tld-login__terms">
