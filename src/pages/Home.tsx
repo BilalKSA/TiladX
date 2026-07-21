@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import Header from '../components/Header'
 import Button from '../components/Button'
 import { courses } from '../data/courses'
@@ -95,9 +96,9 @@ function Home() {
               <span className="tld-pill-tag tld-pill-tag--outline">{course.tag}</span>
               <h3>{course.title}</h3>
               <p>{course.description}</p>
-              <Button variant="primary" size="sm">
+              <Link to={`/courses/${course.id}`} className="tld-button tld-button--primary tld-button--sm">
                 استعرض الدورة
-              </Button>
+              </Link>
             </div>
           ))}
         </div>
