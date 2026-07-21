@@ -1,0 +1,21 @@
+.tld-spinner {
+  display: inline-block;
+  flex-shrink: 0;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  opacity: 0.85;
+  animation: tld-spin 0.65s linear infinite;
+}
+
+@keyframes tld-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tld-spinner {
+    animation-duration: 1.4s;
+  }
+}

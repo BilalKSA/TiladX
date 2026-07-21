@@ -68,3 +68,24 @@
 .tld-button--ghost:not(:disabled):hover {
   background: var(--maroon-50);
 }
+
+.tld-button--loading {
+  cursor: wait;
+  opacity: 0.85;
+}
+
+.tld-button--loading.tld-button--primary {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.tld-button--loading.tld-button--secondary {
+  background: transparent;
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.tld-button--loading.tld-button--ghost {
+  background: transparent;
+  color: var(--ink);
+}

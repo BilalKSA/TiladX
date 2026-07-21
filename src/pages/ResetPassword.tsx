@@ -63,8 +63,8 @@ function ResetPassword() {
 
               {error && <p className="tld-login__error">{error}</p>}
 
-              <Button type="submit" variant="primary" size="lg" className="tld-login__submit" disabled={loading}>
-                {loading ? 'جارٍ الإرسال...' : 'إرسال رابط الاستعادة'}
+              <Button type="submit" variant="primary" size="lg" className="tld-login__submit" loading={loading}>
+                إرسال رابط الاستعادة
               </Button>
             </form>
           </>

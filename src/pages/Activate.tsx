@@ -103,8 +103,8 @@ function Activate() {
 
           {error && <p className="tld-login__error">{error}</p>}
 
-          <Button type="submit" variant="primary" size="lg" className="tld-login__submit" disabled={loading}>
-            {loading ? 'جارٍ التفعيل...' : 'تفعيل الحساب'}
+          <Button type="submit" variant="primary" size="lg" className="tld-login__submit" loading={loading}>
+            تفعيل الحساب
           </Button>
         </form>
       </div>

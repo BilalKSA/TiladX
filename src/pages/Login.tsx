@@ -106,8 +106,8 @@ function Login() {
 
           {error && <p className="tld-login__error">{error}</p>}
 
-          <Button type="submit" variant="primary" size="lg" className="tld-login__submit" disabled={loading}>
-            {loading ? 'جارٍ تسجيل الدخول...' : 'تسجيل الدخول'}
+          <Button type="submit" variant="primary" size="lg" className="tld-login__submit" loading={loading}>
+            تسجيل الدخول
           </Button>
         </form>
 

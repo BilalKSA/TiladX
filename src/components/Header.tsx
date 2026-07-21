@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import Logo from './Logo'
 import ThemeToggle from './ThemeToggle'
@@ -13,8 +14,10 @@ const links = [
 
 function Header() {
   const navigate = useNavigate()
+  const [signingOut, setSigningOut] = useState(false)
 
   async function handleSignOut() {
+    setSigningOut(true)
     await signOut()
     navigate('/')
   }
@@ -37,7 +40,7 @@ function Header() {
       </nav>
       <div className="tld-header__actions">
         <ThemeToggle />
-        <Button variant="secondary" size="sm" onClick={handleSignOut}>
+        <Button variant="secondary" size="sm" onClick={handleSignOut} loading={signingOut}>
           تسجيل الخروج
         </Button>
       </div>
