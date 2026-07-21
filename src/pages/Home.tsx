@@ -46,13 +46,32 @@ function Home() {
       <Header />
 
       <section className="tld-hero halftone">
-        <h1>مرحباً بك في تلاد</h1>
-        <p>من الطالب وإلى الطالب</p>
+        <h1>أهلًا `$name`</h1>
+        <p>أختر البرنامج الي ودّك تشوفها </p>
+      </section>
+
+      <section id="courses" className="tld-section">
+        <div className="tld-section__heading">
+          <span className="tld-badge">01</span>
+          <h2>الدورات</h2>
+        </div>
+        <div className="tld-grid tld-grid--3">
+          {courses.map((course) => (
+            <div className="tld-card" key={course.id}>
+              <span className="tld-pill-tag tld-pill-tag--outline">{course.tag}</span>
+              <h3>{course.title}</h3>
+              <p>{course.description}</p>
+              <Link to={`/courses/${course.id}`} className="tld-button tld-button--primary tld-button--sm">
+                استعرض الدورة
+              </Link>
+            </div>
+          ))}
+        </div>
       </section>
 
       <section id="library" className="tld-section">
         <div className="tld-section__heading">
-          <span className="tld-badge">01</span>
+          <span className="tld-badge">02</span>
           <h2>مكتبة تلاد</h2>
         </div>
         <div className="tld-grid tld-grid--4">
@@ -71,7 +90,7 @@ function Home() {
 
       <section id="videos" className="tld-section">
         <div className="tld-section__heading">
-          <span className="tld-badge">02</span>
+          <span className="tld-badge">03</span>
           <h2>الفيديوهات والجلسات المباشرة</h2>
         </div>
         <div className="tld-grid tld-grid--2">
@@ -80,25 +99,6 @@ function Home() {
               <span className="tld-pill-tag">{item.badge}</span>
               <h3>{item.title}</h3>
               <p>{item.description}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <section id="courses" className="tld-section">
-        <div className="tld-section__heading">
-          <span className="tld-badge">03</span>
-          <h2>الدورات</h2>
-        </div>
-        <div className="tld-grid tld-grid--3">
-          {courses.map((course) => (
-            <div className="tld-card" key={course.id}>
-              <span className="tld-pill-tag tld-pill-tag--outline">{course.tag}</span>
-              <h3>{course.title}</h3>
-              <p>{course.description}</p>
-              <Link to={`/courses/${course.id}`} className="tld-button tld-button--primary tld-button--sm">
-                استعرض الدورة
-              </Link>
             </div>
           ))}
         </div>

@@ -5,9 +5,9 @@ import Button from './Button'
 import './Header.css'
 
 const links = [
+  { href: '#courses', label: 'الدورات' },
   { href: '#library', label: 'المكتبة' },
   { href: '#videos', label: 'الفيديوهات والجلسات' },
-  { href: '#courses', label: 'الدورات' },
 ]
 
 function Header() {
