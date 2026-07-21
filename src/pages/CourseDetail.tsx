@@ -1,5 +1,6 @@
-import { Link, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import Header from '../components/Header'
+import BackLink from '../components/BackLink'
 import Button from '../components/Button'
 import { courses } from '../data/courses'
 import './CourseDetail.css'
@@ -27,10 +28,8 @@ function CourseDetail() {
         <section className="tld-section">
           <h2>الدورة غير موجودة</h2>
           <p>لم نتمكن من العثور على هذه الدورة.</p>
-          <Link to="/home#courses" className="tld-button tld-button--secondary tld-button--sm">
-            العودة إلى الدورات
-          </Link>
         </section>
+        <BackLink to="/home/courses" label="العودة إلى البرامج" />
       </div>
     )
   }
@@ -38,12 +37,7 @@ function CourseDetail() {
   return (
     <div className="tld-home">
       <Header />
-
-      <div className="tld-course-detail__back">
-        <Link to="/home#courses" className="tld-button tld-button--ghost tld-button--sm">
-          ← العودة إلى الدورات
-        </Link>
-      </div>
+      <BackLink to="/home/courses" label="العودة إلى البرامج" />
 
       <section className="tld-hero halftone">
         <span className="tld-pill-tag tld-course-detail__tag">{course.tag}</span>

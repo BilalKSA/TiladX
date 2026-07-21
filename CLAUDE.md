@@ -15,12 +15,15 @@ There is no test suite configured yet.
 
 React + TypeScript + Vite SPA for Tilad, an Arabic-first (RTL) educational platform. Routing is via `react-router-dom` (`BrowserRouter` in `src/main.tsx`).
 
-- `src/App.tsx` — route table: `/` is the sign-in page, `/home` is the post-login home page, `/courses/:id` is a course detail page
+- `src/App.tsx` — route table: `/` sign-in, `/home` post-login landing page, `/home/courses`, `/home/library`, `/home/videos` (the three main sections, each its own page/route), `/courses/:id` course detail
 - `src/pages/Login.tsx` — sign-in page. Currently **organization sign-in only** (KFUPM, hardcoded as the sole option) — this is the default and only implemented mode; a "حساب فردي" (individual account) tab exists in the UI but is disabled/"coming soon". There is no real backend/auth wired up yet — submitting navigates straight to `/home`. Actual valid ID validation logic will be provided later.
-- `src/pages/Home.tsx` — post-login page with three sections: مكتبة تلاد (Library/Resources), الفيديوهات والجلسات المباشرة (Videos & Live Sessions), الدورات (Courses) — course cards link to `/courses/:id`
-- `src/pages/CourseDetail.tsx` — per-course page (looked up from `src/data/courses.ts` by `id`), with content category cards (lessons, files, tests, study plans, perks) and community links; all placeholder content pending real material
+- `src/pages/Home.tsx` — slim post-login landing page: welcome hero banner + three cards linking out to `/home/courses`, `/home/library`, `/home/videos`
+- `src/pages/Courses.tsx` — البرامج (Programs/Courses) list, from `src/data/courses.ts`; cards link to `/courses/:id`. Courses can be marked `disabled: true` (currently STEM Racing and ELO) to render a "غير مشترك" badge and a non-clickable disabled CTA instead of a link — only ISEF is active right now.
+- `src/pages/Library.tsx` — مكتبة تلاد (Tilad's Library) content categories
+- `src/pages/Videos.tsx` — الفيديوهات والجلسات المباشرة (Videos & Live Sessions)
+- `src/pages/CourseDetail.tsx` — per-course page (looked up from `src/data/courses.ts` by `id`), with content category cards (lessons, files, study plans) and community links; all placeholder content pending real material
 - `src/data/courses.ts` — course catalog (currently ISEF, STEM Racing, ELO); course descriptions are placeholder copy pending real content
-- `src/components/` — shared UI: `Button` (pill, variants `primary`/`secondary`/`ghost`, sizes `lg`/`md`/`sm`), `Logo` (bilingual wordmark, Arabic above Latin below), `Header` (marketing header used on Home), `ThemeToggle` (light/dark toggle, persisted to `localStorage`)
+- `src/components/` — shared UI: `Button` (pill, variants `primary`/`secondary`/`ghost`, sizes `lg`/`md`/`sm`), `Logo` (renders the official PNG wordmark from `public/assets/`; defaults to an `auto` variant that CSS-swaps maroon↔white based on the active theme), `Header` (marketing header with `NavLink`s to the three section pages, used on every post-login page), `ThemeToggle` (light/dark toggle, persisted to `localStorage`), `BackLink` (pill "back" link used at the top of section/detail pages)
 
 ### Design system
 

@@ -30,6 +30,11 @@
   background: var(--maroon-100);
 }
 
+.tld-header__link--active {
+  color: var(--primary);
+  background: var(--maroon-100);
+}
+
 .tld-header__actions {
   display: flex;
   align-items: center;

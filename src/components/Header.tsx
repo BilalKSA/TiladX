@@ -1,13 +1,13 @@
-import { useNavigate } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import Logo from './Logo'
 import ThemeToggle from './ThemeToggle'
 import Button from './Button'
 import './Header.css'
 
 const links = [
-  { href: '#courses', label: 'الدورات' },
-  { href: '#library', label: 'المكتبة' },
-  { href: '#videos', label: 'الفيديوهات والجلسات' },
+  { to: '/home/courses', label: 'البرامج' },
+  { to: '/home/library', label: 'المكتبة' },
+  { to: '/home/videos', label: 'الفيديوهات والجلسات' },
 ]
 
 function Header() {
@@ -15,12 +15,18 @@ function Header() {
 
   return (
     <header className="tld-header">
-      <Logo />
+      <Link to="/home" aria-label="الصفحة الرئيسية">
+        <Logo />
+      </Link>
       <nav className="tld-header__nav">
         {links.map((link) => (
-          <a key={link.href} href={link.href} className="tld-header__link">
+          <NavLink
+            key={link.to}
+            to={link.to}
+            className={({ isActive }) => `tld-header__link${isActive ? ' tld-header__link--active' : ''}`}
+          >
             {link.label}
-          </a>
+          </NavLink>
         ))}
       </nav>
       <div className="tld-header__actions">

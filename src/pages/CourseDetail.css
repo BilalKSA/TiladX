@@ -1,7 +1,3 @@
-.tld-course-detail__back {
-  padding: var(--space-5) var(--space-6) 0;
-}
-
 .tld-course-detail__tag {
   margin-bottom: var(--space-3);
   background: rgba(255, 255, 255, 0.16);
