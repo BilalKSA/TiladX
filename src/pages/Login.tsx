@@ -25,8 +25,8 @@ function Login() {
           <Logo />
         </div>
 
-        <h1 className="tld-login__title">مرحباً بك في منصة تلاد</h1>
-        <p className="tld-login__subtitle">سجّل الدخول عبر مؤسستك للوصول إلى برامجك التعليمية</p>
+        <h1 className="tld-login__title">مرحباً بك في تلاد</h1>
+        <p className="tld-login__subtitle">سجّل الدخول عبر مؤسستك للوصول إلى برامجك </p>
 
         <div className="tld-login__modes" role="tablist" aria-label="طريقة تسجيل الدخول">
           <button type="button" role="tab" aria-selected="true" className="tld-login__mode tld-login__mode--active">
@@ -34,7 +34,7 @@ function Login() {
           </button>
           <button type="button" role="tab" aria-selected="false" className="tld-login__mode" disabled>
             حساب فردي
-            <span className="tld-login__soon">قريباً</span>
+
           </button>
         </div>
 

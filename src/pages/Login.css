@@ -35,6 +35,10 @@
   margin-bottom: var(--space-4);
 }
 
+.tld-login__logo .tld-logo {
+  height: 72px;
+}
+
 .tld-login__title {
   font-size: 24px;
   margin-bottom: var(--space-2);
