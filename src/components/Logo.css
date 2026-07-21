@@ -3,3 +3,29 @@
   width: auto;
   display: block;
 }
+
+.tld-logo-swap {
+  display: inline-flex;
+}
+
+.tld-logo-swap__dark {
+  display: none;
+}
+
+:root[data-theme='dark'] .tld-logo-swap__light {
+  display: none;
+}
+
+:root[data-theme='dark'] .tld-logo-swap__dark {
+  display: block;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .tld-logo-swap__light {
+    display: none;
+  }
+
+  :root:not([data-theme='light']) .tld-logo-swap__dark {
+    display: block;
+  }
+}
