@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import Header from '../components/Header'
+import Footer from '../components/Footer'
 import './Home.css'
 
 const sections = [
@@ -52,9 +53,7 @@ function Home() {
         </div>
       </section>
 
-      <footer className="tld-footer">
-        <p>&copy; {new Date().getFullYear()} تلاد. جميع الحقوق محفوظة.</p>
-      </footer>
+      <Footer />
     </div>
   )
 }

@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom'
 import Header from '../components/Header'
 import BackLink from '../components/BackLink'
+import Footer from '../components/Footer'
 import Button from '../components/Button'
 import { courses } from '../data/courses'
 import './CourseDetail.css'
@@ -30,6 +31,7 @@ function CourseDetail() {
           <p>لم نتمكن من العثور على هذه الدورة.</p>
         </section>
         <BackLink to="/home/courses" label="العودة إلى البرامج" />
+        <Footer />
       </div>
     )
   }
@@ -76,6 +78,8 @@ function CourseDetail() {
           ))}
         </div>
       </section>
+
+      <Footer />
     </div>
   )
 }

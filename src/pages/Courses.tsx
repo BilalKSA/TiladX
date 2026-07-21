@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import Header from '../components/Header'
 import BackLink from '../components/BackLink'
+import Footer from '../components/Footer'
 import Button from '../components/Button'
 import { courses } from '../data/courses'
 import './Home.css'
@@ -36,9 +37,7 @@ function Courses() {
         </div>
       </section>
 
-      <footer className="tld-footer">
-        <p>&copy; {new Date().getFullYear()} تلاد. جميع الحقوق محفوظة.</p>
-      </footer>
+      <Footer />
     </div>
   )
 }

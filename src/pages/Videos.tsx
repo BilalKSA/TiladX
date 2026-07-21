@@ -1,5 +1,6 @@
 import Header from '../components/Header'
 import BackLink from '../components/BackLink'
+import Footer from '../components/Footer'
 import './Home.css'
 
 const videoItems = [
@@ -36,9 +37,7 @@ function Videos() {
         </div>
       </section>
 
-      <footer className="tld-footer">
-        <p>&copy; {new Date().getFullYear()} تلاد. جميع الحقوق محفوظة.</p>
-      </footer>
+      <Footer />
     </div>
   )
 }

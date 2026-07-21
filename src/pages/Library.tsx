@@ -1,5 +1,6 @@
 import Header from '../components/Header'
 import BackLink from '../components/BackLink'
+import Footer from '../components/Footer'
 import Button from '../components/Button'
 import './Home.css'
 
@@ -45,9 +46,7 @@ function Library() {
         </div>
       </section>
 
-      <footer className="tld-footer">
-        <p>&copy; {new Date().getFullYear()} تلاد. جميع الحقوق محفوظة.</p>
-      </footer>
+      <Footer />
     </div>
   )
 }
