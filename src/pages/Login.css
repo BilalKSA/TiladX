@@ -8,7 +8,7 @@
   gap: var(--space-5);
   padding: var(--space-6) var(--space-4);
   background: var(--surface-tint);
-  background-image: radial-gradient(var(--maroon-100) 1.5px, transparent 1.5px);
+  background-image: radial-gradient(rgba(95, 24, 42, 0.16) 1.5px, transparent 1.5px);
   background-size: 22px 22px;
 }
 
