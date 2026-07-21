@@ -11,19 +11,14 @@ const libraryItems = [
     description: 'ملفات ومراجع الدورات، جاهزة للتحميل والمراجعة في أي وقت.',
   },
   {
-    icon: '🗂️',
-    title: 'خطط المذاكرة',
-    description: 'خطط أسبوعية منظمة تساعدك على تغطية المنهج بثبات.',
-  },
-  {
-    icon: '📝',
-    title: 'الاختبارات الإلكترونية',
-    description: 'اختبارات محاكية لقياس مستواك ومتابعة تقدّمك.',
-  },
-  {
     icon: '🎓',
     title: 'الدروس والشروحات',
     description: 'شروحات مكتوبة تغطي أهم المفاهيم خطوة بخطوة.',
+  },
+  {
+    icon: '🧑‍🏫',
+    title: 'عرض المرشدين',
+    description: 'تعرّف على المرشدين المسؤولين عن دعمك ومتابعتك.',
   },
 ]
 
@@ -64,11 +59,11 @@ function Home() {
               <p>{course.description}</p>
               {course.disabled ? (
                 <Button variant="primary" size="sm" disabled>
-                  استعرض الدورة
+                  استعرض البرنامج
                 </Button>
               ) : (
                 <Link to={`/courses/${course.id}`} className="tld-button tld-button--primary tld-button--sm">
-                  استعرض الدورة
+                  استعرض البرنامج
                 </Link>
               )}
             </div>
@@ -81,7 +76,7 @@ function Home() {
           <span className="tld-badge">02</span>
           <h2>مكتبة تلاد</h2>
         </div>
-        <div className="tld-grid tld-grid--4">
+        <div className="tld-grid tld-grid--3">
           {libraryItems.map((item) => (
             <div className="tld-card" key={item.title}>
               <div className="tld-card__icon">{item.icon}</div>
