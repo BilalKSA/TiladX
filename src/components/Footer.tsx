@@ -35,45 +35,23 @@ const socials = [
 
 function Footer() {
   return (
-    <>
-      <section className="tld-support">
-        <div className="tld-support__icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M3 13a9 9 0 0 1 18 0" />
-            <path d="M21 13v4a2 2 0 0 1-2 2h-1a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1h3Z" />
-            <path d="M3 13v4a2 2 0 0 0 2 2h1a1 1 0 0 0 1-1v-4a1 1 0 0 0-1-1H3Z" />
-          </svg>
+    <footer className="tld-footer">
+      <div className="tld-footer__brand">
+        <Logo variant="white" />
+        <p>من الطالب وإلى الطالب</p>
+        <div className="tld-footer__socials">
+          {socials.map((social) => (
+            <a key={social.label} href={social.href} aria-label={social.label} className="tld-footer__social">
+              {social.icon}
+            </a>
+          ))}
         </div>
-        <h2>محتاج مساعدة؟</h2>
-        <p>إذا كنت تحتاج أي مساعدة تواصل مع فريق الدعم الفني</p>
-        <div className="tld-support__actions">
-          <a href="#" className="tld-button tld-button--secondary tld-button--md">
-            تلجرام
-          </a>
-          <a href="#" className="tld-button tld-button--primary tld-button--md">
-            واتساب
-          </a>
-        </div>
-      </section>
+      </div>
 
-      <footer className="tld-footer">
-        <div className="tld-footer__brand">
-          <Logo variant="white" />
-          <p>من الطالب وإلى الطالب</p>
-          <div className="tld-footer__socials">
-            {socials.map((social) => (
-              <a key={social.label} href={social.href} aria-label={social.label} className="tld-footer__social">
-                {social.icon}
-              </a>
-            ))}
-          </div>
-        </div>
-
-        <div className="tld-footer__bottom">
-          <p>جميع الحقوق محفوظة لمنصة تلاد &copy; {new Date().getFullYear()}</p>
-        </div>
-      </footer>
-    </>
+      <div className="tld-footer__bottom">
+        <p>جميع الحقوق محفوظة لمنصة تلاد &copy; {new Date().getFullYear()}</p>
+      </div>
+    </footer>
   )
 }
 
