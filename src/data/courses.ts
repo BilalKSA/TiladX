@@ -3,6 +3,7 @@ export interface Course {
   tag: string
   title: string
   description: string
+  disabled?: boolean
 }
 
 export const courses: Course[] = [
@@ -19,11 +20,13 @@ export const courses: Course[] = [
     title: 'دورة STEM Racing',
     description:
       'تصميم وبناء والتنافس بسيارات مصغّرة، تجمع بين مهارات الهندسة والبرمجة والعمل الجماعي.',
+    disabled: true,
   },
   {
     id: 'elo',
     tag: 'ELO',
     title: 'دورة ELO',
     description: 'إعداد الطلاب للمشاركة والتميز في مسابقات ELO.',
+    disabled: true,
   },
 ]

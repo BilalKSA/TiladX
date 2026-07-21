@@ -123,6 +123,15 @@
   color: var(--primary);
 }
 
+.tld-card--disabled {
+  opacity: 0.6;
+}
+
+.tld-course-soon {
+  background: var(--maroon-100);
+  color: var(--primary);
+}
+
 .tld-footer {
   padding: var(--space-6);
   border-top: 1px solid var(--border);

@@ -53,17 +53,24 @@ function Home() {
       <section id="courses" className="tld-section">
         <div className="tld-section__heading">
           <span className="tld-badge">01</span>
-          <h2>الدورات</h2>
+          <h2>البرامج</h2>
         </div>
         <div className="tld-grid tld-grid--3">
           {courses.map((course) => (
-            <div className="tld-card" key={course.id}>
+            <div className={`tld-card${course.disabled ? ' tld-card--disabled' : ''}`} key={course.id}>
               <span className="tld-pill-tag tld-pill-tag--outline">{course.tag}</span>
+              {course.disabled && <span className="tld-pill-tag tld-course-soon">غير متاح</span>}
               <h3>{course.title}</h3>
               <p>{course.description}</p>
-              <Link to={`/courses/${course.id}`} className="tld-button tld-button--primary tld-button--sm">
-                استعرض الدورة
-              </Link>
+              {course.disabled ? (
+                <Button variant="primary" size="sm" disabled>
+                  استعرض الدورة
+                </Button>
+              ) : (
+                <Link to={`/courses/${course.id}`} className="tld-button tld-button--primary tld-button--sm">
+                  استعرض الدورة
+                </Link>
+              )}
             </div>
           ))}
         </div>
