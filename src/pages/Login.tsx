@@ -60,12 +60,12 @@ function Login() {
           </label>
 
           <label className="tld-field">
-            <span className="tld-field__label">الرقم الجامعي</span>
+            <span className="tld-field__label"> رقم الحساب</span>
             <input
               className="tld-field__input"
               type="text"
               inputMode="numeric"
-              placeholder="202XXXXXX"
+              placeholder="100001"
               value={studentNumber}
               onChange={(e) => setStudentNumber(e.target.value)}
               required

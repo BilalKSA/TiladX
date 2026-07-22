@@ -54,7 +54,7 @@ function ResetPassword() {
                   className="tld-field__input"
                   type="text"
                   inputMode="numeric"
-                  placeholder="202XXXXXX"
+                  placeholder="100001"
                   value={studentNumber}
                   onChange={(e) => setStudentNumber(e.target.value)}
                   required

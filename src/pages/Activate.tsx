@@ -47,16 +47,16 @@ function Activate() {
         </div>
 
         <h1 className="tld-login__title">تفعيل الحساب</h1>
-        <p className="tld-login__subtitle">أدخل رقمك الجامعي وبريدك الإلكتروني لتفعيل حسابك في تلاد</p>
+        <p className="tld-login__subtitle">أدخل رقم حسابك وبريدك الإلكتروني لتفعيل حسابك في تلاد</p>
 
         <form className="tld-login__form" onSubmit={handleSubmit}>
           <label className="tld-field">
-            <span className="tld-field__label">الرقم الجامعي</span>
+            <span className="tld-field__label">رقم الحساب</span>
             <input
               className="tld-field__input"
               type="text"
               inputMode="numeric"
-              placeholder="202XXXXXX"
+              placeholder="100001"
               value={studentNumber}
               onChange={(e) => setStudentNumber(e.target.value)}
               required

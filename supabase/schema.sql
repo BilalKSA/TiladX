@@ -1,16 +1,24 @@
--- Tilad: organization (KFUPM) sign-in schema
--- Run this once in the Supabase dashboard's SQL Editor.
+-- Tilad: organization sign-in schema
+-- Run this once in the Supabase dashboard's SQL Editor (safe to re-run).
 
 create table if not exists public.students (
   id uuid primary key default gen_random_uuid(),
   student_number text not null unique,
   full_name text,
-  organization text not null default 'KFUPM',
+  organization text,
   email text,
+  phone text,
+  gender text,
   auth_user_id uuid references auth.users (id),
   activated_at timestamptz,
   created_at timestamptz not null default now()
 );
+
+-- Columns added after the initial rollout — safe to re-run on an existing table.
+alter table public.students add column if not exists phone text;
+alter table public.students add column if not exists gender text;
+alter table public.students alter column organization drop not null;
+alter table public.students alter column organization drop default;
 
 alter table public.students enable row level security;
 -- No select/insert/update policies are defined on purpose: the table is only
@@ -73,7 +81,6 @@ $$;
 
 grant execute on function public.link_student_account(text, text) to authenticated;
 
--- Test data — replace/remove once the real roster is loaded.
-insert into public.students (student_number)
-values ('202212345')
-on conflict (student_number) do nothing;
+-- The real student roster is loaded separately, outside this repo, since it
+-- contains personal data (names, emails, phone numbers) that must never be
+-- committed to git. See the accompanying import file handed to you directly.
