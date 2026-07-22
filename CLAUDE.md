@@ -8,6 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `npm run build` — type-check (`tsc -b`) then production build via Vite
 - `npm run lint` — lint with Oxlint
 - `npm run preview` — preview the production build locally
+- `npm run deploy` — build then `firebase deploy --only hosting`; requires `firebase login` once locally and a project linked via `firebase use --add` (see `firebase.json`)
 
 There is no test suite configured yet.
 
@@ -15,7 +16,9 @@ There is no test suite configured yet.
 
 Copy `.env.example` to `.env.local` and fill in `VITE_SUPABASE_ANON_KEY` (from the Supabase project's Settings → API page) to run anything that touches `src/lib/supabase.ts`. `.env.local` is gitignored — never commit real keys, and never put the Supabase *secret* key in a `VITE_`-prefixed var (it would ship in the client bundle).
 
-`supabase/schema.sql` has the database schema (run once, manually, in the Supabase SQL Editor — this repo has no CLI/migration tooling wired up). It creates a `students` table (roster of valid IDs + activation state, RLS-locked with no direct select/insert/update policies) and three `SECURITY DEFINER` RPC functions (`resolve_login_email`, `check_student_number`, `link_student_account`) that are the only way to read/write it from the client. See `src/lib/auth.ts` for how they're used.
+`supabase/schema.sql` has the database schema (run once, manually, in the Supabase SQL Editor — this repo has no CLI/migration tooling wired up). It creates a `students` table (roster of valid IDs + activation state, RLS-locked with no direct select/insert/update policies) and `SECURITY DEFINER` RPC functions (`resolve_login_email`, `check_student_number`, `link_student_account`, `get_my_profile`) that are the only way to read/write it from the client. See `src/lib/auth.ts` for how they're used.
+
+Hosting is Firebase Hosting (static, SPA rewrite to `index.html` — see `firebase.json`), separate from Supabase, which is only the backend (Postgres + Auth). `firebase-tools` is a dev dependency; deploy via `npm run deploy`.
 
 ## Architecture
 
