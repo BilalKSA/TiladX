@@ -22,6 +22,14 @@ const libraryItems = [
   },
 ]
 
+const posters = [
+  {
+    icon: '🧪',
+    title: 'ملصق ISEF — لمياء النفيعي',
+    description: 'التقاط وتحويل ثاني أكسيد الكربون كهروكيميائياً باستخدام بوليمرات عضوية مسامية.',
+  },
+]
+
 function Library() {
   return (
     <div className="tld-home">
@@ -40,6 +48,25 @@ function Library() {
               <p>{item.description}</p>
               <Button variant="ghost" size="sm">
                 عرض المحتوى
+              </Button>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="tld-section">
+        <div className="tld-section__heading">
+          <h2>الملصقات</h2>
+        </div>
+        <div className="tld-grid tld-grid--3">
+          {posters.map((poster) => (
+            <div className="tld-card tld-card--disabled" key={poster.title}>
+              <span className="tld-pill-tag tld-course-soon">غير متاح</span>
+              <div className="tld-card__icon">{poster.icon}</div>
+              <h3>{poster.title}</h3>
+              <p>{poster.description}</p>
+              <Button variant="ghost" size="sm" disabled>
+                عرض الملصق
               </Button>
             </div>
           ))}
