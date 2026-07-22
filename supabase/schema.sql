@@ -9,6 +9,7 @@ create table if not exists public.students (
   email text,
   phone text,
   gender text,
+  role text not null default 'student',
   auth_user_id uuid references auth.users (id),
   activated_at timestamptz,
   created_at timestamptz not null default now()
@@ -17,6 +18,7 @@ create table if not exists public.students (
 -- Columns added after the initial rollout — safe to re-run on an existing table.
 alter table public.students add column if not exists phone text;
 alter table public.students add column if not exists gender text;
+alter table public.students add column if not exists role text not null default 'student';
 alter table public.students alter column organization drop not null;
 alter table public.students alter column organization drop default;
 
@@ -80,6 +82,22 @@ end;
 $$;
 
 grant execute on function public.link_student_account(text, text) to authenticated;
+
+-- Returns the signed-in user's own profile (name, gender, role) for
+-- greeting/personalization. Scoped to auth.uid() — a user can only ever
+-- read their own row, never anyone else's.
+create or replace function public.get_my_profile()
+returns table (full_name text, gender text, role text)
+language sql
+security definer
+set search_path = public
+as $$
+  select full_name, gender, role
+  from public.students
+  where auth_user_id = auth.uid();
+$$;
+
+grant execute on function public.get_my_profile() to authenticated;
 
 -- The real student roster is loaded separately, outside this repo, since it
 -- contains personal data (names, emails, phone numbers) that must never be

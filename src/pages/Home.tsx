@@ -1,6 +1,8 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import { getMyProfile } from '../lib/auth'
 import './Home.css'
 
 const sections = [
@@ -28,12 +30,29 @@ const sections = [
 ]
 
 function Home() {
+  const [firstName, setFirstName] = useState('')
+  const [gender, setGender] = useState<string | null>(null)
+
+  useEffect(() => {
+    getMyProfile()
+      .then((profile) => {
+        if (!profile) return
+        setFirstName(profile.fullName?.trim().split(' ')[0] ?? '')
+        setGender(profile.gender)
+      })
+      .catch(() => {})
+  }, [])
+
+  const greeting = gender === 'female' ? 'هلا بصانعة المستقبل' : 'هلا بصانع المستقبل'
+
   return (
     <div className="tld-home">
       <Header />
 
       <section className="tld-hero halftone">
-        <h1>هلا صانع المستقبل `$name`</h1>
+        <h1>
+          {greeting} {firstName}
+        </h1>
         <p>اختر القسم اللي ودّك تشوفه</p>
       </section>
 

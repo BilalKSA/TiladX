@@ -52,3 +52,19 @@ export async function requestPasswordReset(studentNumber: string) {
 export async function signOut() {
   await supabase.auth.signOut()
 }
+
+export interface Profile {
+  fullName: string | null
+  gender: string | null
+  role: string
+}
+
+export async function getMyProfile(): Promise<Profile | null> {
+  const { data, error } = await supabase.rpc('get_my_profile')
+  if (error) throw error
+
+  const row = data?.[0]
+  if (!row) return null
+
+  return { fullName: row.full_name, gender: row.gender, role: row.role }
+}
