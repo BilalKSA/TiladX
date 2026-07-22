@@ -26,19 +26,21 @@ const posters = [
   {
     icon: '🧪',
     title: 'ملصق ISEF — لمياء النفيعي',
-    description: 'التقاط وتحويل ثاني أكسيد الكربون كهروكيميائياً باستخدام بوليمرات عضوية مسامية.',
+    description: '',
     file: '/assets/lamyaa-alnofie-isef-poster.pdf',
   },
   {
     icon: '🧪',
     title: 'ملصق ISEF — فاطمة العرفج',
-    description: 'ملصق بحثي مقدم في معرض إنتل الدولي للعلوم والهندسة (ISEF).',
+    description: '',
+
     file: '/assets/fatimah-alarfaj-isef-poster.pdf',
   },
   {
     icon: '🧪',
     title: 'ملصق ISEF — مريم',
-    description: 'ملصق بحثي مقدم في معرض إنتل الدولي للعلوم والهندسة (ISEF).',
+    description: '',
+
     file: '/assets/mariam-isef-poster.pdf',
   },
 ]

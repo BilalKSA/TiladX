@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 .firebase
+email-previews
 .env
 .env.*
 !.env.example
