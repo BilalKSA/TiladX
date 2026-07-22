@@ -41,15 +41,15 @@ function ResetPassword() {
 
         {sent ? (
           <p className="tld-login__subtitle">
-            إذا كان الرقم الجامعي مسجّلاً، أرسلنا رابط استعادة كلمة المرور إلى بريدك الإلكتروني.
+            إذا كان رقم الحساب مسجّلاً، أرسلنا رابط استعادة كلمة المرور إلى بريدك الإلكتروني.
           </p>
         ) : (
           <>
-            <p className="tld-login__subtitle">أدخل رقمك الجامعي وسنرسل رابط استعادة كلمة المرور إلى بريدك المسجّل</p>
+            <p className="tld-login__subtitle">أدخل رقم حسابك وسنرسل رابط استعادة كلمة المرور إلى بريدك المسجّل</p>
 
             <form className="tld-login__form" onSubmit={handleSubmit}>
               <label className="tld-field">
-                <span className="tld-field__label">الرقم الجامعي</span>
+                <span className="tld-field__label">رقم الحساب</span>
                 <input
                   className="tld-field__input"
                   type="text"

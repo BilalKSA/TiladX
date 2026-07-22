@@ -1,6 +1,6 @@
 import { supabase } from './supabase'
 
-const GENERIC_SIGN_IN_ERROR = 'الرقم الجامعي أو كلمة المرور غير صحيحة، أو الحساب غير مفعّل بعد.'
+const GENERIC_SIGN_IN_ERROR = 'رقم الحساب أو كلمة المرور غير صحيحة، أو الحساب غير مفعّل بعد.'
 
 async function resolveLoginEmail(studentNumber: string): Promise<string | null> {
   const { data, error } = await supabase.rpc('resolve_login_email', { p_student_number: studentNumber })
@@ -24,7 +24,7 @@ export async function checkStudentNumber(studentNumber: string): Promise<boolean
 
 export async function activateStudent(studentNumber: string, email: string, password: string) {
   const isValid = await checkStudentNumber(studentNumber)
-  if (!isValid) throw new Error('الرقم الجامعي غير صحيح أو تم تفعيل الحساب مسبقاً.')
+  if (!isValid) throw new Error('رقم الحساب غير صحيح أو تم تفعيل الحساب مسبقاً.')
 
   const { error: signUpError } = await supabase.auth.signUp({ email, password })
   if (signUpError) throw signUpError
