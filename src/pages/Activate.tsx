@@ -111,7 +111,7 @@ function Activate() {
 
       <p className="tld-login__terms">
         لديك حساب بالفعل؟{' '}
-        <Link to="/" className="tld-login__forgot">
+        <Link to="/login" className="tld-login__forgot">
           سجّل الدخول
         </Link>
       </p>

@@ -69,6 +69,15 @@
   background: var(--maroon-50);
 }
 
+.tld-button--on-primary {
+  background: var(--on-primary);
+  color: var(--primary);
+}
+
+.tld-button--on-primary:not(:disabled):hover {
+  background: var(--on-primary-muted);
+}
+
 .tld-button--loading {
   cursor: wait;
   opacity: 0.85;
@@ -88,4 +97,9 @@
 .tld-button--loading.tld-button--ghost {
   background: transparent;
   color: var(--ink);
+}
+
+.tld-button--loading.tld-button--on-primary {
+  background: var(--on-primary);
+  color: var(--primary);
 }

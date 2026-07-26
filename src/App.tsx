@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
+import Landing from './pages/Landing'
 import Login from './pages/Login'
 import Activate from './pages/Activate'
 import ResetPassword from './pages/ResetPassword'
@@ -13,7 +14,8 @@ import RequireAuth from './components/RequireAuth'
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Login />} />
+      <Route path="/" element={<Landing />} />
+      <Route path="/login" element={<Login />} />
       <Route path="/activate" element={<Activate />} />
       <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/reset-password/confirm" element={<ResetPasswordConfirm />} />

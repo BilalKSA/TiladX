@@ -2,7 +2,7 @@ import type { ButtonHTMLAttributes } from 'react'
 import Spinner from './Spinner'
 import './Button.css'
 
-type Variant = 'primary' | 'secondary' | 'ghost'
+type Variant = 'primary' | 'secondary' | 'ghost' | 'on-primary'
 type Size = 'lg' | 'md' | 'sm'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {

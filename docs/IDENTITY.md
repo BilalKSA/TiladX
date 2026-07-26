@@ -55,7 +55,7 @@ Copy is **colloquial Saudi Arabic**, not formal MSA — e.g. "اختر القس�
 
 ## Component patterns to reuse (don't reinvent)
 
-- **`Button`** (`src/components/Button.tsx`) — variants `primary`/`secondary`/`ghost`, sizes `lg`/`md`/`sm`, built-in `loading` prop (spinner + auto-disable, see `Spinner.tsx`). Also exported as raw CSS classes (`tld-button tld-button--primary tld-button--sm`) for non-`<button>` elements like `<Link>`/`<a>` styled as buttons.
+- **`Button`** (`src/components/Button.tsx`) — variants `primary`/`secondary`/`ghost`/`on-primary`, sizes `lg`/`md`/`sm`, built-in `loading` prop (spinner + auto-disable, see `Spinner.tsx`). `on-primary` (white bg, maroon text) is for CTAs sitting on a filled maroon surface like `.tld-hero` — `primary`/`secondary`/`ghost` all have poor contrast there. Also exported as raw CSS classes (`tld-button tld-button--primary tld-button--sm`) for non-`<button>` elements like `<Link>`/`<a>` styled as buttons.
 - **`.tld-card`** — standard card (white/dark surface, border, `radius-card`, flex column). `.tld-card--disabled` (opacity 0.6) + a `.tld-pill-tag.tld-course-soon` badge is the established pattern for "not available yet" content (disabled courses, previously the locked posters section).
 - **`.tld-pill-tag`** / **`.tld-pill-tag--outline`** — filled or outlined maroon pill, used for tags/badges.
 - **`.tld-badge`** — circular numbered badge (`01`, `02`, `03`) for ordered section headings.

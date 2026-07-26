@@ -17,7 +17,7 @@ function RequireAuth() {
   }, [])
 
   if (session === undefined) return null
-  if (session === null) return <Navigate to="/" replace />
+  if (session === null) return <Navigate to="/login" replace />
 
   return <Outlet />
 }

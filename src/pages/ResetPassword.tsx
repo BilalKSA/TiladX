@@ -73,7 +73,7 @@ function ResetPassword() {
 
       <p className="tld-login__terms">
         تذكرت كلمة المرور؟{' '}
-        <Link to="/" className="tld-login__forgot">
+        <Link to="/login" className="tld-login__forgot">
           سجّل الدخول
         </Link>
       </p>

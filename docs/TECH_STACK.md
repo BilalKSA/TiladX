@@ -63,13 +63,14 @@ docs/
 
 ## Routing (`src/App.tsx`)
 
-Public routes: `/`, `/activate`, `/reset-password`, `/reset-password/confirm`.
+Public routes: `/`, `/login`, `/activate`, `/reset-password`, `/reset-password/confirm`.
 
-Everything else is wrapped in a parent `<Route element={<RequireAuth />}>`, which requires a live Supabase session (redirects to `/` otherwise): `/home`, `/home/courses`, `/home/library`, `/home/videos`, `/courses/:id`.
+Everything else is wrapped in a parent `<Route element={<RequireAuth />}>`, which requires a live Supabase session (redirects to `/login` otherwise): `/home`, `/home/courses`, `/home/library`, `/home/videos`, `/courses/:id`.
 
 | Path | Page | Notes |
 |---|---|---|
-| `/` | `Login.tsx` | Organization sign-in by account number, org selector locked to a single option |
+| `/` | `Landing.tsx` | Public marketing page — hero, programs showcase (from `courses.ts`), value props, CTA to `/login`. No auth required. |
+| `/login` | `Login.tsx` | Organization sign-in by account number, org selector locked to a single option |
 | `/activate` | `Activate.tsx` | First-time setup: account number + email + password |
 | `/reset-password` | `ResetPassword.tsx` | Request a reset link by account number |
 | `/reset-password/confirm` | `ResetPasswordConfirm.tsx` | Lands here from the emailed recovery link, sets new password |
