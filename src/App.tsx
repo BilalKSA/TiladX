@@ -1,4 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
+import Maintenance from './pages/Maintenance'
 import Landing from './pages/Landing'
 import Login from './pages/Login'
 import Activate from './pages/Activate'
@@ -14,7 +15,8 @@ import RequireAuth from './components/RequireAuth'
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Landing />} />
+      <Route path="/" element={<Maintenance />} />
+      <Route path="/landing" element={<Landing />} />
       <Route path="/login" element={<Login />} />
       <Route path="/activate" element={<Activate />} />
       <Route path="/reset-password" element={<ResetPassword />} />
