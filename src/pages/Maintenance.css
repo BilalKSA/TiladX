@@ -109,27 +109,3 @@
 .tld-maintenance__time {
   margin-inline-start: auto;
 }
-
-.tld-maintenance__whatsapp {
-  position: fixed;
-  bottom: var(--space-5);
-  inset-inline-end: var(--space-5);
-  width: 52px;
-  height: 52px;
-  border-radius: var(--radius-pill);
-  background: var(--primary);
-  color: #fff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: var(--shadow-soft);
-}
-
-.tld-maintenance__whatsapp:hover {
-  background: var(--primary-hover);
-}
-
-.tld-maintenance__whatsapp svg {
-  width: 26px;
-  height: 26px;
-}
