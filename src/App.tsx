@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import Maintenance from './pages/Maintenance'
+import Files from './pages/Files'
 import Landing from './pages/Landing'
 import Login from './pages/Login'
 import Activate from './pages/Activate'
@@ -16,6 +17,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Maintenance />} />
+      <Route path="/files" element={<Files />} />
       <Route path="/landing" element={<Landing />} />
       <Route path="/login" element={<Login />} />
       <Route path="/activate" element={<Activate />} />

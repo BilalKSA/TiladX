@@ -63,13 +63,14 @@ docs/
 
 ## Routing (`src/App.tsx`)
 
-Public routes: `/`, `/landing`, `/login`, `/activate`, `/reset-password`, `/reset-password/confirm`.
+Public routes: `/`, `/files`, `/landing`, `/login`, `/activate`, `/reset-password`, `/reset-password/confirm`.
 
 Everything else is wrapped in a parent `<Route element={<RequireAuth />}>`, which requires a live Supabase session (redirects to `/login` otherwise): `/home`, `/home/courses`, `/home/library`, `/home/videos`, `/courses/:id`.
 
 | Path | Page | Notes |
 |---|---|---|
-| `/` | `Maintenance.tsx` | **Currently live** — "under maintenance" holding page (Tilad-branded), with a "محاولة تسجيل الدخول" link to `/login`. Swap the `/` route back to `<Landing />` when ready to launch publicly. |
+| `/` | `Maintenance.tsx` | **Currently live** — "under maintenance" holding page (Tilad-branded), with an "اتطلع على ملفاتك" link to `/files`. Swap the `/` route back to `<Landing />` when ready to launch publicly. |
+| `/files` | `Files.tsx` | Public (no auth) poster/file listing — same 3 ISEF posters as the Library page, plus a 4th "MREP 2026 poster Tilad" entry shown locked ("غير متاح") until that file is provided. Independent, hardcoded list — not shared with `Library.tsx`'s posters section. |
 | `/landing` | `Landing.tsx` | The real public marketing page (hero, programs showcase from `courses.ts`, value props, CTA to `/login`) — built and ready, just not the current homepage. |
 | `/login` | `Login.tsx` | Organization sign-in by account number, org selector locked to a single option |
 | `/activate` | `Activate.tsx` | First-time setup: account number + email + password |

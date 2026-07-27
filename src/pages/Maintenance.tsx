@@ -39,8 +39,8 @@ function Maintenance() {
             <button type="button" className="tld-button tld-button--secondary tld-button--md" onClick={() => window.location.reload()}>
               تحديث الصفحة
             </button>
-            <Link to="/login" className="tld-button tld-button--primary tld-button--md">
-              محاولة تسجيل الدخول
+            <Link to="/files" className="tld-button tld-button--primary tld-button--md">
+              اتطلع على ملفاتك
             </Link>
           </div>
 
