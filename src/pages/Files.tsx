@@ -37,7 +37,7 @@ const isefPosters = [
 
 const guidelines = {
   icon: '📘',
-  title: 'دليل هوية تلاد',
+  title: "Tilad's Guidelines",
   file: '/assets/TiladGuideLines.pdf',
 }
 
