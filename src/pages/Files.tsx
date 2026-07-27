@@ -5,6 +5,18 @@ import Footer from '../components/Footer'
 import './Home.css'
 import './Landing.css'
 
+const mrepFilenames = [
+  'EmadPoster',
+  'FaresPoster',
+  'FatimaPoster',
+  'JomanaPoster',
+  'JuanPoster',
+  'LanaPoster',
+  'MohammadPoster',
+  'MohammedPoster',
+  'Shaden',
+]
+
 const posters = [
   {
     icon: '🧪',
@@ -24,12 +36,12 @@ const posters = [
     description: '',
     file: '/assets/mariam-isef-poster.pdf',
   },
-  {
+  ...mrepFilenames.map((name) => ({
     icon: '🏆',
-    title: 'MREP 2026 poster Tilad',
+    title: `MREP - ${name}`,
     description: '',
-    file: null,
-  },
+    file: `/assets/posters/${name}.pdf`,
+  })),
 ]
 
 function Files() {
