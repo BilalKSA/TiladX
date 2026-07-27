@@ -17,32 +17,47 @@ const mrepFilenames = [
   'Shaden',
 ]
 
-const posters = [
+const isefPosters = [
   {
     icon: '🧪',
     title: 'ملصق ISEF — لمياء النفيعي',
-    description: '',
     file: '/assets/lamyaa-alnofie-isef-poster.pdf',
   },
   {
     icon: '🧪',
     title: 'ملصق ISEF — فاطمة العرفج',
-    description: '',
     file: '/assets/fatimah-alarfaj-isef-poster.pdf',
   },
   {
     icon: '🧪',
     title: 'ملصق ISEF — مريم',
-    description: '',
     file: '/assets/mariam-isef-poster.pdf',
   },
-  ...mrepFilenames.map((name) => ({
-    icon: '🏆',
-    title: `MREP - ${name}`,
-    description: '',
-    file: `/assets/posters/${name}.pdf`,
-  })),
 ]
+
+const guidelines = {
+  icon: '📘',
+  title: 'دليل هوية تلاد',
+  file: '/assets/TiladGuideLines.pdf',
+}
+
+const mrepPosters = mrepFilenames.map((name) => ({
+  icon: '🏆',
+  title: `MREP - ${name}`,
+  file: `/assets/posters/${name}.pdf`,
+}))
+
+function PosterCard({ poster }: { poster: { icon: string; title: string; file: string } }) {
+  return (
+    <div className="tld-card" key={poster.title}>
+      <div className="tld-card__icon">{poster.icon}</div>
+      <h3>{poster.title}</h3>
+      <a href={poster.file} target="_blank" rel="noopener noreferrer" className="tld-button tld-button--ghost tld-button--sm">
+        عرض الملف
+      </a>
+    </div>
+  )
+}
 
 function Files() {
   return (
@@ -60,23 +75,24 @@ function Files() {
         <div className="tld-section__heading">
           <h2>ملفاتك</h2>
         </div>
+
         <div className="tld-grid tld-grid--3">
-          {posters.map((poster) => (
-            <div className={`tld-card${poster.file ? '' : ' tld-card--disabled'}`} key={poster.title}>
-              <div className="tld-card__icon">{poster.icon}</div>
-              {!poster.file && <span className="tld-pill-tag tld-course-soon">غير متاح</span>}
-              <h3>{poster.title}</h3>
-              {poster.description && <p>{poster.description}</p>}
-              {poster.file ? (
-                <a href={poster.file} target="_blank" rel="noopener noreferrer" className="tld-button tld-button--ghost tld-button--sm">
-                  عرض الملف
-                </a>
-              ) : (
-                <button type="button" className="tld-button tld-button--ghost tld-button--sm" disabled>
-                  عرض الملف
-                </button>
-              )}
-            </div>
+          {isefPosters.map((poster) => (
+            <PosterCard poster={poster} key={poster.title} />
+          ))}
+        </div>
+
+        <div className="tld-wide-card">
+          <div className="tld-card__icon">{guidelines.icon}</div>
+          <h3 className="tld-wide-card__title">{guidelines.title}</h3>
+          <a href={guidelines.file} target="_blank" rel="noopener noreferrer" className="tld-button tld-button--ghost tld-button--sm">
+            عرض الملف
+          </a>
+        </div>
+
+        <div className="tld-grid tld-grid--3">
+          {mrepPosters.map((poster) => (
+            <PosterCard poster={poster} key={poster.title} />
           ))}
         </div>
       </section>

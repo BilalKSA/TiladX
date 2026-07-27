@@ -29,6 +29,29 @@
   max-width: 480px;
 }
 
+.tld-grid + .tld-wide-card,
+.tld-wide-card + .tld-grid {
+  margin-top: var(--space-5);
+}
+
+.tld-wide-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: var(--space-5);
+}
+
+.tld-wide-card .tld-card__icon {
+  margin-bottom: 0;
+}
+
+.tld-wide-card__title {
+  flex: 1;
+}
+
 .tld-landing__cta {
   margin: var(--space-6);
   padding: var(--space-7) var(--space-6);
