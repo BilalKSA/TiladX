@@ -50,17 +50,6 @@ function Maintenance() {
             <span className="tld-maintenance__time">{now.toLocaleTimeString('ar-SA', { hour: 'numeric', minute: '2-digit', second: '2-digit' })}</span>
           </div>
         </div>
-
-        <div className="tld-maintenance__side halftone">
-          <div className="tld-maintenance__phone">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="7" y="2" width="10" height="20" rx="2" />
-              <path d="M11 18h2" />
-            </svg>
-          </div>
-          <h2>نحن نعمل على تحسين تجربتك</h2>
-          <p>سنعود قريبًا بتحسينات وميزات جديدة!</p>
-        </div>
       </div>
 
       <a href="#" className="tld-maintenance__whatsapp" aria-label="تواصل عبر واتساب" target="_blank" rel="noopener noreferrer">
