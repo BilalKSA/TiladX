@@ -1,17 +1,14 @@
 import { useState } from 'react'
-import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Logo from './Logo'
 import ThemeToggle from './ThemeToggle'
 import Button from './Button'
 import { signOut } from '../lib/auth'
 import './Header.css'
 
-const links = [
-  { to: '/home/courses', label: 'البرامج' },
-  { to: '/home/library', label: 'المكتبة' },
-  { to: '/home/videos', label: 'الفيديوهات والجلسات' },
-]
-
+// No global nav by design — the library and video sections are reached from
+// inside a program page, not from a bar that follows you everywhere. The logo
+// goes back to /home, which is the program picker.
 function Header() {
   const navigate = useNavigate()
   const [signingOut, setSigningOut] = useState(false)
@@ -27,17 +24,6 @@ function Header() {
       <Link to="/home" aria-label="الصفحة الرئيسية">
         <Logo />
       </Link>
-      <nav className="tld-header__nav">
-        {links.map((link) => (
-          <NavLink
-            key={link.to}
-            to={link.to}
-            className={({ isActive }) => `tld-header__link${isActive ? ' tld-header__link--active' : ''}`}
-          >
-            {link.label}
-          </NavLink>
-        ))}
-      </nav>
       <div className="tld-header__actions">
         <ThemeToggle />
         <Button variant="secondary" size="sm" onClick={handleSignOut} loading={signingOut}>

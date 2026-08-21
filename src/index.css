@@ -22,12 +22,24 @@
   --on-primary-muted: #e9cfd5;
   --focus-ring: #5f182a;
 
-  --shadow-soft: 0 8px 24px rgba(63, 10, 22, 0.08);
+  /* Inverted band — a deep maroon section used to break up the pale page
+     rhythm. Always pair with --on-invert / --on-invert-muted for text. */
+  --surface-invert: #3f0a16;
+  --on-invert: #ffffff;
+  --on-invert-muted: #d9b9c1;
+  --border-strong: #dcc3c9;
 
-  --radius-input: 10px;
-  --radius-panel: 16px;
-  --radius-card: 20px;
-  --radius-hero: 28px;
+  /* Elevation scale. Tinted with the maroon ink in light mode so shadows read
+     as part of the brand rather than neutral gray. */
+  --shadow-soft: 0 1px 2px rgba(63, 10, 22, 0.06), 0 8px 24px rgba(63, 10, 22, 0.08);
+  --shadow-md: 0 2px 4px rgba(63, 10, 22, 0.07), 0 12px 28px rgba(63, 10, 22, 0.1);
+  --shadow-lg: 0 4px 8px rgba(63, 10, 22, 0.09), 0 24px 48px rgba(63, 10, 22, 0.14);
+  --shadow-hero: 0 18px 48px rgba(63, 10, 22, 0.26);
+
+  --radius-input: 8px;
+  --radius-panel: 12px;
+  --radius-card: 14px;
+  --radius-hero: 20px;
   --radius-pill: 999px;
 
   --space-1: 4px;
@@ -39,13 +51,20 @@
   --space-7: 48px;
   --space-8: 64px;
 
-  --display: 'Baloo Bhaijaan 2', 'IBM Plex Sans Arabic', sans-serif;
-  --sans: 'IBM Plex Sans Arabic', system-ui, sans-serif;
+  /* Bilingual stacks: Manrope carries the Latin glyphs and has no Arabic
+     coverage, so Arabic text falls through to Tajawal automatically. Order
+     matters — Manrope must come first or Tajawal would render the Latin too. */
+  --display: 'Manrope', 'Tajawal', sans-serif;
+  --sans: 'Manrope', 'Tajawal', system-ui, sans-serif;
 
   font: 16px/1.6 var(--sans);
   color-scheme: light dark;
   color: var(--ink);
-  background: var(--surface-page);
+
+  /* Brand background from the 2026 guidelines. The colour underneath is the
+     fallback while the image loads and behind any transparent edge. Fixed
+     attachment so the gradient stays put instead of scrolling with content. */
+  background: var(--surface-page) url('/assets/tilad-background.webp') center center / cover no-repeat fixed;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -64,6 +83,18 @@
   --primary-hover: #9b4c5f;
   --on-primary: #ffffff;
   --on-primary-muted: #f0dde1;
+
+  /* On dark, the inverted band lifts *above* the page instead of sinking. */
+  --surface-invert: #431724;
+  --on-invert: #ffffff;
+  --on-invert-muted: #e0c4cb;
+  --border-strong: #5c3540;
+
+  /* Maroon-tinted shadows disappear on dark surfaces — go near-black. */
+  --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.45), 0 14px 32px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 6px 12px rgba(0, 0, 0, 0.5), 0 28px 56px rgba(0, 0, 0, 0.55);
+  --shadow-hero: 0 18px 48px rgba(0, 0, 0, 0.6);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -79,6 +110,16 @@
     --primary-hover: #9b4c5f;
     --on-primary: #ffffff;
     --on-primary-muted: #f0dde1;
+
+    --surface-invert: #431724;
+    --on-invert: #ffffff;
+    --on-invert-muted: #e0c4cb;
+    --border-strong: #5c3540;
+
+    --shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 24px rgba(0, 0, 0, 0.35);
+    --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.45), 0 14px 32px rgba(0, 0, 0, 0.45);
+    --shadow-lg: 0 6px 12px rgba(0, 0, 0, 0.5), 0 28px 56px rgba(0, 0, 0, 0.55);
+    --shadow-hero: 0 18px 48px rgba(0, 0, 0, 0.6);
   }
 }
 
@@ -86,8 +127,22 @@
   box-sizing: border-box;
 }
 
+/* The pastel gradient is a light-mode asset — on the maroon-black dark palette
+   it reads as a washed-out haze, so dark mode keeps the flat surface instead. */
+:root[data-theme='dark'] {
+  background-image: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    background-image: none;
+  }
+}
+
 body {
   margin: 0;
+  /* Transparent so the gradient on the root element shows through. */
+  background: transparent;
 }
 
 #root {

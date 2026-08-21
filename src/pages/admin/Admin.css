@@ -1,0 +1,349 @@
+/* Admin panel. Reuses the design tokens from index.css; .tld-field* form
+   styles come from Login.css, imported by the pages that need them. */
+
+.tld-admin {
+  flex: 1;
+  display: grid;
+  /* Sidebar first in source order = inline-start = the right edge in RTL. */
+  grid-template-columns: 248px 1fr;
+  min-block-size: 100svh;
+}
+
+/* ---------------------------------------------------------------- sidebar */
+
+.tld-admin__sidebar {
+  background: var(--surface-invert);
+  color: var(--on-invert);
+  padding: var(--space-5) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  position: sticky;
+  inset-block-start: 0;
+  block-size: 100svh;
+}
+
+.tld-admin__brand {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-inline: var(--space-2);
+}
+
+.tld-admin__brand .tld-logo {
+  height: 44px;
+}
+
+.tld-admin__brand span {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--on-invert-muted);
+}
+
+.tld-admin__nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  flex: 1;
+}
+
+.tld-admin__link {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-input);
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--on-invert-muted);
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.tld-admin__link:hover {
+  background: color-mix(in srgb, var(--on-invert) 10%, transparent);
+  color: var(--on-invert);
+}
+
+.tld-admin__link--active {
+  background: var(--on-invert);
+  color: var(--maroon-900);
+}
+
+.tld-admin__sidebar-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding-block-start: var(--space-4);
+  border-block-start: 1px solid color-mix(in srgb, var(--on-invert) 20%, transparent);
+}
+
+.tld-admin__exit {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--on-invert-muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.tld-admin__exit:hover {
+  color: var(--on-invert);
+}
+
+/* ------------------------------------------------------------------- main */
+
+.tld-admin__main {
+  padding: var(--space-6);
+  /* Transparent — the brand background on :root shows through. */
+  background: transparent;
+  min-inline-size: 0;
+}
+
+.tld-admin__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  margin-block-end: var(--space-5);
+}
+
+.tld-admin__header h1 {
+  font-size: 30px;
+}
+
+.tld-admin__header p {
+  font-size: 14.5px;
+  margin-block-start: var(--space-1);
+}
+
+/* ------------------------------------------------------------------ cards */
+
+.tld-admin__stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+  margin-block-end: var(--space-6);
+}
+
+.tld-admin__stat {
+  background: var(--surface-card);
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-soft);
+  padding: var(--space-5);
+}
+
+.tld-admin__stat strong {
+  display: block;
+  font-family: var(--display);
+  font-size: 34px;
+  font-weight: 800;
+  color: var(--primary);
+  line-height: 1.2;
+}
+
+.tld-admin__stat span {
+  font-size: 13.5px;
+  color: var(--ink-muted);
+}
+
+.tld-admin__panel {
+  background: var(--surface-card);
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-soft);
+  padding: var(--space-5);
+  margin-block-end: var(--space-5);
+}
+
+.tld-admin__panel > h2 {
+  font-size: 20px;
+  margin-block-end: var(--space-4);
+}
+
+/* ------------------------------------------------------------------ table */
+
+.tld-admin__table-wrap {
+  overflow-x: auto;
+}
+
+.tld-admin__table {
+  inline-size: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.tld-admin__table th,
+.tld-admin__table td {
+  text-align: start;
+  padding: var(--space-3);
+  border-block-end: 1px solid var(--border);
+  vertical-align: middle;
+}
+
+.tld-admin__table th {
+  font-weight: 700;
+  color: var(--ink);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.tld-admin__table td {
+  color: var(--ink-muted);
+}
+
+.tld-admin__table tr:last-child td {
+  border-block-end: none;
+}
+
+.tld-admin__table-actions {
+  display: flex;
+  gap: var(--space-2);
+  justify-content: flex-end;
+}
+
+.tld-admin__row-title {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* ------------------------------------------------------------------ badge */
+
+.tld-admin__badge {
+  display: inline-flex;
+  padding: 3px var(--space-3);
+  border-radius: var(--radius-pill);
+  font-size: 11.5px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.tld-admin__badge--live {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.tld-admin__badge--draft {
+  background: var(--maroon-50);
+  color: var(--primary);
+  border: 1px solid var(--maroon-300);
+}
+
+/* ------------------------------------------------------------------- form */
+
+.tld-admin__form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+}
+
+.tld-admin__form .tld-field--full {
+  grid-column: 1 / -1;
+}
+
+.tld-admin__form textarea.tld-field__input {
+  block-size: auto;
+  min-block-size: 96px;
+  padding-block: var(--space-3);
+  resize: vertical;
+  font-family: inherit;
+  line-height: 1.7;
+}
+
+.tld-admin__form-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.tld-admin__checkbox {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.tld-admin__checkbox input {
+  inline-size: 18px;
+  block-size: 18px;
+  accent-color: var(--primary);
+}
+
+.tld-admin__error {
+  grid-column: 1 / -1;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-input);
+  background: var(--maroon-50);
+  color: var(--maroon-900);
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+:root[data-theme='dark'] .tld-admin__error {
+  color: var(--ink);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .tld-admin__error {
+    color: var(--ink);
+  }
+}
+
+.tld-admin__empty {
+  padding: var(--space-6);
+  text-align: center;
+  color: var(--ink-faint);
+  font-size: 14.5px;
+}
+
+/* ----------------------------------------------------------------- upload */
+
+.tld-admin__upload {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.tld-admin__thumb {
+  inline-size: 56px;
+  block-size: 56px;
+  border-radius: var(--radius-input);
+  object-fit: cover;
+  border: 1px solid var(--border-strong);
+  background: var(--surface-tint);
+}
+
+.tld-admin__file-hint {
+  font-size: 12.5px;
+  color: var(--ink-faint);
+}
+
+/* ------------------------------------------------------------ responsive */
+
+@media (max-width: 900px) {
+  .tld-admin {
+    grid-template-columns: 1fr;
+  }
+
+  .tld-admin__sidebar {
+    position: static;
+    block-size: auto;
+  }
+
+  .tld-admin__nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .tld-admin__stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .tld-admin__form {
+    grid-template-columns: 1fr;
+  }
+}

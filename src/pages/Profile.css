@@ -1,0 +1,141 @@
+.tld-profile {
+  max-inline-size: 620px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.tld-profile__card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border-radius: var(--radius-card);
+  border: 1.5px solid var(--border-strong);
+  background: var(--surface-card);
+  box-shadow: var(--shadow-md);
+}
+
+.tld-profile__avatar {
+  inline-size: 64px;
+  block-size: 64px;
+  flex-shrink: 0;
+  border-radius: var(--radius-pill);
+  background: var(--primary);
+  color: var(--on-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--display);
+  font-size: 26px;
+  font-weight: 800;
+}
+
+.tld-profile__identity {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  min-inline-size: 0;
+}
+
+.tld-profile__fields {
+  margin: 0;
+  display: grid;
+  gap: 1px;
+  background: var(--border);
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+}
+
+.tld-profile__fields > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  background: var(--surface-card);
+}
+
+.tld-profile__fields dt {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink-muted);
+}
+
+.tld-profile__fields dd {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ink);
+  text-align: end;
+  overflow-wrap: anywhere;
+}
+
+.tld-profile__actions {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.tld-profile__note {
+  font-size: 13px;
+  color: var(--ink-faint);
+}
+
+@media (max-width: 480px) {
+  .tld-profile__actions .tld-button {
+    inline-size: 100%;
+  }
+}
+
+/* ---------------------------------------------------------- editable name */
+
+.tld-profile__fields dd {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  justify-content: flex-end;
+}
+
+.tld-profile__edit-link {
+  border: none;
+  background: none;
+  padding: 0;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  flex-shrink: 0;
+}
+
+.tld-profile__edit-link:hover {
+  color: var(--primary-hover);
+}
+
+.tld-profile__edit {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border-radius: var(--radius-card);
+  border: 1.5px solid var(--border-strong);
+  background: var(--surface-card);
+  box-shadow: var(--shadow-md);
+}
+
+.tld-profile__edit-actions {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.tld-profile__saved {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--primary);
+}

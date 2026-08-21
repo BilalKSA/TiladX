@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "deploy": "npm run build && firebase deploy --only hosting"
+    "deploy": "npm run build && firebase deploy --only hosting:production",
+    "deploy:staging": "npm run build && firebase deploy --only hosting:staging"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.110.7",

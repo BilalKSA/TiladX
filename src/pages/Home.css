@@ -131,3 +131,241 @@
   background: var(--maroon-100);
   color: var(--primary);
 }
+
+.tld-library__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+}
+
+.tld-library__filter {
+  border: 1px solid transparent;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.tld-library__filter.tld-pill-tag--outline:hover {
+  background: var(--maroon-50);
+}
+
+/* ===========================================================================
+   برامج تلاد — program picker on /home
+   Poster-style cards: image on top, title, full-width CTA pinned to the base
+   so every button lines up regardless of title length.
+   ======================================================================== */
+
+.tld-programs__head {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+}
+
+.tld-programs__head h2 {
+  font-size: clamp(26px, 3.2vw, 36px);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.tld-programs__note {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 13.5px;
+  color: var(--ink-faint);
+  margin-top: var(--space-1);
+}
+
+.tld-programs__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-5);
+  align-items: stretch;
+}
+
+.tld-programs__empty {
+  text-align: center;
+  color: var(--ink-faint);
+  padding: var(--space-6);
+}
+
+.tld-program-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-card);
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.tld-program-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--maroon-300);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tld-program-card {
+    transition: none;
+  }
+
+  .tld-program-card:hover {
+    transform: none;
+  }
+}
+
+.tld-program-card__media {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  background: var(--surface-tint);
+}
+
+.tld-program-card__media img {
+  inline-size: 100%;
+  block-size: 100%;
+  /* Contain, not cover: programme artwork is a poster, and cropping it cuts
+     off the title. The tinted backdrop fills whatever the aspect ratio leaves
+     over, so letterboxing reads as intentional rather than broken.
+     Padding sits on the image itself — putting it on the container would shift
+     the absolutely-positioned tag and ribbon inward with it. */
+  object-fit: contain;
+  padding: var(--space-3);
+  box-sizing: border-box;
+  display: block;
+}
+
+/* Same dotted maroon tint used for the gallery and mentor placeholders, so an
+   image-less card still reads as branded rather than broken. */
+.tld-program-card__placeholder {
+  inline-size: 100%;
+  block-size: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: color-mix(in srgb, var(--primary) 45%, transparent);
+  background:
+    radial-gradient(color-mix(in srgb, var(--primary) 14%, transparent) 1.5px, transparent 1.5px) 0 0 / 14px 14px,
+    linear-gradient(150deg, var(--surface-tint), var(--maroon-100));
+}
+
+.tld-program-card__placeholder svg {
+  inline-size: 30%;
+  block-size: 30%;
+}
+
+.tld-program-card__tag {
+  position: absolute;
+  inset-block-start: var(--space-3);
+  inset-inline-start: var(--space-3);
+  padding: 4px var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--maroon-900);
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 700;
+  box-shadow: var(--shadow-soft);
+}
+
+.tld-program-card__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-5) var(--space-4);
+  text-align: center;
+}
+
+.tld-program-card__body h3 {
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.tld-program-card__cta {
+  inline-size: 100%;
+  margin-block-start: auto;
+}
+
+@media (max-width: 1100px) {
+  .tld-programs__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .tld-programs__grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+}
+
+/* ------------------------------------------------------- locked programmes */
+/* A programme the user isn't enrolled in stays visible but isn't enterable:
+   diagonal corner ribbon + a dead, greyed action in place of the CTA. */
+
+.tld-program-card--locked {
+  box-shadow: var(--shadow-soft);
+}
+
+.tld-program-card--locked:hover {
+  transform: none;
+  box-shadow: var(--shadow-soft);
+  border-color: var(--border-strong);
+}
+
+/* Desaturate the artwork so locked cards recede without disappearing. */
+.tld-program-card--locked .tld-program-card__media img,
+.tld-program-card--locked .tld-program-card__placeholder {
+  filter: grayscale(0.65);
+  opacity: 0.75;
+}
+
+.tld-program-card__ribbon {
+  position: absolute;
+  inset-block-start: 22px;
+  inset-inline-start: -46px;
+  inline-size: 190px;
+  transform: rotate(-45deg);
+  transform-origin: center;
+  background: var(--maroon-900);
+  color: #fff;
+  text-align: center;
+  padding-block: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: var(--shadow-md);
+  pointer-events: none;
+}
+
+/* RTL mirrors the corner the ribbon sits in, so flip the angle to match. */
+[dir='rtl'] .tld-program-card__ribbon {
+  transform: rotate(45deg);
+}
+
+.tld-program-card__locked-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  block-size: 40px;
+  padding-inline: var(--space-5);
+  border-radius: var(--radius-pill);
+  background: var(--surface-tint);
+  border: 1.5px solid var(--border);
+  color: var(--ink-faint);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: not-allowed;
+}
+
+.tld-program-card__locked-cta svg {
+  inline-size: 15px;
+  block-size: 15px;
+  flex-shrink: 0;
+}

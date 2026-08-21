@@ -1,0 +1,60 @@
+/* Scroller mechanics shared by GalleryStrip and MentorStrip. Scroll position
+   is driven from useInfiniteMarquee.ts — see the comment there for how the
+   infinite loop works. Item styling lives in each strip's own stylesheet. */
+
+.tld-marquee {
+  overflow-x: auto;
+  overflow-y: hidden;
+  /* The wrap sets scrollLeft directly; smooth scrolling would animate that
+     jump and make the seam visible. */
+  scroll-behavior: auto;
+  /* Don't let a horizontal flick at either end scroll the page or trigger
+     browser back-navigation. */
+  overscroll-behavior-x: contain;
+  cursor: grab;
+
+  /* Scroll direction here is visual, not textual — an LTR container keeps
+     scrollLeft positive and left-anchored regardless of the page's RTL. */
+  direction: ltr;
+
+  /* Fade the strip out at both edges instead of cutting it off hard. */
+  mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
+
+  /* The strip is self-evidently draggable; a scrollbar under the fade just
+     adds noise. Keyboard and wheel scrolling still work. */
+  scrollbar-width: none;
+}
+
+.tld-marquee::-webkit-scrollbar {
+  display: none;
+}
+
+.tld-marquee:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: -4px;
+}
+
+.tld-marquee.is-dragging {
+  cursor: grabbing;
+  /* Stop drags from selecting the text inside the cards. */
+  user-select: none;
+}
+
+.tld-marquee__track {
+  display: flex;
+  inline-size: max-content;
+}
+
+.tld-marquee__group {
+  display: flex;
+  gap: var(--space-5);
+  /* Included in the group's offsetWidth, so the measured copy-width used for
+     wrapping covers the gap to the next copy too. */
+  padding-inline-end: var(--space-5);
+}
+
+/* Each card keeps the page's RTL text direction inside the LTR scroller. */
+.tld-marquee__group > * {
+  direction: rtl;
+  flex-shrink: 0;
+}

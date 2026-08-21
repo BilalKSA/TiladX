@@ -21,10 +21,26 @@ npm run dev       # Vite dev server with HMR
 npm run build     # tsc -b && vite build
 npm run lint      # Oxlint
 npm run preview   # preview the production build locally
-npm run deploy    # build + firebase deploy --only hosting
+npm run deploy         # build + deploy to production (tilad-sa)
+npm run deploy:staging # build + deploy to staging (stgtilad)
 ```
 
-`npm run deploy` requires a one-time `firebase login` (interactive Google OAuth — must be run by a human, not automatable) and `firebase use --add` to link a project (writes `.firebaserc`, currently linked to `tilad-sa`).
+Both deploy scripts require a one-time `firebase login` (interactive Google OAuth — must be run by a human, not automatable).
+
+### Hosting targets
+
+The project has two Hosting sites, wired as deploy targets in `.firebaserc`:
+
+| Target | Site | URL |
+|---|---|---|
+| `production` | `tilad-sa` | https://tilad-sa.web.app (and tilad.org) |
+| `staging` | `stgtilad` | https://stgtilad.web.app |
+
+`firebase.json` carries a `hosting` **array** with one block per target — both serve `dist/` with the same SPA rewrite. Re-point a target with `firebase target:apply hosting <target> <site>`.
+
+> **Never run a bare `firebase deploy --only hosting`.** Once targets are configured that deploys to *every* target at once, pushing to production when you meant staging. Always qualify: `--only hosting:staging` or `--only hosting:production`. The npm scripts do this for you.
+
+Verify config without deploying: `firebase deploy --only hosting:staging --dry-run`.
 
 ## Environment variables
 
@@ -44,10 +60,15 @@ src/
   index.css            design tokens + global styles (see docs/IDENTITY.md)
   pages/                one file per route
   components/           shared UI (Button, Logo, Header, Footer, ThemeToggle, BackLink, Spinner, RequireAuth)
-  data/courses.ts       static course catalog (not in Supabase — see below)
+  pages/admin/          admin panel (layout + one page per managed surface)
+  data/quiz.ts          landing-page program quiz (votes for a course slug)
   lib/
     supabase.ts         Supabase client singleton
-    auth.ts             auth helper functions wrapping Supabase Auth + the RPCs in supabase/schema.sql
+    auth.ts             auth helpers wrapping Supabase Auth + the RPCs in supabase/schema.sql
+    content.ts          read side of the content model (courses/lessons/library/mentors)
+    admin.ts            write side + storage uploads + roster RPCs
+    video.ts            YouTube/Vimeo URL → embed URL
+    leads.ts            landing-page quiz submissions
 supabase/
   schema.sql             DB schema — run manually in the Supabase SQL Editor, no migration tooling
 public/
@@ -63,24 +84,26 @@ docs/
 
 ## Routing (`src/App.tsx`)
 
-Public routes: `/`, `/files`, `/landing`, `/login`, `/activate`, `/reset-password`, `/reset-password/confirm`.
+Public routes: `/`, `/files`, `/landing`, `/maintenance`, `/login`, `/activate`, `/reset-password`, `/reset-password/confirm`.
 
-Everything else is wrapped in a parent `<Route element={<RequireAuth />}>`, which requires a live Supabase session (redirects to `/login` otherwise): `/home`, `/home/courses`, `/home/library`, `/home/videos`, `/courses/:id`.
+Everything else is wrapped in a parent `<Route element={<RequireAuth />}>`, which requires a live Supabase session (redirects to `/login` otherwise): `/home`, `/home/courses`, `/home/videos`, `/courses/:slug`, `/courses/:slug/library`, and `/admin/*` — the last of which is additionally wrapped in `<RequireAdmin />`.
 
 | Path | Page | Notes |
 |---|---|---|
-| `/` | `Maintenance.tsx` | **Currently live** — "under maintenance" holding page (Tilad-branded), with an "اتطلع على ملفاتك" link to `/files`. Swap the `/` route back to `<Landing />` when ready to launch publicly. |
+| `/` | `Landing.tsx` | **Currently live** — the public marketing homepage. Swap this route to `<Maintenance />` to put the site back into maintenance mode. |
 | `/files` | `Files.tsx` | Public (no auth) poster/file listing — same 3 ISEF posters as the Library page, plus a 4th "MREP 2026 poster Tilad" entry shown locked ("غير متاح") until that file is provided. Independent, hardcoded list — not shared with `Library.tsx`'s posters section. |
-| `/landing` | `Landing.tsx` | The real public marketing page (hero, programs showcase from `courses.ts`, value props, CTA to `/login`) — built and ready, just not the current homepage. |
+| `/landing` | `Landing.tsx` | Same component as `/`, kept so older links still resolve. |
+| `/maintenance` | `Maintenance.tsx` | The "under maintenance" holding page, no longer on `/`. |
 | `/login` | `Login.tsx` | Organization sign-in by account number, org selector locked to a single option |
-| `/activate` | `Activate.tsx` | First-time setup: account number + email + password |
+| `/activate` | `Activate.tsx` | First-time setup by roster **email** + password. No account number — see the activation-by-email note below. |
 | `/reset-password` | `ResetPassword.tsx` | Request a reset link by account number |
 | `/reset-password/confirm` | `ResetPasswordConfirm.tsx` | Lands here from the emailed recovery link, sets new password |
 | `/home` | `Home.tsx` | Personalized greeting + links to the 3 sections |
-| `/home/courses` | `Courses.tsx` | البرامج — from `src/data/courses.ts` |
-| `/home/library` | `Library.tsx` | مكتبة تلاد — content categories + posters subsection |
+| `/home/courses` | `Courses.tsx` | البرامج — read from the `courses` table |
 | `/home/videos` | `Videos.tsx` | الفيديوهات والجلسات المباشرة |
-| `/courses/:id` | `CourseDetail.tsx` | Per-course page, looked up by `id` from `courses.ts` |
+| `/courses/:slug` | `CourseDetail.tsx` | Course page with an embedded lesson player, playlist, and links to the program's sections |
+| `/courses/:slug/library` | `Library.tsx` | That program's library — its own files plus general ones, filterable by category |
+| `/admin/*` | `pages/admin/` | Admin panel — see "Admin panel" below. Wrapped in `RequireAdmin` |
 
 ## Auth architecture
 
@@ -118,9 +141,47 @@ set auth_user_id = (select id from auth.users where email = '<email>'),
 where student_number = '<number>';
 ```
 
-## Courses (`src/data/courses.ts`)
+## Content model
 
-Static, hardcoded array (`Course[]`) — **not** stored in Supabase. Each course has `id`, `tag`, `title`, `description`, optional `disabled`. Disabled courses (currently `stem-racing`, `elo`) render a "غير مشترك" badge and a non-clickable disabled CTA instead of linking to `/courses/:id`. Only `isef` is currently active. If/when course content needs to be admin-editable, this would need to move into Supabase — it hasn't yet.
+Courses, lessons, library files, and mentors live in Postgres and are edited through the admin panel at `/admin` — they used to be hardcoded in `src/data/*.ts`, which meant a deploy for every content change. Those files are gone.
+
+| Table | Notes |
+|---|---|
+| `courses` | `slug` is the URL key (`/courses/isef`), plus `tag`, `title`, `description`, `thumbnail_path`, `position` |
+| `lessons` | Belongs to a course, `on delete cascade`. `video_url` holds a raw YouTube/Vimeo URL |
+| `library_assets` | Belongs to a course via `course_id` — **the library is per-program**. `null` means general material shown in every program. `category` is one of `papers`/`posters`/`presentations`/`plans`/`templates`/`videos`. Either `file_path` (storage) or `external_url` |
+| `mentors` | Name, title, bio, `photo_path` |
+
+Every one of them has a `published` boolean — the draft/live switch. **All four are readable by `anon`, but only where `published` is true**; admins see everything. Writes require `public.is_admin()`.
+
+`is_admin()` is `SECURITY DEFINER` and checks `students.role = 'admin'` for `auth.uid()`. It has to be, since `students` has no select policy.
+
+> **Authorization belongs in RLS, never in React.** The anon key ships in the JS bundle, so anyone can query these tables directly. `RequireAdmin.tsx` only prevents non-admins from seeing a broken screen; the policies are what actually protect the data.
+
+### Storage buckets
+
+`media` (course thumbnails, mentor photos) and `library` (library files). Both are **public-read**, matching how `public/assets/` already worked, with writes restricted to admins.
+
+Gating library files behind a subscription tier later means flipping `library` to private and serving signed URLs — a public bucket URL is readable forever by anyone who has it.
+
+### Video embedding
+
+`src/lib/video.ts` converts pasted YouTube/Vimeo URLs into embed URLs. Videos are **not** hosted by Tilad — only the URL is stored.
+
+## Admin panel (`/admin`)
+
+Nested under `RequireAuth` → `RequireAdmin`. Sidebar sits on the inline-start edge (the right, in RTL).
+
+| Path | Manages |
+|---|---|
+| `/admin` | Counts across all content, roster activation summary |
+| `/admin/courses` | Courses CRUD + thumbnail upload |
+| `/admin/courses/:courseId/lessons` | Lessons for one course, with video URL validation |
+| `/admin/library` | Library files — upload or external link, categorised |
+| `/admin/mentors` | Mentors + photo upload |
+| `/admin/roster` | Student list, search, activation status, add a student |
+
+The roster screen reads through `admin_list_students()` and writes through `admin_add_student()` — both `SECURITY DEFINER` and both re-checking `is_admin()` themselves, since being definer-rights they'd otherwise bypass RLS entirely.
 
 ## Email infrastructure
 

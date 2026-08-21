@@ -1,8 +1,8 @@
 import './Logo.css'
 
 const sources = {
-  ink: '/assets/tilad-logo-maroon.png',
-  white: '/assets/tilad-logo-white.png',
+  ink: '/assets/tilad-logo-maroon.webp',
+  white: '/assets/tilad-logo-white.webp',
 }
 
 interface LogoProps {

@@ -14,7 +14,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `npm run build` — type-check (`tsc -b`) then production build via Vite
 - `npm run lint` — lint with Oxlint
 - `npm run preview` — preview the production build locally
-- `npm run deploy` — build then `firebase deploy --only hosting`; requires `firebase login` once locally and a project linked via `firebase use --add` (see `firebase.json`)
+- `npm run deploy` — build then deploy to **production** (`tilad-sa` → tilad.org)
+- `npm run deploy:staging` — build then deploy to **staging** (`stgtilad` → stgtilad.web.app)
+
+Both require `firebase login` once locally. Hosting is target-scoped: `.firebaserc` maps `production` → `tilad-sa` and `staging` → `stgtilad`, and `firebase.json` carries one hosting block per target. Never run a bare `firebase deploy --only hosting` — with targets configured it deploys to *both* sites at once.
 
 There is no test suite configured yet.
 

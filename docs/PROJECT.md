@@ -22,7 +22,7 @@ See [`IDENTITY.md`](IDENTITY.md) for the brand/design system and [`TECH_STACK.md
 
 ## People/roles
 
-- **Bilal Zaki** (`zaki.bilal@icloud.com`) — the platform owner/admin. Account number `900001`, `role: 'admin'` in the `students` table. There is no admin-only UI/dashboard yet; the role column exists for future use.
+- **Bilal Zaki** (`zaki.bilal@icloud.com`) — the platform owner/admin. Account number `900001`, `role: 'admin'` in the `students` table, which unlocks the admin panel at `/admin` (content + roster management).
 - **Students** — real roster of 63, mostly personal Gmail/iCloud addresses (not institutional). Likely includes minors (ISEF/STEM Racing are pre-university competitions) — treat any student PII (names, emails, phone numbers) accordingly.
 
 ## Hard rule: never commit student/personal data

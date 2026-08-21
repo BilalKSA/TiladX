@@ -34,7 +34,7 @@ function renderEmail(firstName) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>عرض ورشة اليوم</title>
   </head>
-  <body style="margin:0;padding:0;background:#F8F0F1;font-family:'IBM Plex Sans Arabic', Tahoma, Arial, sans-serif;">
+  <body style="margin:0;padding:0;background:#F8F0F1;font-family:'Tajawal', Tahoma, Arial, sans-serif;">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="padding:32px 16px;">
       <tr>
         <td align="center">

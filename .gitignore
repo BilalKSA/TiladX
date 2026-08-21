@@ -29,3 +29,6 @@ email-previews
 *.njsproj
 *.sln
 *.sw?
+
+# Contains a plaintext admin password — never commit
+supabase/admin-setup.sql

@@ -37,7 +37,7 @@ function renderEmail({ full_name, account_number }) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>مرحباً بك في تلاد</title>
   </head>
-  <body style="margin:0;padding:0;background:#F8F0F1;font-family:'IBM Plex Sans Arabic', Tahoma, Arial, sans-serif;">
+  <body style="margin:0;padding:0;background:#F8F0F1;font-family:'Tajawal', Tahoma, Arial, sans-serif;">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="padding:32px 16px;">
       <tr>
         <td align="center">
@@ -61,7 +61,7 @@ function renderEmail({ full_name, account_number }) {
                   ${account_number}
                 </div>
                 <p style="margin:0 0 24px;font-size:15px;line-height:1.8;color:#6E5C61;">
-                  لتفعيل حسابك، اضغط على الزر أدناه وأدخل رقم حسابك وبريدك الإلكتروني وكلمة مرور من اختيارك.
+                  لتفعيل حسابك، اضغط على الزر أدناه وأدخل بريدك الإلكتروني هذا وكلمة مرور من اختيارك.
                 </p>
                 <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 auto 8px;">
                   <tr>

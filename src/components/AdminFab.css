@@ -1,0 +1,88 @@
+/* Admin shortcut, pinned bottom-right. In an RTL document the right edge is
+   inline-START, so that's the property used here — visually right today, and
+   still the correct edge if an LTR version ever exists. */
+
+.tld-admin-fab {
+  position: fixed;
+  inset-block-end: var(--space-5);
+  inset-inline-start: var(--space-5);
+  z-index: 50;
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  border-radius: var(--radius-pill);
+  background: var(--primary);
+  color: var(--on-primary);
+  text-decoration: none;
+  box-shadow: var(--shadow-lg);
+  border: 1.5px solid color-mix(in srgb, var(--on-primary) 22%, transparent);
+  transition: transform 0.18s ease, background 0.18s ease;
+}
+
+.tld-admin-fab:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+.tld-admin-fab:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+.tld-admin-fab__icon {
+  inline-size: 40px;
+  block-size: 40px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tld-admin-fab__icon svg {
+  inline-size: 22px;
+  block-size: 22px;
+}
+
+/* Collapsed to a circle at rest; expands to a pill on hover/focus so the
+   button is discoverable without permanently taking up space. */
+.tld-admin-fab__label {
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  max-inline-size: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-inline-size 0.22s ease, opacity 0.18s ease, padding-inline-end 0.22s ease;
+}
+
+.tld-admin-fab:hover .tld-admin-fab__label,
+.tld-admin-fab:focus-visible .tld-admin-fab__label {
+  max-inline-size: 160px;
+  opacity: 1;
+  padding-inline-end: var(--space-3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tld-admin-fab,
+  .tld-admin-fab__label {
+    transition: none;
+  }
+
+  .tld-admin-fab:hover {
+    transform: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .tld-admin-fab {
+    inset-block-end: var(--space-4);
+    inset-inline-start: var(--space-4);
+  }
+
+  .tld-admin-fab__icon {
+    inline-size: 36px;
+    block-size: 36px;
+  }
+}

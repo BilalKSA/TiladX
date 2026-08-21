@@ -4,35 +4,11 @@
   justify-content: space-between;
   gap: var(--space-5);
   padding: var(--space-4) var(--space-6);
-  background: var(--surface-page);
+  /* Translucent so the brand background shows through rather than being
+     covered by a solid band. */
+  background: color-mix(in srgb, var(--surface-page) 82%, transparent);
+  backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
-}
-
-.tld-header__nav {
-  display: flex;
-  gap: var(--space-2);
-  background: var(--maroon-50);
-  border-radius: var(--radius-pill);
-  padding: var(--space-1);
-}
-
-.tld-header__link {
-  padding: var(--space-2) var(--space-4);
-  border-radius: var(--radius-pill);
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--ink-muted);
-  text-decoration: none;
-}
-
-.tld-header__link:hover {
-  color: var(--ink);
-  background: var(--maroon-100);
-}
-
-.tld-header__link--active {
-  color: var(--primary);
-  background: var(--maroon-100);
 }
 
 .tld-header__actions {
@@ -44,11 +20,5 @@
 @media (max-width: 960px) {
   .tld-header {
     flex-wrap: wrap;
-  }
-
-  .tld-header__nav {
-    order: 3;
-    width: 100%;
-    justify-content: center;
   }
 }

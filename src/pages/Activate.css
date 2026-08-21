@@ -1,0 +1,141 @@
+/* Activation flow — layered on top of Login.css, which owns the auth card
+   shell (.tld-login*) and the shared .tld-field* form styles. */
+
+.tld-activate__card {
+  max-width: 480px;
+}
+
+/* ------------------------------------------------------- field extras */
+
+.tld-field__hint {
+  font-size: 12.5px;
+  color: var(--ink-faint);
+}
+
+.tld-field__hint.is-ok {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.tld-field__hint.is-bad {
+  color: var(--maroon-900);
+  font-weight: 600;
+}
+
+:root[data-theme='dark'] .tld-field__hint.is-bad {
+  color: var(--ink);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .tld-field__hint.is-bad {
+    color: var(--ink);
+  }
+}
+
+.tld-field__error {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--maroon-900);
+}
+
+:root[data-theme='dark'] .tld-field__error {
+  color: var(--ink);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .tld-field__error {
+    color: var(--ink);
+  }
+}
+
+.tld-field__input[aria-invalid='true'] {
+  border-color: var(--maroon-600);
+}
+
+/* ------------------------------------------------------- strength meter */
+
+.tld-activate__strength {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-block-start: var(--space-1);
+}
+
+.tld-activate__strength-bars {
+  display: flex;
+  gap: 4px;
+}
+
+.tld-activate__strength-bars span {
+  flex: 1;
+  block-size: 5px;
+  border-radius: var(--radius-pill);
+  background: var(--border);
+  transition: background 0.2s ease;
+}
+
+/* Strength is conveyed by how many bars fill, plus the text label beside it —
+   monochrome only, so no red/amber/green scale. */
+.tld-activate__strength-bars span.is-on {
+  background: var(--primary);
+}
+
+.tld-activate__strength-label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink-muted);
+}
+
+/* --------------------------------------------------- requirement checklist */
+
+.tld-activate__checks {
+  list-style: none;
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.tld-activate__checks li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 12.5px;
+  color: var(--ink-faint);
+}
+
+.tld-activate__checks li.is-passed {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.tld-activate__checks svg {
+  inline-size: 15px;
+  block-size: 15px;
+  flex-shrink: 0;
+}
+
+/* ------------------------------------------------------------------ terms */
+
+.tld-activate__terms {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: 13px;
+  color: var(--ink-muted);
+  line-height: 1.7;
+}
+
+.tld-activate__terms input {
+  inline-size: 18px;
+  block-size: 18px;
+  margin: 2px 0 0;
+  accent-color: var(--primary);
+  flex-shrink: 0;
+}
+
+.tld-activate__terms a {
+  color: var(--primary);
+  font-weight: 600;
+}

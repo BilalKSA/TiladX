@@ -1,0 +1,113 @@
+/* 404 — same centred-card shape as the maintenance page, so the two standalone
+   status screens read as a set. Sits on the brand background from :root. */
+
+.tld-notfound {
+  flex: 1;
+  min-block-size: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-6) var(--space-4);
+}
+
+.tld-notfound__card {
+  inline-size: 100%;
+  max-inline-size: 480px;
+  background: var(--surface-card);
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-hero);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-6);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.tld-notfound__top {
+  align-self: flex-start;
+}
+
+.tld-notfound__logo {
+  margin-block-end: var(--space-2);
+}
+
+.tld-notfound__logo .tld-logo {
+  height: 60px;
+}
+
+/* Maroon panel carrying the swords pattern — a flat maroon surface, so it
+   takes the brand pattern rather than the halftone dots. */
+.tld-notfound__code {
+  position: relative;
+  overflow: hidden;
+  inline-size: 100%;
+  padding-block: var(--space-5);
+  border-radius: var(--radius-card);
+  background: linear-gradient(155deg, var(--maroon-700) 0%, var(--maroon-900) 100%);
+  box-shadow: var(--shadow-hero);
+}
+
+.tld-notfound__code::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('/assets/tilad-pattern-swords.webp') center / 150% auto no-repeat;
+  pointer-events: none;
+}
+
+.tld-notfound__code span {
+  position: relative;
+  z-index: 1;
+  display: block;
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(56px, 16vw, 84px);
+  line-height: 1;
+  letter-spacing: 0.04em;
+  color: var(--on-primary);
+}
+
+.tld-notfound h1 {
+  font-size: 26px;
+  margin-block-start: var(--space-2);
+}
+
+.tld-notfound__body {
+  font-size: 15px;
+  max-inline-size: 40ch;
+}
+
+.tld-notfound__path {
+  display: inline-block;
+  max-inline-size: 100%;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-pill);
+  background: var(--maroon-50);
+  border: 1px solid var(--maroon-300);
+  color: var(--primary);
+  font-size: 12.5px;
+  font-weight: 600;
+}
+
+.tld-notfound__actions {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-block-start: var(--space-3);
+}
+
+@media (max-width: 480px) {
+  .tld-notfound__card {
+    padding: var(--space-5);
+  }
+
+  .tld-notfound__actions .tld-button {
+    inline-size: 100%;
+  }
+}

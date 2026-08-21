@@ -1,0 +1,62 @@
+.tld-locked {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-7) var(--space-4);
+}
+
+.tld-locked__card {
+  inline-size: 100%;
+  max-inline-size: 520px;
+  background: var(--surface-card);
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-hero);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-6);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.tld-locked__icon {
+  inline-size: 64px;
+  block-size: 64px;
+  border-radius: var(--radius-pill);
+  background: var(--primary);
+  color: var(--on-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-block-end: var(--space-2);
+}
+
+.tld-locked__icon svg {
+  inline-size: 30px;
+  block-size: 30px;
+}
+
+.tld-locked__card h1 {
+  font-size: 26px;
+}
+
+.tld-locked__card p {
+  font-size: 15px;
+  max-inline-size: 44ch;
+}
+
+.tld-locked__actions {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-block-start: var(--space-3);
+}
+
+@media (max-width: 480px) {
+  .tld-locked__actions .tld-button {
+    inline-size: 100%;
+  }
+}

@@ -210,3 +210,9 @@
   color: var(--primary);
   text-decoration: none;
 }
+
+.tld-login__register {
+  margin-block-start: var(--space-4);
+  font-size: 13.5px;
+  color: var(--ink-muted);
+}

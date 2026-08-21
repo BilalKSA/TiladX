@@ -1,7 +1,30 @@
 .tld-footer {
+  position: relative;
+  overflow: hidden;
   margin-top: auto;
   background: var(--maroon-900);
   color: #fff;
+}
+
+/* Crossed-swords arcs from the 2026 guidelines, sweeping across the full width.
+   The file is already low-alpha white on transparency, so it's used at full
+   strength — the subtlety is baked into the artwork, not dialled in here.
+   Applied only to flat maroon surfaces; anything already carrying the halftone
+   dot texture is left alone. */
+.tld-footer::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: 0;
+  block-size: 100%;
+  background: url('/assets/tilad-pattern-swords.webp') center / 130% auto no-repeat;
+  pointer-events: none;
+}
+
+/* Keep the real content above the pattern layer. */
+.tld-footer > * {
+  position: relative;
+  z-index: 1;
 }
 
 .tld-footer__brand {

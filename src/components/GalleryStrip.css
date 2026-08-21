@@ -1,0 +1,66 @@
+/* Photo strip items. Scroller mechanics live in Marquee.css. */
+
+.tld-gallery {
+  padding-block: var(--space-6);
+}
+
+.tld-gallery__item {
+  inline-size: 325px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.tld-gallery__item img,
+.tld-gallery__placeholder {
+  inline-size: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border-strong);
+  box-shadow: var(--shadow-md);
+  object-fit: cover;
+  display: block;
+  -webkit-user-drag: none;
+}
+
+.tld-gallery__placeholder {
+  background:
+    radial-gradient(color-mix(in srgb, var(--primary) 16%, transparent) 1.5px, transparent 1.5px) 0 0 / 14px 14px,
+    linear-gradient(150deg, var(--surface-tint), var(--maroon-100));
+  color: color-mix(in srgb, var(--primary) 55%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tld-gallery__placeholder svg {
+  inline-size: 48px;
+  block-size: 48px;
+}
+
+.tld-gallery__item figcaption {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--ink-muted);
+}
+
+.tld-gallery__tag {
+  display: inline-flex;
+  padding: 3px var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--primary);
+  color: var(--on-primary);
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+@media (max-width: 640px) {
+  .tld-gallery__item {
+    inline-size: 250px;
+  }
+}

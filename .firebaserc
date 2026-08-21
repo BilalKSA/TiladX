@@ -2,6 +2,17 @@
   "projects": {
     "production": "tilad-sa"
   },
-  "targets": {},
+  "targets": {
+    "tilad-sa": {
+      "hosting": {
+        "staging": [
+          "stgtilad"
+        ],
+        "production": [
+          "tilad-sa"
+        ]
+      }
+    }
+  },
   "etags": {}
 }
