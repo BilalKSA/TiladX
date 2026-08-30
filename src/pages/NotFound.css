@@ -1,113 +1,136 @@
-/* 404 — same centred-card shape as the maintenance page, so the two standalone
-   status screens read as a set. Sits on the brand background from :root. */
+/* 404 — the landing's grain hero, reused as a status screen. A full-bleed
+   .tld-band--hero (near-black maroon, fixed across themes) so this page carries
+   the new identity and needs no dark-mode CSS of its own. Colours come off the
+   maroon ramp / --on-invert, never a raw hex. */
 
 .tld-notfound {
-  flex: 1;
   min-block-size: 100svh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: var(--space-6) var(--space-4);
+  overflow: hidden;
+  padding: var(--space-8) var(--space-5);
 }
 
-.tld-notfound__card {
+/* Brand mark in the top-start corner (the right, under dir="rtl"), mirroring
+   the landing header. */
+.tld-notfound__brand {
+  position: absolute;
+  inset-block-start: var(--space-5);
+  inset-inline-start: var(--space-5);
+  z-index: 2;
+  display: inline-flex;
+}
+
+.tld-notfound__brand .tld-logo {
+  height: 38px;
+}
+
+/* Copy on the start side, mascot on the end — the hero's own left/right split.
+   First DOM child (copy) lands on the right in RTL. */
+.tld-notfound__inner {
   inline-size: 100%;
-  max-inline-size: 480px;
-  background: var(--surface-card);
-  border: 1.5px solid var(--border-strong);
-  border-radius: var(--radius-hero);
-  box-shadow: var(--shadow-lg);
-  padding: var(--space-6);
-  text-align: center;
+  max-inline-size: 1000px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-7);
+}
+
+.tld-notfound__copy {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: var(--space-3);
+  align-items: flex-start;
+  text-align: start;
+  max-inline-size: 46ch;
 }
 
-.tld-notfound__top {
-  align-self: flex-start;
-}
-
-.tld-notfound__logo {
-  margin-block-end: var(--space-2);
-}
-
-.tld-notfound__logo .tld-logo {
-  height: 60px;
-}
-
-/* Maroon panel carrying the swords pattern — a flat maroon surface, so it
-   takes the brand pattern rather than the halftone dots. */
+/* Oversized numerals, fading from white into the maroon ramp. */
 .tld-notfound__code {
-  position: relative;
-  overflow: hidden;
-  inline-size: 100%;
-  padding-block: var(--space-5);
-  border-radius: var(--radius-card);
-  background: linear-gradient(155deg, var(--maroon-700) 0%, var(--maroon-900) 100%);
-  box-shadow: var(--shadow-hero);
-}
-
-.tld-notfound__code::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: url('/assets/tilad-pattern-swords.webp') center / 150% auto no-repeat;
-  pointer-events: none;
-}
-
-.tld-notfound__code span {
-  position: relative;
-  z-index: 1;
-  display: block;
   font-family: var(--display);
   font-weight: 800;
-  font-size: clamp(56px, 16vw, 84px);
-  line-height: 1;
-  letter-spacing: 0.04em;
-  color: var(--on-primary);
+  font-size: clamp(88px, 20vw, 168px);
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+  margin-block-end: var(--space-3);
+  background: linear-gradient(180deg, var(--on-invert), var(--maroon-300));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .tld-notfound h1 {
-  font-size: 26px;
-  margin-block-start: var(--space-2);
+  font-size: clamp(28px, 4vw, 40px);
+  color: var(--on-invert);
+  margin-block-end: var(--space-3);
 }
 
 .tld-notfound__body {
-  font-size: 15px;
-  max-inline-size: 40ch;
-}
-
-.tld-notfound__path {
-  display: inline-block;
-  max-inline-size: 100%;
-  overflow-x: auto;
-  white-space: nowrap;
-  padding: var(--space-2) var(--space-4);
-  border-radius: var(--radius-pill);
-  background: var(--maroon-50);
-  border: 1px solid var(--maroon-300);
-  color: var(--primary);
-  font-size: 12.5px;
-  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--on-invert-muted);
+  margin-block-end: var(--space-5);
 }
 
 .tld-notfound__actions {
   display: flex;
   gap: var(--space-3);
   flex-wrap: wrap;
-  justify-content: center;
-  margin-block-start: var(--space-3);
 }
 
-@media (max-width: 480px) {
-  .tld-notfound__card {
-    padding: var(--space-5);
+/* Outline action that reads on the dark surface — the base button variants all
+   assume a light one. Page CSS loads after Button.css, so this wins at equal
+   specificity. */
+.tld-notfound__ghost {
+  background: transparent;
+  border: 1.5px solid color-mix(in srgb, var(--on-invert) 40%, transparent);
+  color: var(--on-invert);
+}
+
+.tld-notfound__ghost:not(:disabled):hover {
+  background: color-mix(in srgb, var(--on-invert) 10%, transparent);
+  border-color: var(--on-invert);
+}
+
+/* Mascot: friendly, decorative, and allowed to bleed a little at the bottom. */
+.tld-notfound__art {
+  flex-shrink: 0;
+  inline-size: clamp(180px, 30vw, 300px);
+  filter: drop-shadow(0 24px 48px color-mix(in srgb, var(--surface-hero) 70%, transparent));
+}
+
+.tld-notfound__art img {
+  display: block;
+  inline-size: 100%;
+  height: auto;
+}
+
+/* Stack under the split's breakpoint: mascot on top, copy centred beneath. */
+@media (max-width: 760px) {
+  .tld-notfound {
+    padding-block-start: var(--space-8);
+  }
+
+  .tld-notfound__inner {
+    flex-direction: column-reverse;
+    gap: var(--space-5);
+  }
+
+  .tld-notfound__copy {
+    align-items: center;
+    text-align: center;
+  }
+
+  .tld-notfound__art {
+    inline-size: clamp(160px, 44vw, 220px);
+  }
+
+  .tld-notfound__actions {
+    justify-content: center;
+    inline-size: 100%;
   }
 
   .tld-notfound__actions .tld-button {
-    inline-size: 100%;
+    flex: 1 1 auto;
   }
 }
