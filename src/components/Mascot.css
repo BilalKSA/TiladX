@@ -1,0 +1,114 @@
+/* Mascot-as-cursor over a section title. The artwork's chevron tip points
+   south at rest, so the -135deg in the component swings it to north-east —
+   aimed back at the text it just selected. */
+
+.tld-mascot {
+  /* One source for both sizes, so the cursor tracks the title instead of
+     drifting out of proportion at each breakpoint. The 1.55 allows for the
+     PNG's transparent padding — roughly a quarter of the box — which leaves
+     the artwork itself well clear of the glyphs it points at. */
+  --title-size: clamp(40px, 7.5vw, 92px);
+  --mascot-size: calc(var(--title-size) * 1.55);
+  position: relative;
+  /* Tall spacer. Height minus the pinned stage is how much scrolling happens
+     with the page apparently frozen. Raise for a slower sequence, lower for a
+     quicker one. */
+  block-size: 165svh;
+  margin-block-end: max(var(--space-6), calc(var(--title-size) * 1.1));
+}
+
+/* Pins to the viewport while the track scrolls past underneath. Sticky needs
+   no scroll-container ancestor: .tld-marketing sets `overflow-x: clip`, which
+   (unlike `hidden`) does not create one, so this resolves against the
+   viewport. */
+.tld-mascot__pin {
+  position: sticky;
+  /* Deliberately shorter than the viewport and offset from the top, so the
+     neighbouring sections stay partly visible while the title is pinned —
+     the title sits near the middle without an empty screen around it. */
+  inset-block-start: 16svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 58svh;
+}
+
+/* Containing block for the cursor, sized to the title it points at. */
+.tld-mascot__stage {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+/* No pinning when motion is reduced — the section becomes an ordinary block. */
+.tld-mascot--static {
+  block-size: auto;
+}
+
+.tld-mascot--static .tld-mascot__pin {
+  position: static;
+  min-block-size: 0;
+  padding-block-start: calc(var(--mascot-size) * 0.9);
+}
+
+.tld-mascot__title {
+  position: relative;
+  display: inline-block;
+  text-align: center;
+  /* --display resolves Latin to Manrope and Arabic to Tajawal, so the script
+     picks the right face without a :lang() rule. Pinning 'Tajawal' directly
+     would work today but would also let it claim any Latin text here. */
+  font-family: var(--display);
+  font-size: var(--title-size);
+  /* Bold. 700 is one of the Tajawal weights loaded in index.html, so this is a
+     real face rather than a synthesised one (font-synthesis is off). */
+  font-weight: 700;
+  /* Arabic at display size needs leading; the global h2's Latin-tuned metrics
+     would crowd the descenders once this wraps. */
+  line-height: 1.3;
+  letter-spacing: normal;
+  max-width: 16ch;
+}
+
+/* The selection swipe. Grows from the leading edge — `right` is the start side
+   under dir="rtl", and transform-origin has no logical keyword to use here. */
+.tld-mascot__highlight {
+  position: absolute;
+  inset-inline: -0.18em;
+  inset-block: 0.06em 0.1em;
+  background: color-mix(in srgb, var(--primary) 20%, transparent);
+  border-radius: 5px;
+  transform-origin: right center;
+  pointer-events: none;
+}
+
+.tld-mascot__label {
+  position: relative;
+}
+
+.tld-mascot__cursor {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 50%;
+  margin-inline-start: calc(var(--mascot-size) * -0.5);
+  inline-size: var(--mascot-size);
+  block-size: auto;
+  pointer-events: none;
+  /* Above the highlight, so it reads as the thing doing the selecting. */
+  z-index: 1;
+}
+
+/* Phones don't pin. `svh` changes as the browser address bar hides and shows,
+   which makes a sticky section jump mid-sweep. The sweep still plays as the
+   title scrolls past — it just isn't held in place. Mirrors --static. */
+@media (max-width: 760px) {
+  .tld-mascot {
+    block-size: auto;
+  }
+
+  .tld-mascot__pin {
+    position: static;
+    min-block-size: 0;
+    padding-block-start: calc(var(--mascot-size) * 0.9);
+  }
+}

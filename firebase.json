@@ -2,8 +2,131 @@
   "hosting": [
     {
       "target": "production",
-      "public": "dist",
-      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+      "public": "dist-site",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "redirects": [
+        {
+          "source": "/home",
+          "destination": "https://app.tilad.org/home",
+          "type": 301
+        },
+        {
+          "source": "/home/:p*",
+          "destination": "https://app.tilad.org/home/:p*",
+          "type": 301
+        },
+        {
+          "source": "/login",
+          "destination": "https://app.tilad.org/login",
+          "type": 301
+        },
+        {
+          "source": "/login/:p*",
+          "destination": "https://app.tilad.org/login/:p*",
+          "type": 301
+        },
+        {
+          "source": "/register",
+          "destination": "https://app.tilad.org/register",
+          "type": 301
+        },
+        {
+          "source": "/register/:p*",
+          "destination": "https://app.tilad.org/register/:p*",
+          "type": 301
+        },
+        {
+          "source": "/activate",
+          "destination": "https://app.tilad.org/activate",
+          "type": 301
+        },
+        {
+          "source": "/activate/:p*",
+          "destination": "https://app.tilad.org/activate/:p*",
+          "type": 301
+        },
+        {
+          "source": "/reset-password",
+          "destination": "https://app.tilad.org/reset-password",
+          "type": 301
+        },
+        {
+          "source": "/reset-password/:p*",
+          "destination": "https://app.tilad.org/reset-password/:p*",
+          "type": 301
+        },
+        {
+          "source": "/profile",
+          "destination": "https://app.tilad.org/profile",
+          "type": 301
+        },
+        {
+          "source": "/profile/:p*",
+          "destination": "https://app.tilad.org/profile/:p*",
+          "type": 301
+        },
+        {
+          "source": "/courses",
+          "destination": "https://app.tilad.org/courses",
+          "type": 301
+        },
+        {
+          "source": "/courses/:p*",
+          "destination": "https://app.tilad.org/courses/:p*",
+          "type": 301
+        },
+        {
+          "source": "/files",
+          "destination": "https://app.tilad.org/files",
+          "type": 301
+        },
+        {
+          "source": "/files/:p*",
+          "destination": "https://app.tilad.org/files/:p*",
+          "type": 301
+        },
+        {
+          "source": "/admin",
+          "destination": "https://app.tilad.org/admin",
+          "type": 301
+        },
+        {
+          "source": "/admin/:p*",
+          "destination": "https://app.tilad.org/admin/:p*",
+          "type": 301
+        }
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    },
+    {
+      "target": "app",
+      "public": "dist-app",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "redirects": [
+        {
+          "source": "/",
+          "destination": "https://tilad.org",
+          "type": 302
+        },
+        {
+          "source": "/landing",
+          "destination": "https://tilad.org",
+          "type": 301
+        }
+      ],
       "rewrites": [
         {
           "source": "**",
@@ -14,7 +137,11 @@
     {
       "target": "staging",
       "public": "dist",
-      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
       "rewrites": [
         {
           "source": "**",

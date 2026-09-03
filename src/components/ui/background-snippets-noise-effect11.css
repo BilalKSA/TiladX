@@ -1,0 +1,40 @@
+/* Background: radial spotlight + animated film grain.
+
+   Ported from a Tailwind snippet — this project has no Tailwind, so the
+   utility classes are expressed here against the same tokens the rest of the
+   site uses. Colours come in as custom properties so one component can serve
+   both the standalone dark/orange look and a brand-tinted section. */
+
+.bg-noise {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background-color: var(--bg-noise-base, var(--surface-hero));
+}
+
+/* The snippet's original framing: pinned to the viewport, behind everything. */
+.bg-noise--viewport {
+  position: fixed;
+  z-index: -10;
+}
+
+.bg-noise__spotlight {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle var(--bg-noise-spotlight-size, 560px) at 50% 200px,
+    var(--bg-noise-spotlight, var(--primary)),
+    transparent
+  );
+}
+
+/* Stretched over the parent rather than sized in viewport units, so the grain
+   covers a section as happily as it covers the screen. */
+.bg-noise__grain {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  image-rendering: pixelated;
+}

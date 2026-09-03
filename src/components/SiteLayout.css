@@ -1,0 +1,195 @@
+/* Shell bits that only apply to the inner pages — the landing page opts out of
+   all of it with `flush`. */
+
+/* Clears the fixed header bar. The landing page doesn't need this: its hero
+   band is meant to run underneath the bar. */
+.tld-site-main {
+  padding-block-start: 96px;
+}
+
+/* ------------------------------------------------------------- page head */
+
+/* Opening band of an inner page: title, standfirst, and optionally a photo on
+   the end side. Near-black maroon with grain — the same surface as the landing
+   hero and the 404 — so an inner page announces itself in the brand before any
+   content, and the five inner pages read as a set rather than as five
+   unrelated layouts. It starts below the header's 96px gutter, which is where
+   the translucent header pill sits.
+
+   Every colour here is a token off the maroon ramp, so this band needs no
+   dark-mode CSS of its own. */
+.tld-site-head {
+  background: var(--surface-hero);
+  color: var(--on-invert);
+  overflow: hidden;
+  --bg-noise-spotlight: color-mix(in srgb, var(--maroon-500) 48%, transparent);
+  --bg-noise-spotlight-size: 680px;
+}
+
+.tld-site-head__inner {
+  max-width: var(--rail);
+  margin-inline: auto;
+  width: 100%;
+  padding: var(--space-8) var(--space-5);
+}
+
+.tld-site-head__copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  align-items: start;
+}
+
+/* Copy first so it lands on the start side — the right, under dir="rtl". The
+   photo takes the end column. */
+.tld-site-head--split .tld-site-head__inner {
+  display: grid;
+  grid-template-columns: 1fr 0.8fr;
+  gap: clamp(var(--space-5), 5vw, var(--space-8));
+  align-items: center;
+}
+
+/* Outlined pill, per the identity's "pills everywhere" rule — the bare
+   letter-spaced label read as a stray line of body copy. */
+.tld-site-head__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px var(--space-4);
+  border-radius: var(--radius-pill);
+  border: 1px solid color-mix(in srgb, var(--maroon-300) 55%, transparent);
+  background: color-mix(in srgb, var(--on-invert) 8%, transparent);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--maroon-300);
+}
+
+.tld-site-head h1 {
+  font-family: var(--display-ar);
+  font-size: clamp(34px, 5.4vw, 58px);
+  /* 400, not 800: AlYamama ships Regular only, and font-synthesis is off
+     globally — a heavier weight here would render no heavier, it would just
+     fall through to the next family in the stack. */
+  font-weight: 400;
+  /* Arabic at display size: the global heading metrics are Latin-tuned and
+     crowd the descenders. */
+  line-height: 1.3;
+  letter-spacing: normal;
+  color: var(--on-invert);
+}
+
+/* Scoped to its own class rather than `.tld-site-head p`, which used to be a
+   class+element selector and so outranked the eyebrow's single class — the
+   label was silently rendering at 17px in the lead's colour. */
+.tld-site-head__lead {
+  max-width: 60ch;
+  font-size: 17px;
+  line-height: 1.9;
+  color: var(--on-invert-muted);
+}
+
+/* Photograph in the head. The white hairline and the drop shadow are what stop
+   a dark photo from dissolving into the near-black band. */
+.tld-site-head__art {
+  margin: 0;
+  border-radius: var(--radius-hero);
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--on-invert) 22%, transparent);
+  /* Deliberately black, not --shadow-*: the maroon-tinted shadow tokens are
+     invisible against this band. */
+  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.45);
+}
+
+.tld-site-head__art img {
+  display: block;
+  inline-size: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+/* --------------------------------------------------------------- prose */
+
+/* Long-form body copy — the legal pages and the about narrative. Capped
+   narrower than the rail: a 1180px line length is unreadable. */
+.tld-prose {
+  max-width: 72ch;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.tld-prose h2 {
+  font-size: clamp(21px, 2.4vw, 26px);
+  font-weight: 800;
+  line-height: 1.4;
+  margin-block-start: var(--space-3);
+}
+
+.tld-prose h3 {
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.tld-prose p,
+.tld-prose li {
+  font-size: 16px;
+  line-height: 1.95;
+  color: var(--ink-muted);
+}
+
+.tld-prose ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding-inline-start: var(--space-5);
+  list-style: disc;
+}
+
+.tld-prose ul li::marker {
+  color: var(--primary);
+}
+
+.tld-prose a {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+/* Section counter down the side of a legal page, so a clause can be pointed
+   at by number in an email. */
+.tld-prose__clause {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.tld-prose__updated {
+  font-size: 13.5px;
+  color: var(--ink-faint);
+  padding-block-end: var(--space-3);
+  border-block-end: 1px solid var(--border);
+}
+
+/* Stacks well before the columns get narrow: at this width the photo column is
+   under 340px and crowds the headline beside it. */
+@media (max-width: 900px) {
+  .tld-site-head--split .tld-site-head__inner {
+    grid-template-columns: 1fr;
+  }
+
+  /* Photo under the copy — on an inner page the title is what orients the
+     reader, so it keeps the top. */
+  .tld-site-head__art {
+    max-inline-size: 520px;
+  }
+}
+
+@media (max-width: 640px) {
+  .tld-site-main {
+    padding-block-start: 84px;
+  }
+
+  .tld-site-head__inner {
+    padding-block: var(--space-7);
+  }
+}

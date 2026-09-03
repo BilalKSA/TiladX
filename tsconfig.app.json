@@ -16,6 +16,11 @@
     "noEmit": true,
     "jsx": "react-jsx",
 
+    /* `@root` is re-pointed per build by the alias in vite.config.ts. This
+       mapping exists so `tsc -b` can resolve it; the combined root type-checks
+       every page, which is what we want from the type pass regardless. */
+    "paths": { "@root": ["./src/App.tsx"] },
+
     /* Linting */
     "noUnusedLocals": true,
     "noUnusedParameters": true,

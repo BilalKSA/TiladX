@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import AppHeader from '../components/AppHeader'
-import Footer from '../components/Footer'
 import { getMyProfile } from '../lib/auth'
 import { listCourses, fileUrl, type Course } from '../lib/content'
 import { listMyEnrollments, lockStateFor, type Enrollment } from '../lib/enrollments'
@@ -116,8 +115,6 @@ function Home() {
           <p className="tld-programs__empty">ما فيه برامج متاحة حالياً.</p>
         )}
       </section>
-
-      <Footer />
     </div>
   )
 }

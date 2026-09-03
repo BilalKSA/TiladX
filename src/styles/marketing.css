@@ -1,0 +1,327 @@
+/* ===========================================================================
+   Marketing shell
+
+   Everything every page on the marketing site (tilad.org) shares: the page
+   wrapper, the floating header bar, and the section rail. Split out of
+   Landing.css when the site grew past one page — Landing.css now holds only
+   what is specific to the landing page itself.
+
+   Loaded by SiteLayout, so it lands before any page stylesheet. Page files can
+   therefore override anything here at equal specificity.
+   ======================================================================== */
+
+.tld-marketing {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  /* `clip`, not `hidden`: `hidden` would turn this into a scroll container,
+     which changes how the page scrolls. `clip` contains the same horizontal
+     overflow without creating one. */
+  overflow-x: clip;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* ---------------------------------------------------------------- header */
+
+/* Fixed rather than sticky: it floats over the full-height hero instead of
+   taking a slice of it, which is what lets the band below be a clean 100svh. */
+.tld-marketing__header {
+  position: fixed;
+  inset-block-start: var(--space-4);
+  inset-inline: 0;
+  z-index: 20;
+  padding-inline: var(--space-4);
+  pointer-events: none;
+}
+
+.tld-marketing__header-inner {
+  max-width: var(--rail);
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-pill);
+  border: 1px solid color-mix(in srgb, var(--border) 90%, transparent);
+  background: color-mix(in srgb, var(--surface-page) 82%, transparent);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 10px 30px color-mix(in srgb, var(--ink) 16%, transparent);
+  /* Re-enabled here so the transparent gutter beside the pill stays
+     click-through to the page underneath. */
+  pointer-events: auto;
+}
+
+/* Circular icon button in the bar, sized to sit level with the --sm pills
+   beside it. */
+.tld-marketing__lang {
+  inline-size: 36px;
+  block-size: 36px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  background: var(--surface-card);
+  color: var(--ink-muted);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.tld-marketing__lang:not(:disabled):hover {
+  border-color: var(--border-strong);
+  color: var(--ink);
+}
+
+/* Still legible and still focusable-looking — it reads as "not yet", not as
+   broken chrome. */
+.tld-marketing__lang:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.tld-marketing__brand {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+/* Scoped override — the wordmark is 52px everywhere else. In this bar it sits
+   on the same 32px line as the CTA and the prefs trigger. */
+.tld-marketing__brand .tld-logo {
+  height: 32px;
+}
+
+.tld-marketing__header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+/* Keep the sticky header from covering a section heading when jumped to. */
+.tld-marketing [id] {
+  scroll-margin-block-start: 88px;
+}
+
+/* -------------------------------------------------------------- sections */
+
+.tld-marketing .tld-section {
+  max-width: var(--rail);
+  margin-inline: auto;
+  width: 100%;
+  padding-block: var(--space-8);
+}
+
+/* Bold accent rule before every section heading. */
+.tld-marketing .tld-section__heading {
+  margin-bottom: var(--space-4);
+}
+
+.tld-marketing .tld-section__heading::before {
+  content: '';
+  inline-size: 5px;
+  block-size: 30px;
+  border-radius: 2px;
+  background: var(--primary);
+  flex-shrink: 0;
+}
+
+.tld-marketing .tld-section__heading h2 {
+  font-size: clamp(26px, 3.2vw, 38px);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.tld-marketing .tld-section__lead {
+  margin-block-end: var(--space-6);
+  max-width: 60ch;
+  font-size: 16px;
+}
+
+/* Heading block sitting directly above a full-bleed strip — the strip carries
+   its own bottom padding, so this one shouldn't add a second gap. */
+.tld-marketing .tld-marketing__strip-head {
+  padding-block-end: 0;
+}
+
+.tld-marketing .tld-marketing__strip-head .tld-section__lead {
+  margin-block-end: 0;
+}
+
+/* On an inverted band the accent bar has to flip too, or it disappears into
+   the maroon. Carries the .tld-marketing prefix so it outranks the rule above
+   on specificity rather than on source order. */
+.tld-marketing .tld-band--invert .tld-section__heading::before {
+  background: var(--on-invert);
+}
+
+/* ----------------------------------------------------- cards (shared look) */
+
+.tld-marketing .tld-card {
+  border: 1.5px solid var(--border-strong);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-5);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.tld-marketing .tld-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--maroon-300);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tld-marketing .tld-card {
+    transition: none;
+  }
+
+  .tld-marketing .tld-card:hover {
+    transform: none;
+  }
+}
+
+.tld-marketing .tld-card h3 {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* ------------------------------------------------------------- pull quote */
+
+.tld-marketing__quote {
+  background: color-mix(in srgb, var(--on-invert) 9%, transparent);
+  border: 1px solid color-mix(in srgb, var(--on-invert) 18%, transparent);
+  border-radius: var(--radius-hero);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  align-items: flex-start;
+  backdrop-filter: blur(4px);
+}
+
+.tld-marketing__quote-mark {
+  font-family: var(--display);
+  font-size: 64px;
+  line-height: 0.7;
+  color: color-mix(in srgb, var(--on-invert) 45%, transparent);
+}
+
+.tld-marketing__band .tld-marketing__quote p {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(22px, 2.4vw, 30px);
+  line-height: 1.35;
+  color: var(--on-invert);
+}
+
+.tld-marketing__quote-by {
+  font-size: 13px;
+  color: color-mix(in srgb, var(--on-invert) 65%, transparent);
+}
+
+/* ------------------------------------------------------------------- cta */
+
+.tld-marketing__cta {
+  position: relative;
+  overflow: hidden;
+  max-width: var(--rail);
+  margin: var(--space-6) auto var(--space-8);
+  padding: var(--space-8) var(--space-6);
+  border-radius: var(--radius-hero);
+  background:
+    radial-gradient(110% 90% at 22% 0%, color-mix(in srgb, var(--maroon-500) 45%, transparent), transparent 62%),
+    linear-gradient(155deg, var(--maroon-700) 0%, var(--maroon-900) 100%);
+  box-shadow: var(--shadow-hero);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.tld-marketing__cta::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(color-mix(in srgb, var(--on-invert) 10%, transparent) 1.5px, transparent 1.5px);
+  background-size: 18px 18px;
+  pointer-events: none;
+}
+
+.tld-marketing__cta > * {
+  position: relative;
+  z-index: 1;
+}
+
+.tld-marketing__cta h2 {
+  color: var(--on-invert);
+  font-size: clamp(26px, 3.4vw, 40px);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.tld-marketing__cta p {
+  color: var(--on-invert-muted);
+  font-size: 16.5px;
+}
+
+.tld-marketing__cta .tld-button {
+  background: var(--on-primary);
+  color: var(--maroon-900);
+  border-color: transparent;
+  font-weight: 700;
+  /* Deliberately black, not --shadow-*: the maroon-tinted shadow tokens
+     disappear against the dark band this button sits on. */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.28);
+}
+
+.tld-marketing__cta .tld-button:hover {
+  background: var(--on-primary-muted);
+}
+
+/* ------------------------------------------------------------ responsive */
+
+@media (max-width: 960px) {
+  .tld-marketing .tld-section {
+    padding-block: var(--space-7);
+  }
+}
+
+@media (max-width: 640px) {
+  /* Three controls plus the wordmark is more than the bar can hold at this
+     width. Sign-in is the one to drop: the hero CTA and the footer both still
+     reach it, whereas the language switch has nowhere else to live. */
+  .tld-marketing__signin {
+    display: none;
+  }
+
+  /* Three controls in the bar leave little room on a phone — tighten the
+     gutters rather than dropping one of them behind another menu. */
+  .tld-marketing__header-inner {
+    gap: var(--space-3);
+    padding-inline: var(--space-4);
+  }
+
+  .tld-marketing__header-actions {
+    gap: var(--space-2);
+  }
+}
+
+@media (max-width: 640px) {
+  .tld-marketing__quote {
+    padding: var(--space-5);
+  }
+
+  .tld-marketing__cta {
+    padding: var(--space-7) var(--space-5);
+  }
+}

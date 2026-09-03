@@ -44,7 +44,7 @@
   padding-inline: var(--space-2);
   border-radius: var(--radius-pill);
   background: var(--maroon-700);
-  color: #fff;
+  color: var(--on-primary);
   font-family: var(--display);
   font-weight: 700;
   font-size: 14px;
@@ -112,7 +112,7 @@
   padding: 4px var(--space-3);
   border-radius: var(--radius-pill);
   background: var(--maroon-700);
-  color: #fff;
+  color: var(--on-primary);
   font-size: 12px;
   font-weight: 600;
 }
@@ -265,7 +265,7 @@
   padding: 4px var(--space-3);
   border-radius: var(--radius-pill);
   background: var(--maroon-900);
-  color: #fff;
+  color: var(--on-primary);
   font-size: 11.5px;
   font-weight: 700;
   box-shadow: var(--shadow-soft);
@@ -334,7 +334,7 @@
   transform: rotate(-45deg);
   transform-origin: center;
   background: var(--maroon-900);
-  color: #fff;
+  color: var(--on-primary);
   text-align: center;
   padding-block: 6px;
   font-size: 12px;

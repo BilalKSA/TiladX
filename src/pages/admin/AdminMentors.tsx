@@ -7,7 +7,7 @@ import './Admin.css'
 
 type Editing = Mentor | 'new' | null
 
-const BLANK = { name: '', title: '', bio: '', position: 0, published: false }
+const BLANK = { name: '', title: '', bio: '', track: '', position: 0, published: false }
 
 function AdminMentors() {
   const [mentors, setMentors] = useState<Mentor[]>([])
@@ -39,6 +39,7 @@ function AdminMentors() {
         name: mentor.name,
         title: mentor.title ?? '',
         bio: mentor.bio ?? '',
+        track: mentor.track ?? '',
         position: mentor.position,
         published: mentor.published,
         photo_path: mentor.photo_path,
@@ -87,12 +88,15 @@ function AdminMentors() {
     }
   }
 
+  // Tracks already in use, offered as autocomplete below.
+  const tracks = [...new Set(mentors.map((m) => m.track).filter((t): t is string => !!t))].sort()
+
   return (
     <>
       <div className="tld-admin__header">
         <div>
           <h1>المرشدون</h1>
-          <p>يظهرون في الشريط المتحرك في الصفحة الرئيسية.</p>
+          <p>يظهرون في الشريط المتحرك في الصفحة الرئيسية، وفي صفحة «مرشدونا» مقسّمين على المسارات.</p>
         </div>
         <Button variant="primary" size="md" onClick={() => startEdit('new')}>
           مرشد جديد
@@ -124,6 +128,24 @@ function AdminMentors() {
                 value={form.title}
                 onChange={(e) => setForm({ ...form, title: e.target.value })}
               />
+            </label>
+
+            <label className="tld-field">
+              <span className="tld-field__label">المسار</span>
+              <input
+                className="tld-field__input"
+                list="mentor-tracks"
+                placeholder="بحث علمي"
+                value={form.track}
+                onChange={(e) => setForm({ ...form, track: e.target.value })}
+              />
+              {/* Existing tracks offered as suggestions: the /mentors filter
+                  groups by exact text, so a typo would split one track in two. */}
+              <datalist id="mentor-tracks">
+                {tracks.map((track) => (
+                  <option value={track} key={track} />
+                ))}
+              </datalist>
             </label>
 
             <label className="tld-field tld-field--full">
@@ -193,6 +215,7 @@ function AdminMentors() {
                 <th>الصورة</th>
                 <th>الاسم</th>
                 <th>التخصص</th>
+                <th>المسار</th>
                 <th>الحالة</th>
                 <th />
               </tr>
@@ -209,6 +232,7 @@ function AdminMentors() {
                   </td>
                   <td className="tld-admin__row-title">{mentor.name}</td>
                   <td>{mentor.title || '—'}</td>
+                  <td>{mentor.track || '—'}</td>
                   <td>
                     <span className={`tld-admin__badge tld-admin__badge--${mentor.published ? 'live' : 'draft'}`}>
                       {mentor.published ? 'ظاهر' : 'مخفي'}

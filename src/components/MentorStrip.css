@@ -98,3 +98,13 @@
   color: var(--ink-faint);
   line-height: 1.5;
 }
+
+/* Same as the board cards: a light card on an inverted band has to restore its
+   own ink, or the names render white on white. */
+.tld-band--invert .tld-mentor h3 {
+  color: var(--ink);
+}
+
+.tld-band--invert .tld-mentor__title {
+  color: var(--ink-faint);
+}

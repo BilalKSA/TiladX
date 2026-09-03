@@ -3,7 +3,7 @@ import Logo from '../components/Logo'
 import ThemeToggle from '../components/ThemeToggle'
 import Footer from '../components/Footer'
 import './Home.css'
-import './Landing.css'
+import './Files.css'
 
 const mrepFilenames = [
   'EmadPoster',

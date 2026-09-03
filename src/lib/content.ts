@@ -44,6 +44,10 @@ export interface Mentor {
   title: string | null
   bio: string | null
   photo_path: string | null
+  /** Free-text track, e.g. "بحث علمي". The /mentors filter chips are derived
+   *  from the distinct values across published mentors, so an empty column
+   *  simply means no filter bar. */
+  track: string | null
   position: number
   published: boolean
 }
@@ -71,6 +75,22 @@ export function fileUrl(bucket: 'media' | 'library', path: string | null | undef
 
 export async function listCourses(): Promise<Course[]> {
   const { data, error } = await supabase.from('courses').select('*').order('position')
+  if (error) throw error
+  return data ?? []
+}
+
+/** Published courses only, for public surfaces.
+ *
+ *  `listCourses` leans on RLS to hide unpublished rows — but RLS deliberately
+ *  exempts admins, so an admin browsing a public page would see drafts that
+ *  nobody else can. Marketing pages must render the same for everyone, so the
+ *  filter is explicit here rather than left to the policy. */
+export async function listPublishedCourses(): Promise<Course[]> {
+  const { data, error } = await supabase
+    .from('courses')
+    .select('*')
+    .eq('published', true)
+    .order('position')
   if (error) throw error
   return data ?? []
 }

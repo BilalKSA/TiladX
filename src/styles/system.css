@@ -1,0 +1,107 @@
+/* ===========================================================================
+   Tilad design system — layout primitives
+   ---------------------------------------------------------------------------
+   Page-agnostic classes extracted from the landing page. Tokens live in
+   index.css; this file is the reusable structure built on them.
+   See .claude/DESIGN_SYSTEM.md for when to reach for each one.
+   ======================================================================== */
+
+/* ------------------------------------------------------------------- band */
+
+/* A full-bleed horizontal stripe. The page is a stack of these: each one owns
+   a surface, and content inside it stays on the --rail width via .tld-section.
+   Also the containing block for any absolutely-positioned texture layer. */
+.tld-band {
+  position: relative;
+}
+
+/* Content paints above the texture. */
+.tld-band > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ...but NOT the texture itself. Without this, the blanket rule above drags
+   the noise layer back into flow and it stops covering the band. This is the
+   single most repeated bug in the landing build — it was hand-fixed on the
+   hero, the inverted band and the footer separately before living here. */
+.tld-band > .bg-noise {
+  position: absolute;
+  z-index: 0;
+}
+
+/* Surface modifiers. Every one is a token, so dark mode needs no override. */
+.tld-band--page {
+  background: var(--surface-band);
+}
+
+.tld-band--tint {
+  background: var(--surface-tint);
+}
+
+/* Dark maroon with light type. Anything inside carrying its own light surface
+   (a card, say) has to restore its own ink colours — see the mentor cards. */
+.tld-band--invert {
+  background: var(--surface-invert);
+  color: var(--on-invert);
+}
+
+.tld-band--invert h2,
+.tld-band--invert h3 {
+  color: var(--on-invert);
+}
+
+.tld-band--invert p {
+  color: var(--on-invert-muted);
+}
+
+/* Near-black maroon, for grain-backed hero surfaces. */
+.tld-band--hero {
+  background: var(--surface-hero);
+  color: var(--on-primary);
+}
+
+/* ------------------------------------------------------------------ frame */
+
+/* An inset rounded rectangle sitting on a band — the "card, but section
+   sized" surface. Padding is equal on all four sides by design; sections
+   otherwise inherit an asymmetric block/inline pair from .tld-section. */
+.tld-frame {
+  background: var(--surface-tint);
+  border-radius: var(--radius-hero);
+  padding: var(--space-8);
+}
+
+/* One step up from the frame it sits in. */
+.tld-frame__panel {
+  background: var(--surface-raised);
+  border-radius: var(--radius-hero);
+  padding: var(--space-6);
+}
+
+/* ---------------------------------------------------------------- display */
+
+/* Oversized section title. --title-size is exposed so sibling art (an icon, a
+   mascot) can be sized off the same value and stay in proportion. */
+.tld-display {
+  --title-size: clamp(40px, 7.5vw, 92px);
+  font-family: var(--display);
+  font-size: var(--title-size);
+  font-weight: 700;
+  /* Arabic needs more leading than the Latin-tuned global heading metrics, and
+     negative tracking works against a connected script. */
+  line-height: 1.3;
+  letter-spacing: normal;
+}
+
+/* --------------------------------------------------------------- centring */
+
+/* Section header centred over its content. The brand accent bar is a
+   left-edge anchor, so it comes off when the heading is centred. */
+.tld-heading--center {
+  justify-content: center;
+}
+
+.tld-heading--center::before {
+  display: none;
+}

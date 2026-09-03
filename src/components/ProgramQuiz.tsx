@@ -1,8 +1,9 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import Button from './Button'
-import { quiz, recommendSlug } from '../data/quiz'
+import { getQuiz, recommendSlug } from '../data/quiz'
+import { useLocale, useT } from '../i18n'
 import { submitLead } from '../lib/leads'
-import { listCourses, type Course } from '../lib/content'
+import { listPublishedCourses, type Course } from '../lib/content'
 // Login.css owns the shared .tld-field / .tld-field__input form styles.
 import '../pages/Login.css'
 import './ProgramQuiz.css'
@@ -12,6 +13,8 @@ type Stage = { kind: 'questions'; index: number } | { kind: 'form' } | { kind: '
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
 
 function ProgramQuiz() {
+  const t = useT()
+  const quiz = getQuiz(useLocale())
   const [stage, setStage] = useState<Stage>({ kind: 'questions', index: 0 })
   const [answers, setAnswers] = useState<Record<string, string>>({})
   const [result, setResult] = useState<Course | null>(null)
@@ -20,7 +23,7 @@ function ProgramQuiz() {
   // Courses are admin-editable, so the recommendation resolves against the
   // live list rather than a hardcoded copy.
   useEffect(() => {
-    listCourses()
+    listPublishedCourses()
       .then(setCourses)
       .catch(() => {})
   }, [])
@@ -56,11 +59,11 @@ function ProgramQuiz() {
     setError('')
 
     if (!fullName.trim()) {
-      setError('اكتب اسمك عشان نعرف نخاطبك.')
+      setError(t.quiz.errorName)
       return
     }
     if (!EMAIL_PATTERN.test(email.trim())) {
-      setError('تأكد من بريدك الإلكتروني، يبدو فيه شي ناقص.')
+      setError(t.quiz.errorEmail)
       return
     }
 
@@ -74,7 +77,7 @@ function ProgramQuiz() {
       })
       setStage({ kind: 'done' })
     } catch {
-      setError('ما قدرنا نستقبل بياناتك الحين، حاول مرة ثانية بعد شوي.')
+      setError(t.quiz.errorSubmit)
     } finally {
       setLoading(false)
     }
@@ -89,15 +92,15 @@ function ProgramQuiz() {
               <path d="m4 12.5 5.2 5.2L20 7" />
             </svg>
           </div>
-          <h3>وصلنا طلبك، شكراً {fullName.trim().split(' ')[0]} 👋</h3>
+          <h3>{t.quiz.doneTitle(fullName.trim().split(' ')[0])}</h3>
           <p>
-            سجّلنا اهتمامك بـ <strong>{result?.title}</strong>. بنرسل لك تفاصيل البرنامج وخطوات المشاركة على بريدك قريباً.
+            {t.quiz.doneBodyPrefix}
+            <strong>{result?.title}</strong>
+            {t.quiz.doneBodySuffix}
           </p>
-          <p className="tld-quiz__hint">
-            لو ما وصلتك الرسالة، تأكد من مجلد الرسائل غير المرغوب فيها (Spam).
-          </p>
+          <p className="tld-quiz__hint">{t.quiz.doneHint}</p>
           <button type="button" className="tld-quiz__restart" onClick={restart}>
-            جرّب الاختبار مرة ثانية
+            {t.quiz.doneRestart}
           </button>
         </div>
       </div>
@@ -108,21 +111,21 @@ function ProgramQuiz() {
     return (
       <div className="tld-quiz">
         <div className="tld-quiz__result">
-          <span className="tld-pill-tag tld-pill-tag--outline">الأنسب لك</span>
+          <span className="tld-pill-tag tld-pill-tag--outline">{t.quiz.bestForYou}</span>
           <h3>{result?.title}</h3>
           <p>{result?.description}</p>
         </div>
 
         <form className="tld-quiz__form" onSubmit={handleSubmit}>
-          <p className="tld-quiz__form-intro">اكتب اسمك وبريدك ونرسل لك التفاصيل الكاملة.</p>
+          <p className="tld-quiz__form-intro">{t.quiz.formIntro}</p>
 
           <label className="tld-field">
-            <span className="tld-field__label">الاسم</span>
+            <span className="tld-field__label">{t.quiz.nameLabel}</span>
             <input
               className="tld-field__input"
               type="text"
               autoComplete="name"
-              placeholder="اسمك الكامل"
+              placeholder={t.quiz.namePlaceholder}
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
               required
@@ -130,7 +133,7 @@ function ProgramQuiz() {
           </label>
 
           <label className="tld-field">
-            <span className="tld-field__label">البريد الإلكتروني</span>
+            <span className="tld-field__label">{t.quiz.emailLabel}</span>
             <input
               className="tld-field__input"
               type="email"
@@ -150,11 +153,11 @@ function ProgramQuiz() {
           )}
 
           <Button type="submit" variant="primary" size="lg" loading={loading}>
-            أرسل لي التفاصيل
+            {t.quiz.submit}
           </Button>
 
           <button type="button" className="tld-quiz__restart" onClick={restart}>
-            ابدأ من جديد
+            {t.quiz.restart}
           </button>
         </form>
       </div>
@@ -167,9 +170,7 @@ function ProgramQuiz() {
   return (
     <div className="tld-quiz">
       <div className="tld-quiz__progress">
-        <span className="tld-quiz__step">
-          سؤال {stage.index + 1} من {total}
-        </span>
+        <span className="tld-quiz__step">{t.quiz.step(stage.index + 1, total)}</span>
         <div className="tld-quiz__bar" role="presentation">
           <span style={{ inlineSize: `${((stage.index + 1) / total) * 100}%` }} />
         </div>
@@ -204,7 +205,7 @@ function ProgramQuiz() {
             className="tld-quiz__restart"
             onClick={() => setStage({ kind: 'questions', index: stage.index - 1 })}
           >
-            رجوع
+            {t.quiz.back}
           </button>
         )}
         <Button
@@ -214,7 +215,7 @@ function ProgramQuiz() {
           disabled={!selected}
           onClick={() => goNext(stage.index)}
         >
-          {stage.index + 1 === total ? 'اعرض النتيجة' : 'التالي'}
+          {stage.index + 1 === total ? t.quiz.showResult : t.quiz.next}
         </Button>
       </div>
     </div>

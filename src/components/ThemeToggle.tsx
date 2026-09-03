@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import './ThemeToggle.css'
+import { Moon, Sun } from 'lucide-react'
+import Switch from './Switch'
 
 type Theme = 'light' | 'dark'
 
@@ -17,15 +18,16 @@ function ThemeToggle() {
     localStorage.setItem('tld-theme', theme)
   }, [theme])
 
+  const isDark = theme === 'dark'
+
   return (
-    <button
-      type="button"
-      className="tld-theme-toggle"
-      aria-label={theme === 'dark' ? 'التبديل إلى الوضع الفاتح' : 'التبديل إلى الوضع الداكن'}
-      onClick={() => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))}
-    >
-      {theme === 'dark' ? '☀️' : '🌙'}
-    </button>
+    <Switch
+      value={isDark}
+      onToggle={() => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))}
+      iconOn={<Moon size={14} strokeWidth={2} />}
+      iconOff={<Sun size={14} strokeWidth={2} />}
+      label={isDark ? 'التبديل إلى الوضع الفاتح' : 'التبديل إلى الوضع الداكن'}
+    />
   )
 }
 

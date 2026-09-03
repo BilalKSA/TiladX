@@ -76,7 +76,7 @@ function renderEmail({ full_name, account_number }) {
             </tr>
             <tr>
               <td style="padding:20px 32px;background:#F8F0F1;text-align:center;">
-                <p style="margin:0;font-size:12px;color:#8A787D;">تلاد — من الطالب وإلى الطالب</p>
+                <p style="margin:0;font-size:12px;color:#8A787D;">تلاد — من الطالب إلى الطالب</p>
               </td>
             </tr>
           </table>

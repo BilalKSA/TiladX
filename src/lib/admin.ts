@@ -129,6 +129,9 @@ export async function saveMentor(mentor: Partial<Mentor> & { id?: string }) {
     title: mentor.title,
     bio: mentor.bio,
     photo_path: mentor.photo_path,
+    // Empty string means "no track" — stored as null so the /mentors filter
+    // doesn't grow a blank chip.
+    track: mentor.track?.trim() || null,
     position: mentor.position ?? 0,
     published: mentor.published ?? false,
     updated_at: new Date().toISOString(),

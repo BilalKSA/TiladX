@@ -1,0 +1,139 @@
+/* Dropdown holding the language choice and the theme switch. Anchored to the
+   inline-end edge so it opens under the trigger in both directions. */
+
+.tld-prefs {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.tld-prefs__trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  /* Matches .tld-button--sm so the whole bar sits on one 32px line. */
+  block-size: 32px;
+  padding-block: 0;
+  padding-inline: var(--space-2);
+  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--border-strong);
+  background: transparent;
+  color: var(--ink-muted);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.tld-prefs__trigger:hover,
+.tld-prefs__trigger[aria-expanded='true'] {
+  background: var(--maroon-50);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.tld-prefs__trigger:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.tld-prefs__caret {
+  transition: transform 0.15s ease;
+}
+
+.tld-prefs__trigger[aria-expanded='true'] .tld-prefs__caret {
+  transform: rotate(180deg);
+}
+
+.tld-prefs__panel {
+  position: absolute;
+  inset-block-start: calc(100% + var(--space-2));
+  inset-inline-end: 0;
+  z-index: 40;
+  min-inline-size: 220px;
+  padding: var(--space-2);
+  border-radius: var(--radius-card);
+  background: var(--surface-card);
+  border: 1.5px solid var(--border-strong);
+  box-shadow: var(--shadow-lg);
+}
+
+.tld-prefs__label {
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--ink-faint);
+}
+
+.tld-prefs__option {
+  inline-size: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 0;
+  border-radius: var(--radius-input);
+  background: transparent;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 14.5px;
+  font-weight: 600;
+  text-align: start;
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+
+.tld-prefs__option:not(:disabled):hover {
+  background: var(--maroon-50);
+  color: var(--primary);
+}
+
+.tld-prefs__option[aria-checked='true'] {
+  color: var(--primary);
+}
+
+.tld-prefs__option:disabled {
+  color: var(--ink-faint);
+  cursor: default;
+}
+
+.tld-prefs__option:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: -2px;
+}
+
+/* English is listed for signposting only until translations land. */
+.tld-prefs__soon {
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-pill);
+  background: var(--surface-tint);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink-faint);
+}
+
+.tld-prefs__divider {
+  block-size: 1px;
+  background: var(--border);
+  margin-block: var(--space-2);
+}
+
+.tld-prefs__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3) var(--space-3);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tld-prefs__trigger,
+  .tld-prefs__caret,
+  .tld-prefs__option {
+    transition: none;
+  }
+}

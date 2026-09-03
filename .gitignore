@@ -9,6 +9,8 @@ lerna-debug.log*
 
 node_modules
 dist
+dist-site
+dist-app
 dist-ssr
 *.local
 .firebase
@@ -16,6 +18,8 @@ email-previews
 .env
 .env.*
 !.env.example
+# Public origin URLs only, no secrets — needed by every production build.
+!.env.production
 
 .claude/settings.local.json
 
@@ -32,3 +36,6 @@ email-previews
 
 # Contains a plaintext admin password — never commit
 supabase/admin-setup.sql
+
+# Full-resolution source photos. Optimised copies live in public/assets/Gallery.
+photo-originals/

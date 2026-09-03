@@ -1,0 +1,146 @@
+/* Board of directors. Two wide cards, used on both the landing page and
+   /about — on an inverted band in each, hence the ink restoration at the
+   bottom of this file. */
+
+.tld-board__lead {
+  margin-block-end: var(--space-6);
+}
+
+/* Tighter than the default section rhythm — the centered three-up grid already
+   carries its own breathing room, so the full --space-8 band reads as a gap. */
+.tld-marketing .tld-section.tld-board {
+  padding-block: var(--space-4);
+}
+
+.tld-board__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+}
+
+/* Portrait stacked above the copy, centered. Three cards to a row leaves each
+   too narrow for a side-by-side avatar, so the whole card reads vertically. */
+.tld-board__card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  text-align: center;
+  background: var(--surface-card);
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-5);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.tld-board__card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--maroon-300);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tld-board__card {
+    transition: none;
+  }
+
+  .tld-board__card:hover {
+    transform: none;
+  }
+}
+
+.tld-board__avatar {
+  inline-size: 108px;
+  block-size: 108px;
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--maroon-300);
+  /* Same dotted-tint placeholder as the mentor avatars, so a card without a
+     portrait still reads as branded rather than unfinished. */
+  background:
+    radial-gradient(color-mix(in srgb, var(--primary) 16%, transparent) 1.5px, transparent 1.5px) 0 0 / 12px 12px,
+    linear-gradient(150deg, var(--surface-tint), var(--maroon-100));
+  color: color-mix(in srgb, var(--primary) 60%, transparent);
+}
+
+.tld-board__avatar img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  display: block;
+  -webkit-user-drag: none;
+}
+
+.tld-board__avatar svg {
+  inline-size: 52px;
+  block-size: 52px;
+}
+
+.tld-board__body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  text-align: center;
+}
+
+.tld-board__card h3 {
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.tld-board__title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary);
+  letter-spacing: 0.01em;
+}
+
+.tld-board__word {
+  font-size: 14.5px;
+  line-height: 1.85;
+}
+
+@media (max-width: 900px) {
+  /* Three across is too tight below this — drop to one column and let each card
+     take the full width. */
+  .tld-board__grid {
+    grid-template-columns: 1fr;
+    max-inline-size: 420px;
+    margin-inline: auto;
+  }
+}
+
+@media (max-width: 520px) {
+  .tld-board__avatar {
+    inline-size: 92px;
+    block-size: 92px;
+  }
+
+  .tld-board__avatar svg {
+    inline-size: 44px;
+    block-size: 44px;
+  }
+}
+
+/* The card keeps its own light surface on a `.tld-band--invert`, so the band's
+   light-on-dark ink has to be undone inside it — otherwise the name renders
+   white on white. Two classes beats the band's `--invert p` rule, so this wins
+   wherever the file happens to load. */
+.tld-band--invert .tld-board__card h3 {
+  color: var(--ink);
+}
+
+.tld-band--invert .tld-board__title {
+  color: var(--primary);
+}
+
+.tld-band--invert .tld-board__word {
+  color: var(--ink-muted);
+}

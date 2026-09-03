@@ -1,0 +1,148 @@
+/* Photo deck beside the hero copy. Cards are absolutely stacked, so the
+   wrapper needs its own intrinsic size. */
+
+.tld-gallery-cards {
+  inline-size: min(100%, 560px);
+  margin-inline: auto;
+  /* Room for the back cards to sit above the front one without clipping. */
+  margin-block-start: var(--space-5);
+}
+
+.tld-gallery-cards__deck {
+  position: relative;
+  inline-size: 100%;
+  aspect-ratio: 4 / 3;
+}
+
+.tld-gallery-cards__card {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--on-primary) 22%, transparent);
+  /* Also deliberately black — a maroon-tinted --shadow-* disappears against
+     the dark hero band this deck sits on. */
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+}
+
+.tld-gallery-cards__card img,
+.tld-gallery-cards__placeholder {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  display: block;
+  -webkit-user-drag: none;
+}
+
+.tld-gallery-cards__placeholder {
+  background:
+    radial-gradient(color-mix(in srgb, var(--primary) 16%, transparent) 1.5px, transparent 1.5px) 0 0 / 14px 14px,
+    linear-gradient(150deg, var(--surface-tint), var(--maroon-100));
+  color: color-mix(in srgb, var(--primary) 55%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tld-gallery-cards__placeholder svg {
+  inline-size: 48px;
+  block-size: 48px;
+}
+
+/* Overlaid rather than stacked below, so every card stays the same clean
+   rectangle regardless of caption length. */
+.tld-gallery-cards__caption {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-6) var(--space-4) var(--space-4);
+  /* True black, not a brand token: this is a legibility scrim over a
+     photograph, so it must not shift with the theme. */
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  color: var(--on-invert);
+  font-size: 13.5px;
+  font-weight: 600;
+  text-align: start;
+}
+
+.tld-gallery-cards__tag {
+  display: inline-flex;
+  padding: 3px var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--primary);
+  color: var(--on-primary);
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ------------------------------------------------------------------ dots */
+
+/* A scrub track, not a scroller: dragging across it moves through the deck.
+   `pan-y` hands vertical swipes back to the page so a drag that starts here
+   can still scroll the article, while horizontal movement stays ours. */
+.tld-gallery-cards__dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-2);
+  margin-block-start: var(--space-5);
+  /* Generous block padding: the whole strip is the grab target, not just the
+     9px dots inside it. */
+  padding: var(--space-3) var(--space-2);
+  touch-action: pan-y;
+  cursor: grab;
+}
+
+.tld-gallery-cards__dots--scrubbing {
+  cursor: grabbing;
+}
+
+/* While a drag is live the dots must not swallow the pointer, or moving over
+   one would retarget the gesture mid-scrub. */
+.tld-gallery-cards__dots--scrubbing .tld-gallery-cards__dot {
+  pointer-events: none;
+}
+
+.tld-gallery-cards__dot {
+  /* Must not shrink, or the dots compress instead of overflowing and there is
+     nothing to scroll. */
+  flex: none;
+  inline-size: 9px;
+  block-size: 9px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--on-primary) 32%, transparent);
+  cursor: pointer;
+  transition: background-color 0.2s, inline-size 0.2s;
+}
+
+.tld-gallery-cards__dot:hover {
+  background: color-mix(in srgb, var(--on-primary) 60%, transparent);
+}
+
+/* Transitions are per-dot, so a fast scrub still reads as continuous motion
+   rather than a stack of queued animations. */
+@media (prefers-reduced-motion: reduce) {
+  .tld-gallery-cards__dot {
+    transition: none;
+  }
+}
+
+/* The current card reads as a bar rather than a dot — legible without relying
+   on colour alone. */
+.tld-gallery-cards__dot[aria-current='true'] {
+  inline-size: 26px;
+  background: var(--on-primary);
+}
+
+.tld-gallery-cards__dot:focus-visible {
+  outline: 2px solid var(--on-primary);
+  outline-offset: 3px;
+}

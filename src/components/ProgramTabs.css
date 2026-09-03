@@ -1,0 +1,178 @@
+/* Programs browser: a pill tab row over a two-column panel, the whole thing
+   framed in its own rectangle. */
+
+/* The extra class beats `.tld-marketing .tld-section`, which sets the --rail
+   cap this needs to escape and which loads after this file. */
+.tld-marketing .tld-section.tld-ptabs {
+  inline-size: 75%;
+  max-width: none;
+  margin-inline: auto;
+  margin-block: var(--space-8);
+  /* Matches the block padding `.tld-marketing .tld-section` sets, so the frame
+     is inset by the same amount on all four sides. The base `.tld-section`
+     shorthand only gives the inline axis --space-6, and it loads after this
+     file, hence the extra class. */
+  padding-inline: var(--space-8);
+}
+
+.tld-ptabs {
+  /* The brand maroon, via the token so it tracks dark mode (#8c3e52 there)
+     rather than being pinned to one hex. Drives the active tab and the focus
+     ring. */
+  --ptabs-accent: var(--primary);
+  background: var(--surface-tint);
+  border-radius: var(--radius-hero);
+}
+
+/* Centred title, and no accent bar — the frame already marks the section out,
+   so the bar would just sit off to one side of a centred heading. */
+.tld-marketing .tld-ptabs .tld-section__heading {
+  justify-content: center;
+  margin-block-end: var(--space-5);
+}
+
+.tld-marketing .tld-ptabs .tld-section__heading::before {
+  display: none;
+}
+
+/* --surface-tint carries its own dark-mode value, so the frame needs no
+   theme override. */
+
+.tld-ptabs__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-block: var(--space-6) var(--space-6);
+}
+
+.tld-ptabs__tab {
+  padding: 10px var(--space-5);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: var(--surface-card);
+  color: var(--ink-muted);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+/* Scoped away from the active tab. `:hover` counts as a class, so the plain
+   `.tld-ptabs__tab:hover` outranked `.tld-ptabs__tab--active` and repainted
+   the selected tab's label near-black on maroon — invisible. */
+.tld-ptabs__tab:not(.tld-ptabs__tab--active):hover {
+  border-color: var(--border-strong);
+  color: var(--ink);
+}
+
+.tld-ptabs__tab--active {
+  background: var(--ptabs-accent);
+  border-color: var(--ptabs-accent);
+  color: var(--on-primary);
+}
+
+.tld-ptabs__tab--active:hover {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+}
+
+.tld-ptabs__tab:focus-visible {
+  outline: 2px solid var(--ptabs-accent);
+  outline-offset: 2px;
+}
+
+/* Subjects lead (start side, so the right under dir="rtl"); artwork follows. */
+.tld-ptabs__panel {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  align-items: stretch;
+  gap: var(--space-6);
+  padding: var(--space-6);
+  border-radius: var(--radius-hero);
+  background: var(--surface-raised);
+}
+
+.tld-ptabs__subjects {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-4);
+  padding-inline: var(--space-4);
+}
+
+.tld-ptabs__subjects h3 {
+  font-size: 19px;
+}
+
+.tld-ptabs__subjects ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  /* The course order carries the meaning here, not a bullet glyph. */
+  list-style: none;
+}
+
+.tld-ptabs__subjects li,
+.tld-ptabs__subjects p {
+  font-size: 16px;
+  color: var(--ink-muted);
+  margin: 0;
+}
+
+.tld-ptabs__media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 320px;
+  padding: var(--space-5);
+  border-radius: var(--radius-card);
+  background: var(--surface-card);
+}
+
+.tld-ptabs__media img {
+  inline-size: 100%;
+  max-block-size: 340px;
+  object-fit: contain;
+}
+
+/* Shown when a course has no artwork — better than an empty white box. */
+.tld-ptabs__tag {
+  padding: 8px var(--space-5);
+  border-radius: var(--radius-pill);
+  background: var(--surface-tint);
+  color: var(--primary);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* 75% of the viewport minus 64px of padding each side leaves ~164px of usable
+   content on a 390px phone. Below the two-column layout, the frame takes the
+   full width and insets with a margin instead. */
+@media (max-width: 960px) {
+  .tld-marketing .tld-section.tld-ptabs {
+    inline-size: auto;
+    margin-inline: var(--space-4);
+    padding-inline: var(--space-5);
+  }
+}
+
+@media (max-width: 760px) {
+  .tld-ptabs__tab {
+    padding-inline: var(--space-4);
+    font-size: 14px;
+  }
+
+  .tld-ptabs__panel {
+    padding: var(--space-4);
+    grid-template-columns: 1fr;
+  }
+
+  .tld-ptabs__media {
+    min-block-size: 220px;
+    order: -1;
+  }
+}

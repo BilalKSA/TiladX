@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { listMentors, fileUrl, type Mentor } from '../lib/content'
+import { useT } from '../i18n'
 import { useInfiniteMarquee, MARQUEE_COPIES } from './useInfiniteMarquee'
 import './Marquee.css'
 import './MentorStrip.css'
@@ -9,6 +10,7 @@ import './MentorStrip.css'
 const SPEED = 32
 
 function MentorStrip() {
+  const t = useT()
   const { scrollerRef, groupRef, handlers } = useInfiniteMarquee(SPEED)
   const [mentors, setMentors] = useState<Mentor[]>([])
 
@@ -25,7 +27,7 @@ function MentorStrip() {
       className="tld-marquee tld-mentors"
       ref={scrollerRef}
       role="region"
-      aria-label="مرشدو تلاد"
+      aria-label={t.mentors.regionAria}
       {...handlers}
     >
       <div className="tld-marquee__track">

@@ -288,11 +288,19 @@ create table if not exists public.mentors (
   title text,
   bio text,
   photo_path text,
+  -- Free-text track ("بحث علمي", "روبوتات", …). The /mentors page derives its
+  -- filter chips from the distinct values present, so there is no enum to keep
+  -- in step — but it also means spelling is what groups them. Null means the
+  -- mentor is shown under every filter except a named one.
+  track text,
   position integer not null default 0,
   published boolean not null default false,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
+
+-- For databases created before `track` existed.
+alter table public.mentors add column if not exists track text;
 
 alter table public.courses enable row level security;
 alter table public.lessons enable row level security;

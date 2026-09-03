@@ -1,0 +1,186 @@
+/* ===========================================================================
+   Mentor profiles  (/mentors)
+
+   The landing page's marquee (`.tld-mentor`) is the short form: photo, name,
+   title. These cards are the long form — a full-width portrait with the track
+   badge over it, then the bio — so they get their own classes.
+   ======================================================================== */
+
+/* Mentor count, shown in the page head under the standfirst. */
+.tld-mentors-page__count {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px var(--space-4);
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--on-invert) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--on-invert) 20%, transparent);
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--on-invert);
+}
+
+/* ------------------------------------------------------------- filters */
+
+.tld-mentors-page__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-block-end: var(--space-6);
+}
+
+.tld-mentors-page__chip {
+  padding: 9px var(--space-5);
+  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--border-strong);
+  background: var(--surface-card);
+  color: var(--ink-muted);
+  font-family: var(--sans);
+  font-size: 14.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+
+/* `:hover` is worth two classes to `--active`'s one, so it has to be excluded
+   explicitly or it repaints the selected chip's text. DESIGN_SYSTEM.md
+   gotcha 3. */
+.tld-mentors-page__chip:not(.tld-mentors-page__chip--active):hover {
+  border-color: var(--maroon-300);
+  background: var(--maroon-50);
+  color: var(--primary);
+}
+
+.tld-mentors-page__chip:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+.tld-mentors-page__chip--active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--on-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tld-mentors-page__chip {
+    transition: none;
+  }
+}
+
+/* --------------------------------------------------------------- cards */
+
+.tld-mentors-page__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-5);
+}
+
+.tld-mentor-profile {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--surface-card);
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-hero);
+  box-shadow: var(--shadow-md);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.tld-mentor-profile:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--maroon-300);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tld-mentor-profile {
+    transition: none;
+  }
+
+  .tld-mentor-profile:hover {
+    transform: none;
+  }
+}
+
+/* Portrait runs the full width of the card rather than sitting as an 88px
+   circle above the name — at this size a face is the thing that makes a mentor
+   feel like a person you could ask. */
+.tld-mentor-profile__portrait {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Same dotted-tint placeholder as the mentor strip and the board cards. */
+  background:
+    radial-gradient(color-mix(in srgb, var(--primary) 16%, transparent) 1.5px, transparent 1.5px) 0 0 / 12px 12px,
+    linear-gradient(150deg, var(--surface-tint), var(--maroon-100));
+  color: color-mix(in srgb, var(--primary) 60%, transparent);
+}
+
+.tld-mentor-profile__portrait img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  display: block;
+  -webkit-user-drag: none;
+}
+
+.tld-mentor-profile__portrait > svg {
+  inline-size: 64px;
+  block-size: 64px;
+}
+
+/* Track badge over the portrait's lower start corner. Sits on a scrim of its
+   own so it stays legible over any photograph. */
+.tld-mentor-profile__track {
+  position: absolute;
+  inset-block-end: var(--space-3);
+  inset-inline-start: var(--space-3);
+  padding: 5px var(--space-3);
+  border-radius: var(--radius-pill);
+  /* Deliberately a black scrim, not a token: it sits over a photograph whose
+     colours are unknown, and it must not shift with the theme. Same exception
+     the design system documents for the hero's legibility scrim. */
+  background: rgba(20, 3, 9, 0.72);
+  backdrop-filter: blur(6px);
+  color: var(--on-primary);
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.tld-mentor-profile__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-5);
+}
+
+.tld-mentor-profile h2 {
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.tld-mentor-profile__title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.tld-mentor-profile__bio {
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--ink-muted);
+  margin-block-start: var(--space-1);
+}
+
+/* Loading / empty / error line, all three the same shape. */
+.tld-mentors-page__state {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--ink-faint);
+  font-size: 15px;
+  padding-block: var(--space-5);
+}

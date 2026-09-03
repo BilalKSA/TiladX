@@ -2,7 +2,7 @@
 
 ## What this is
 
-Tilad (تلاد) is an Arabic-first educational platform built to support Saudi students in competitive extracurricular programs — currently **ISEF** (Intel International Science and Engineering Fair), **STEM Racing**, and **ELO**. Tagline: **"من الطالب وإلى الطالب"** (from student to student).
+Tilad (تلاد) is an Arabic-first educational platform built to support Saudi students in competitive extracurricular programs — currently **ISEF** (Intel International Science and Engineering Fair), **STEM Racing**, and **ELO**. Tagline: **"من الطالب إلى الطالب"** (from student to student).
 
 It's a single organization-style platform: students don't self-register freely. They're pre-loaded into a roster by an admin, then activate their own account with a password. There is no public marketing/signup flow yet — access is closed to the current cohort.
 

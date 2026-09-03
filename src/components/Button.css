@@ -7,6 +7,9 @@
   font-weight: 600;
   cursor: pointer;
   border: 1.5px solid transparent;
+  /* Buttons are anchors as often as they are <button>s, so opt out of the UA
+     underline here rather than at each call site. */
+  text-decoration: none;
   transition: background-color 0.2s, border-color 0.2s, opacity 0.2s;
   white-space: nowrap;
 }
@@ -19,7 +22,7 @@
 .tld-button:disabled {
   cursor: not-allowed;
   background: var(--maroon-100);
-  color: #b99ba3;
+  color: var(--on-disabled);
   border-color: transparent;
 }
 

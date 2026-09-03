@@ -1,4 +1,5 @@
 import { supabase } from './supabase'
+import { appUrl } from './origins'
 
 const GENERIC_SIGN_IN_ERROR = 'رقم الحساب أو كلمة المرور غير صحيحة، أو الحساب غير مفعّل بعد.'
 
@@ -55,7 +56,9 @@ export async function activateStudent(email: string, password: string) {
 // about who has an account — the UI always shows the same message.
 export async function requestPasswordReset(email: string) {
   const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
-    redirectTo: `${window.location.origin}/reset-password/confirm`,
+    // Pinned to the app origin, not the current one: the confirm route only
+    // exists there once the site and app are split across subdomains.
+    redirectTo: appUrl('/reset-password/confirm'),
   })
   if (error) throw error
 }

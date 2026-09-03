@@ -1,0 +1,237 @@
+/* ===========================================================================
+   Why Tilad  (/why)
+
+   The landing page has a short version of the claims in `.tld-why__*`. This is
+   the long form — same claims, with the detail paragraph and a number down the
+   side — so the two sets of classes stay separate on purpose.
+
+   Page rhythm: grain head → light band of alternating rows → a single framed
+   list → inverted band for the objections → cta. Three surfaces, so the page
+   doesn't read as one continuous column of cards.
+   ======================================================================== */
+
+/* Surface only — .tld-band supplies the positioning and layering. */
+.tld-why-page__bg {
+  background: var(--surface-band);
+}
+
+.tld-why-page__rows {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(var(--space-7), 7vw, 104px);
+}
+
+/* Text first, so it lands on the start side under dir="rtl". */
+.tld-why-page__row {
+  display: grid;
+  grid-template-columns: 1fr 0.9fr;
+  gap: clamp(var(--space-6), 5vw, 80px);
+  align-items: center;
+}
+
+/* Every second row swaps sides, so the eye zigzags down the page. */
+.tld-why-page__row:nth-child(even) .tld-why-page__text {
+  order: 2;
+}
+
+.tld-why-page__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* Outlined numeral rather than a filled chip: three of these run down the
+   page, and three filled maroon pills read as navigation. */
+.tld-why-page__index {
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--primary);
+  inline-size: 44px;
+  block-size: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--maroon-300);
+  background: var(--surface-card);
+  margin-block-end: var(--space-2);
+}
+
+.tld-why-page__text h2 {
+  font-family: var(--display-ar);
+  font-size: clamp(26px, 3.2vw, 38px);
+  /* AlYamama ships Regular only, and font-synthesis is off globally — see
+     DESIGN_SYSTEM.md gotchas 5 and 6. */
+  font-weight: 400;
+  line-height: 1.35;
+  letter-spacing: normal;
+}
+
+.tld-why-page__text p {
+  color: var(--ink-muted);
+  line-height: 1.9;
+  max-width: 52ch;
+}
+
+/* Two classes, so it outranks the class-plus-element rule above rather than
+   depending on source order. */
+.tld-why-page__text p.tld-why-page__lead {
+  font-size: 17.5px;
+  /* 500, not 600: Tajawal is loaded at 300/400/500/700/800 and font-synthesis
+     is off, so a 600 here would silently render as 700. */
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1.8;
+}
+
+.tld-why-page__photo {
+  margin: 0;
+  border-radius: var(--radius-hero);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  border: 1.5px solid var(--border-strong);
+}
+
+.tld-why-page__photo img {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+/* ---------------------------------------------------------- what you get */
+
+.tld-why-page__included {
+  padding-block: var(--space-4);
+}
+
+.tld-why-page__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Hairline between rows, not around each one — the frame already supplies the
+   outer edge, and five bordered cards inside a bordered panel is two frames
+   deep for a plain list. */
+.tld-why-page__list li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding-block: var(--space-4);
+  font-size: 16.5px;
+  line-height: 1.8;
+  color: var(--ink);
+  border-block-end: 1px solid var(--border);
+}
+
+.tld-why-page__list li:last-child {
+  border-block-end: none;
+}
+
+.tld-why-page__check {
+  flex-shrink: 0;
+  inline-size: 30px;
+  block-size: 30px;
+  border-radius: var(--radius-pill);
+  background: var(--primary);
+  color: var(--on-primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tld-why-page__check svg {
+  inline-size: 15px;
+  block-size: 15px;
+}
+
+/* -------------------------------------------------------- misconceptions */
+
+/* Surface and ink come from .tld-band--invert. */
+.tld-why-page__myths-bg {
+  overflow: hidden;
+  --bg-noise-spotlight: color-mix(in srgb, var(--maroon-500) 40%, transparent);
+  --bg-noise-spotlight-size: 620px;
+}
+
+.tld-why-page__myths {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+}
+
+/* A translucent panel on the band rather than a light card: a white card here
+   would have to restore all of its own ink, and it would break the run of
+   maroon that makes this section land. */
+.tld-why-page__myth {
+  background: color-mix(in srgb, var(--on-invert) 7%, transparent);
+  border: 1px solid color-mix(in srgb, var(--on-invert) 16%, transparent);
+  border-radius: var(--radius-hero);
+  padding: var(--space-5);
+  backdrop-filter: blur(4px);
+}
+
+/* Both labels are <p>s inside .tld-band--invert, whose `p` rule is a class
+   plus an element — so a bare class here would lose the colour. Scoping to the
+   panel gets them back over it. See DESIGN_SYSTEM.md, "Where the shared CSS
+   lives". */
+.tld-why-page__myth p.tld-why-page__myth-label,
+.tld-why-page__myth p.tld-why-page__truth-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-block-end: var(--space-2);
+}
+
+.tld-why-page__myth p.tld-why-page__myth-label {
+  color: color-mix(in srgb, var(--on-invert) 50%, transparent);
+}
+
+/* The assumption, quoted and set back: faint, italic-weight-by-colour rather
+   than struck through — a line-through cuts straight across Arabic
+   letterforms and is hard to read. */
+.tld-why-page__myth p.tld-why-page__myth-claim {
+  font-family: var(--display);
+  font-size: clamp(18px, 1.9vw, 21px);
+  font-weight: 700;
+  line-height: 1.5;
+  color: color-mix(in srgb, var(--on-invert) 62%, transparent);
+  padding-block-end: var(--space-4);
+  margin-block-end: var(--space-4);
+  border-block-end: 1px solid color-mix(in srgb, var(--on-invert) 18%, transparent);
+}
+
+.tld-why-page__myth p.tld-why-page__truth-label {
+  color: var(--maroon-300);
+}
+
+/* Full --on-invert, not the muted pair: this is the answer, and it has to be
+   the highest-contrast text in the panel. */
+.tld-why-page__myth p.tld-why-page__truth {
+  color: var(--on-invert);
+  font-size: 15.5px;
+  line-height: 1.9;
+}
+
+/* ----------------------------------------------------------- responsive */
+
+@media (max-width: 900px) {
+  .tld-why-page__row {
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+
+  /* Photo back under the copy on every row — the alternating order only makes
+     sense side by side. */
+  .tld-why-page__row:nth-child(even) .tld-why-page__text {
+    order: 0;
+  }
+
+  .tld-why-page__myths {
+    grid-template-columns: 1fr;
+  }
+}

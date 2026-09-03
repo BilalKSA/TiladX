@@ -119,7 +119,7 @@ function renderEmail({ full_name, recommended_program }) {
                   ${programName}
                 </div>
                 <p style="margin:0 0 24px;font-size:15px;line-height:1.8;color:#6E5C61;">
-                  تلاد منصة عربية من الطالب وإلى الطالب، تجهّزك للمنافسة في أقوى البرامج الطلابية — من أول فكرة لمشروعك
+                  تلاد منصة عربية من الطالب إلى الطالب، تجهّزك للمنافسة في أقوى البرامج الطلابية — من أول فكرة لمشروعك
                   إلى لحظة ما توقف قدّام لجنة التحكيم. تقدر تتصفح البرامج والملفات من الموقع.
                 </p>
                 <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 auto 8px;">
@@ -138,7 +138,7 @@ function renderEmail({ full_name, recommended_program }) {
             </tr>
             <tr>
               <td style="padding:20px 32px;background:#F8F0F1;text-align:center;">
-                <p style="margin:0;font-size:12px;color:#8A787D;">تلاد — من الطالب وإلى الطالب</p>
+                <p style="margin:0;font-size:12px;color:#8A787D;">تلاد — من الطالب إلى الطالب</p>
               </td>
             </tr>
           </table>

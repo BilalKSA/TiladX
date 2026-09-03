@@ -1,0 +1,47 @@
+/* Files page. These classes used to live at the top of Landing.css, which meant
+   importing them dragged the entire marketing stylesheet into the app bundle —
+   tilad.org and app.tilad.org are separate builds, and the landing page's CSS
+   has no business shipping to the app. Files.tsx is the only consumer. */
+
+.tld-landing {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.tld-landing__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-6);
+  border-bottom: 1px solid var(--border);
+}
+
+.tld-landing__header-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.tld-grid + .tld-wide-card,
+.tld-wide-card + .tld-grid {
+  margin-block-start: var(--space-5);
+}
+
+.tld-wide-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  padding: var(--space-5);
+}
+
+.tld-wide-card .tld-card__icon {
+  margin-bottom: 0;
+}
+
+.tld-wide-card__title {
+  flex: 1;
+}

@@ -1,38 +1,58 @@
 .tld-footer {
-  position: relative;
   overflow: hidden;
   margin-top: auto;
   background: var(--maroon-900);
-  color: #fff;
+  color: var(--on-invert);
 }
 
-/* Crossed-swords arcs from the 2026 guidelines, sweeping across the full width.
-   The file is already low-alpha white on transparency, so it's used at full
-   strength — the subtlety is baked into the artwork, not dialled in here.
-   Applied only to flat maroon surfaces; anything already carrying the halftone
-   dot texture is left alone. */
-.tld-footer::before {
-  content: '';
-  position: absolute;
-  inset-inline: 0;
-  inset-block-start: 0;
-  block-size: 100%;
-  background: url('/assets/tilad-pattern-swords.webp') center / 130% auto no-repeat;
-  pointer-events: none;
-}
-
-/* Keep the real content above the pattern layer. */
-.tld-footer > * {
-  position: relative;
-  z-index: 1;
+/* Brand block leads, link columns follow and take the remaining width. */
+.tld-footer__inner {
+  display: grid;
+  grid-template-columns: minmax(200px, 1fr) 2.2fr;
+  gap: var(--space-8);
+  max-width: var(--rail);
+  margin-inline: auto;
+  padding: var(--space-8) var(--space-6);
 }
 
 .tld-footer__brand {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: var(--space-3);
-  padding: var(--space-7) var(--space-6);
+}
+
+.tld-footer__nav {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-6);
+}
+
+.tld-footer__col h3 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--maroon-300);
+  margin-block-end: var(--space-4);
+}
+
+.tld-footer__col ul {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tld-footer__col a {
+  font-size: 15px;
+  color: var(--on-invert);
+  text-decoration: none;
+}
+
+.tld-footer__col a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 .tld-footer__brand p {
@@ -49,15 +69,15 @@
   width: 40px;
   height: 40px;
   border-radius: var(--radius-pill);
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
+  background: color-mix(in srgb, var(--on-invert) 10%, transparent);
+  color: var(--on-invert);
   display: inline-flex;
   align-items: center;
   justify-content: center;
 }
 
 .tld-footer__social:hover {
-  background: rgba(255, 255, 255, 0.18);
+  background: color-mix(in srgb, var(--on-invert) 18%, transparent);
 }
 
 .tld-footer__social svg {
@@ -66,12 +86,46 @@
 }
 
 .tld-footer__bottom {
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  max-width: var(--rail);
+  margin-inline: auto;
+  border-top: 1px solid color-mix(in srgb, var(--on-invert) 12%, transparent);
   padding: var(--space-4) var(--space-6);
-  text-align: center;
 }
 
 .tld-footer__bottom p {
   color: var(--maroon-300);
   font-size: 13px;
+}
+
+.tld-footer__legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.tld-footer__legal a {
+  font-size: 13px;
+  color: var(--maroon-300);
+  text-decoration: none;
+}
+
+.tld-footer__legal a:hover {
+  color: var(--on-invert);
+}
+
+@media (max-width: 760px) {
+  .tld-footer__inner {
+    grid-template-columns: 1fr;
+    gap: var(--space-7);
+  }
+
+  .tld-footer__bottom {
+    justify-content: center;
+    text-align: center;
+  }
 }

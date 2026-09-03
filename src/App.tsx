@@ -1,7 +1,14 @@
 import { Routes, Route } from 'react-router-dom'
+import { LocaleProvider } from './i18n/LocaleProvider'
+import { EnSiteRoutes } from './roots/SiteRoutes'
 import Maintenance from './pages/Maintenance'
 import Files from './pages/Files'
 import Landing from './pages/Landing'
+import About from './pages/About'
+import WhyTilad from './pages/WhyTilad'
+import Mentors from './pages/Mentors'
+import Terms from './pages/Terms'
+import Privacy from './pages/Privacy'
 import Login from './pages/Login'
 import Activate from './pages/Activate'
 import ResetPassword from './pages/ResetPassword'
@@ -30,11 +37,28 @@ function App() {
   return (
     <>
       <Routes>
+        {/* English marketing site. Same SiteRoutes table as production's
+            SiteRoot, under a "/en" prefix. Ranks above the "/*" catch-all, so
+            the Arabic routes below stay the default. */}
+        <Route
+          path="/en/*"
+          element={
+            <LocaleProvider locale="en">
+              <EnSiteRoutes />
+            </LocaleProvider>
+          }
+        />
+
         {/* Landing is now the public homepage. To put the site back into
             maintenance mode, swap this element back to <Maintenance />. */}
         <Route path="/" element={<Landing />} />
         <Route path="/files" element={<Files />} />
         <Route path="/landing" element={<Landing />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/why" element={<WhyTilad />} />
+        <Route path="/mentors" element={<Mentors />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/privacy" element={<Privacy />} />
         <Route path="/maintenance" element={<Maintenance />} />
         <Route path="/login" element={<Login />} />
         <Route path="/activate" element={<Activate />} />

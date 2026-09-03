@@ -1,0 +1,356 @@
+/* ===========================================================================
+   About page  (/about)
+
+   Shape of the page, top to bottom:
+
+     grain head (photo split)  →  impact frame lifted over its seam
+     →  story + pull quote     →  mission, one display line on the grain hero
+     →  values                 →  board (inverted)  →  cta
+
+   Two dark bands with a light stretch between them, so the page has a rhythm
+   rather than being one long scroll of cards. Every colour is a token; the
+   site is light-locked (see SiteLayout), but nothing here would break if that
+   changed.
+   ======================================================================== */
+
+/* Small maroon label above a section title — the light-surface twin of the
+   head's eyebrow pill. */
+.tld-about__eyebrow {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--primary);
+  margin-block-end: var(--space-2);
+}
+
+.tld-about__eyebrow--invert {
+  color: var(--maroon-300);
+}
+
+/* ---------------------------------------------------------- impact strip */
+
+/* The frame is pulled up over the head band's lower edge, so the page opens on
+   the numbers instead of on more prose. Needs the two-class selector to beat
+   `.tld-marketing .tld-section`'s symmetric block padding — see gotcha 2 in
+   DESIGN_SYSTEM.md. */
+.tld-marketing .tld-about__impact-section {
+  padding-block-start: 0;
+  margin-block-start: calc(var(--space-7) * -1);
+}
+
+.tld-about__impact {
+  background: var(--surface-card);
+  border: 1.5px solid var(--border-strong);
+  /* Deliberately black rather than --shadow-hero: half of this panel sits over
+     the near-black head band, where the maroon-tinted shadow tokens vanish. */
+  box-shadow: 0 26px 60px rgba(0, 0, 0, 0.22);
+}
+
+.tld-about__impact-heading {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--ink-faint);
+  margin-block-end: var(--space-6);
+}
+
+.tld-about__stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-6);
+}
+
+/* Hairline between figures, on the leading edge of each — dropped from the
+   first, which would otherwise carry a rule against the frame's padding. */
+.tld-about__stat {
+  padding-inline-start: var(--space-5);
+  border-inline-start: 1px solid var(--border);
+}
+
+.tld-about__stat:first-child {
+  padding-inline-start: 0;
+  border-inline-start: none;
+}
+
+.tld-about__stat dt {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-block-end: var(--space-2);
+}
+
+.tld-about__stat-value {
+  font-family: var(--display);
+  font-size: clamp(38px, 4.4vw, 54px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--primary);
+}
+
+.tld-about__stat-label {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.tld-about__stat dd {
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--ink-faint);
+}
+
+/* ---------------------------------------------------------------- story */
+
+.tld-about__story {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: clamp(var(--space-6), 5vw, var(--space-8));
+  align-items: start;
+}
+
+/* Down a step from the section-heading scale: this is the page's second voice,
+   not a competitor to the h1 in the head. */
+.tld-about__story-title {
+  --title-size: clamp(30px, 3.6vw, 44px);
+  font-family: var(--display-ar);
+  /* AlYamama ships Regular only and font-synthesis is off globally, so a
+     heavier weight would render no heavier — it would fall through to the next
+     family in the stack. Same reasoning as the landing hero. */
+  font-weight: 400;
+  color: var(--ink);
+  margin-block-end: var(--space-5);
+}
+
+.tld-about__story-side {
+  display: flex;
+  flex-direction: column;
+}
+
+.tld-about__story-photo {
+  margin: 0;
+  border-radius: var(--radius-hero);
+  overflow: hidden;
+  border: 1.5px solid var(--border-strong);
+  box-shadow: var(--shadow-lg);
+}
+
+.tld-about__story-photo img {
+  display: block;
+  inline-size: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+
+/* Steps over the photo's lower corner. Negative margin rather than absolute
+   positioning, so the quote still contributes its height to the column and
+   nothing below it has to be nudged. */
+.tld-about__quote {
+  position: relative;
+  margin-block-start: calc(var(--space-7) * -1);
+  margin-inline: var(--space-5) calc(var(--space-4) * -1);
+  padding: var(--space-5);
+  border-radius: var(--radius-hero);
+  background: var(--surface-tint);
+  border: 1.5px solid var(--border-strong);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  align-items: flex-start;
+}
+
+.tld-about__quote-mark {
+  font-family: var(--display);
+  font-size: 56px;
+  line-height: 0.7;
+  color: var(--maroon-300);
+}
+
+.tld-about__quote p {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(21px, 2.2vw, 28px);
+  line-height: 1.35;
+  color: var(--primary);
+}
+
+.tld-about__quote-by {
+  font-size: 13px;
+  color: var(--ink-faint);
+}
+
+/* -------------------------------------------------------------- mission */
+
+/* Surface and ink come from .tld-band--hero. The extra vertical room is the
+   point: one sentence with nothing near it. */
+.tld-about__mission-band {
+  overflow: hidden;
+  --bg-noise-spotlight: color-mix(in srgb, var(--maroon-500) 45%, transparent);
+  --bg-noise-spotlight-size: 700px;
+}
+
+.tld-marketing .tld-about__mission {
+  padding-block: clamp(var(--space-8), 9vw, 128px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.tld-about__mission-line {
+  --title-size: clamp(28px, 4.4vw, 56px);
+  font-family: var(--display-ar);
+  font-weight: 400;
+  max-width: 20ch;
+  color: var(--on-invert);
+}
+
+.tld-about__mission-note {
+  margin-block-start: var(--space-5);
+  max-width: 48ch;
+  font-size: 16.5px;
+  line-height: 1.9;
+  color: var(--on-invert-muted);
+}
+
+/* --------------------------------------------------------------- values */
+
+.tld-about__values {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-5);
+}
+
+/* Not .tld-card: these want the leading-edge accent rule that the section
+   headings use, not the shared card's even border on all four sides. */
+.tld-about__value {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface-card);
+  border: 1.5px solid var(--border);
+  /* Logical, so the accent lands on the right under dir="rtl" and flips with
+     the English build. */
+  border-inline-start: 4px solid var(--primary);
+  border-radius: var(--radius-card);
+  padding: var(--space-5) var(--space-6);
+  box-shadow: var(--shadow-soft);
+  transition: box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.tld-about__value:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--maroon-300);
+  border-inline-start-color: var(--primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tld-about__value {
+    transition: none;
+  }
+}
+
+/* Oversized ghost numeral in the far corner — ordering without a badge. */
+.tld-about__value-index {
+  position: absolute;
+  inset-block-start: var(--space-2);
+  inset-inline-end: var(--space-4);
+  font-family: var(--display);
+  font-size: 64px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--maroon-50);
+  pointer-events: none;
+}
+
+.tld-about__value h3 {
+  position: relative;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1.4;
+  margin-block-end: var(--space-2);
+}
+
+.tld-about__value p {
+  position: relative;
+  color: var(--ink-muted);
+  line-height: 1.85;
+}
+
+/* ---------------------------------------------------------------- board */
+
+/* Inverted band, same grain glow as the landing page's. No extra bottom
+   padding: the board section carries its own and there is no marquee under it
+   here. */
+.tld-about__board-bg {
+  overflow: hidden;
+  --bg-noise-spotlight: color-mix(in srgb, var(--maroon-500) 42%, transparent);
+  --bg-noise-spotlight-size: 640px;
+}
+
+/* ----------------------------------------------------------- responsive */
+
+@media (max-width: 1000px) {
+  /* Four figures across become ~180px columns here, which crowds the two-word
+     labels onto three lines. */
+  .tld-about__stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-5);
+  }
+
+  /* The hairline rule is per-row now, so it comes off the first item in each
+     row rather than only the first overall. */
+  .tld-about__stat:nth-child(odd) {
+    padding-inline-start: 0;
+    border-inline-start: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .tld-about__story {
+    grid-template-columns: 1fr;
+  }
+
+  /* The quote stops overlapping once stacked: at full width the step-over
+     reads as a misalignment rather than as layering. */
+  .tld-about__quote {
+    margin-block-start: var(--space-5);
+    margin-inline: 0;
+  }
+
+  .tld-about__story-photo img {
+    aspect-ratio: 16 / 9;
+  }
+
+  .tld-about__values {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .tld-about__stats {
+    grid-template-columns: 1fr;
+  }
+
+  .tld-about__stat {
+    padding-inline-start: 0;
+    border-inline-start: none;
+    padding-block-start: var(--space-4);
+    border-block-start: 1px solid var(--border);
+  }
+
+  .tld-about__stat:first-child {
+    padding-block-start: 0;
+    border-block-start: none;
+  }
+
+  /* The lifted frame needs less overhang on a phone, where the head band is
+     shorter and the overlap would eat the standfirst. */
+  .tld-marketing .tld-about__impact-section {
+    margin-block-start: calc(var(--space-5) * -1);
+  }
+
+  .tld-about__impact {
+    padding: var(--space-5);
+  }
+}

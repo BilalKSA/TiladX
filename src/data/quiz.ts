@@ -1,8 +1,13 @@
 // Three-question quiz on the landing page. Each answer votes for one course
 // slug; the slug with the most votes wins.
 //
-// Courses themselves now live in Postgres (admin-editable), so this file deals
-// only in slugs — ProgramQuiz looks the winning slug up against the live list.
+// Locale-keyed: the *structure* (question ids, option ids, and which slug each
+// option votes for) is language-independent and drives recommendSlug; only the
+// prompts and labels translate. `getQuiz(locale)` merges the two.
+//
+// Courses themselves live in Postgres (admin-editable), so this file deals only
+// in slugs — ProgramQuiz looks the winning slug up against the live list.
+import type { Locale } from '../i18n'
 
 export interface QuizOption {
   id: string
@@ -17,44 +22,95 @@ export interface QuizQuestion {
   options: QuizOption[]
 }
 
-/** Tie-break order — earlier wins a dead heat. */
-const PRIORITY = ['isef', 'stem-racing', 'elo']
-
-export const quiz: QuizQuestion[] = [
+/** Language-independent skeleton: ids and vote targets. */
+const structure: { id: string; options: { id: string; votes: string }[] }[] = [
   {
     id: 'stage',
-    prompt: 'وش المرحلة اللي أنت فيها الحين؟',
     options: [
-      { id: 'middle', label: 'المرحلة المتوسطة', votes: 'stem-racing' },
-      { id: 'high', label: 'المرحلة الثانوية', votes: 'isef' },
-      { id: 'uni', label: 'جامعي أو متخرج', votes: 'elo' },
+      { id: 'middle', votes: 'stem-racing' },
+      { id: 'high', votes: 'isef' },
+      { id: 'uni', votes: 'elo' },
     ],
   },
   {
     id: 'interest',
-    prompt: 'أي مجال يشدّك أكثر؟',
     options: [
-      { id: 'research', label: 'البحث العلمي والتجارب', votes: 'isef' },
-      { id: 'building', label: 'الهندسة والتصميم والبرمجة', votes: 'stem-racing' },
-      { id: 'leading', label: 'القيادة والتنظيم والعمل ضمن فريق', votes: 'elo' },
+      { id: 'research', votes: 'isef' },
+      { id: 'building', votes: 'stem-racing' },
+      { id: 'leading', votes: 'elo' },
     ],
   },
   {
     id: 'goal',
-    prompt: 'وش تبي توصل له؟',
     options: [
-      { id: 'international', label: 'أشارك بمشروع بحثي في مسابقة دولية', votes: 'isef' },
-      { id: 'build', label: 'أبني شي بيدي وأتنافس فيه مع فريقي', votes: 'stem-racing' },
-      { id: 'skills', label: 'أطوّر مهاراتي وأقوّي سيرتي الذاتية', votes: 'elo' },
+      { id: 'international', votes: 'isef' },
+      { id: 'build', votes: 'stem-racing' },
+      { id: 'skills', votes: 'elo' },
     ],
   },
 ]
 
-/** Tallies the answers and returns the winning course slug. */
+const text: Record<Locale, { prompts: Record<string, string>; options: Record<string, string> }> = {
+  ar: {
+    prompts: {
+      stage: 'وش المرحلة اللي أنت فيها الحين؟',
+      interest: 'أي مجال يشدّك أكثر؟',
+      goal: 'وش تبي توصل له؟',
+    },
+    options: {
+      middle: 'المرحلة المتوسطة',
+      high: 'المرحلة الثانوية',
+      uni: 'جامعي أو متخرج',
+      research: 'البحث العلمي والتجارب',
+      building: 'الهندسة والتصميم والبرمجة',
+      leading: 'القيادة والتنظيم والعمل ضمن فريق',
+      international: 'أشارك بمشروع بحثي في مسابقة دولية',
+      build: 'أبني شي بيدي وأتنافس فيه مع فريقي',
+      skills: 'أطوّر مهاراتي وأقوّي سيرتي الذاتية',
+    },
+  },
+  en: {
+    prompts: {
+      stage: 'What stage are you in right now?',
+      interest: 'Which field pulls you in most?',
+      goal: 'What do you want to achieve?',
+    },
+    options: {
+      middle: 'Middle school',
+      high: 'High school',
+      uni: 'University or graduate',
+      research: 'Scientific research and experiments',
+      building: 'Engineering, design and programming',
+      leading: 'Leadership, organizing and teamwork',
+      international: 'Enter a research project in an international competition',
+      build: 'Build something with my hands and compete with my team',
+      skills: 'Grow my skills and strengthen my résumé',
+    },
+  },
+}
+
+/** Tie-break order — earlier wins a dead heat. */
+const PRIORITY = ['isef', 'stem-racing', 'elo']
+
+export function getQuiz(locale: Locale): QuizQuestion[] {
+  const t = text[locale]
+  return structure.map((question) => ({
+    id: question.id,
+    prompt: t.prompts[question.id],
+    options: question.options.map((option) => ({
+      id: option.id,
+      label: t.options[option.id],
+      votes: option.votes,
+    })),
+  }))
+}
+
+/** Tallies the answers and returns the winning course slug. Reads the shared
+ *  structure, so it needs no locale. */
 export function recommendSlug(answers: Record<string, string>): string {
   const tally = new Map<string, number>()
 
-  for (const question of quiz) {
+  for (const question of structure) {
     const chosen = question.options.find((option) => option.id === answers[question.id])
     if (!chosen) continue
     tally.set(chosen.votes, (tally.get(chosen.votes) ?? 0) + 1)

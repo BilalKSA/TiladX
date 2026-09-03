@@ -150,7 +150,7 @@ Courses, lessons, library files, and mentors live in Postgres and are edited thr
 | `courses` | `slug` is the URL key (`/courses/isef`), plus `tag`, `title`, `description`, `thumbnail_path`, `position` |
 | `lessons` | Belongs to a course, `on delete cascade`. `video_url` holds a raw YouTube/Vimeo URL |
 | `library_assets` | Belongs to a course via `course_id` — **the library is per-program**. `null` means general material shown in every program. `category` is one of `papers`/`posters`/`presentations`/`plans`/`templates`/`videos`. Either `file_path` (storage) or `external_url` |
-| `mentors` | Name, title, bio, `photo_path` |
+| `mentors` | Name, title, bio, `photo_path`, and `track` — free text, e.g. "بحث علمي". `/mentors` derives its filter chips from the distinct `track` values across published rows, so there is no enum to keep in step; the flip side is that spelling is what groups them, which is why the admin form offers the existing values as autocomplete. Empty on every row means no filter bar |
 
 Every one of them has a `published` boolean — the draft/live switch. **All four are readable by `anon`, but only where `published` is true**; admins see everything. Writes require `public.is_admin()`.
 

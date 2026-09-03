@@ -1,9 +1,11 @@
-import { gallery } from '../data/gallery'
+import { getGallery } from '../data/gallery'
+import { useLocale } from '../i18n'
 import { useInfiniteMarquee, MARQUEE_COPIES } from './useInfiniteMarquee'
 import './Marquee.css'
 import './GalleryStrip.css'
 
 function GalleryStrip() {
+  const gallery = getGallery(useLocale())
   const { scrollerRef, groupRef, handlers } = useInfiniteMarquee()
 
   return (

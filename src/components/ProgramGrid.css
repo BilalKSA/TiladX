@@ -1,0 +1,25 @@
+/* Programs band on the landing page. Cards reuse .tld-card; only the
+   landing-specific framing lives here. */
+
+.tld-programs__grid {
+  margin-block-start: var(--space-5);
+}
+
+.tld-programs__card {
+  align-items: flex-start;
+  text-align: start;
+}
+
+.tld-programs__thumb {
+  inline-size: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+  background: var(--surface-tint);
+  border-radius: var(--radius-input);
+}
+
+.tld-programs__cta {
+  display: flex;
+  justify-content: center;
+  margin-block-start: var(--space-6);
+}

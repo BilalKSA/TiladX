@@ -1,3 +1,18 @@
+@import './styles/system.css';
+
+/* AlYamama, self-hosted from public/assets/. Only the Regular weight exists in
+   the repo — see public/assets/fonts/README.md before adding more. Declaring a
+   weight whose file is missing is worse than not declaring it: the browser
+   matches the face, fails the fetch, and drops to the NEXT FAMILY rather than
+   to another AlYamama weight. */
+@font-face {
+  font-family: 'AlYamama';
+  src: url('/assets/Alyamama%20Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --maroon-900: #3f0a16;
   --maroon-800: #4a1020;
@@ -8,9 +23,23 @@
   --maroon-100: #edd9dd;
   --maroon-50: #f8f0f1;
 
-  --surface-page: #faf6f4;
+  --surface-page: #fafafa;
   --surface-card: #ffffff;
   --surface-tint: #f3e9eb;
+  /* Section surfaces the landing layout introduced. --band is a full-bleed
+     stripe, --raised is a panel sitting on one, --hero is the near-black
+     maroon behind grain (a single value: it is dark in both themes). */
+  --surface-band: #fafafa;
+  --surface-raised: #f0f0f0;
+  --surface-hero: #140309;
+
+  /* Shared content rail. Every band is full-bleed; this is what keeps the
+     content inside them lined up across pages. */
+  --rail: 1180px;
+
+  /* Disabled control text. A single value, not a themed ink: it sits on
+     --maroon-100, and the maroon ramp is fixed across both themes. */
+  --on-disabled: #b99ba3;
   --border: #eadde0;
   --ink: #2e2226;
   --ink-muted: #6e5c61;
@@ -55,16 +84,17 @@
      coverage, so Arabic text falls through to Tajawal automatically. Order
      matters — Manrope must come first or Tajawal would render the Latin too. */
   --display: 'Manrope', 'Tajawal', sans-serif;
+  /* Display-only Arabic face for large headlines. Same load-bearing order as
+     the other stacks: Manrope claims Latin, Arabic goes to AlYamama, and if
+     those files aren't installed yet it lands on Reem Kufi, then Tajawal. */
+  --display-ar: 'Manrope', 'AlYamama', 'Reem Kufi', 'Tajawal', sans-serif;
   --sans: 'Manrope', 'Tajawal', system-ui, sans-serif;
 
   font: 16px/1.6 var(--sans);
   color-scheme: light dark;
   color: var(--ink);
 
-  /* Brand background from the 2026 guidelines. The colour underneath is the
-     fallback while the image loads and behind any transparent edge. Fixed
-     attachment so the gradient stays put instead of scrolling with content. */
-  background: var(--surface-page) url('/assets/tilad-background.webp') center center / cover no-repeat fixed;
+  background: var(--surface-page);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -75,6 +105,8 @@
   --surface-page: #241318;
   --surface-card: #331b23;
   --surface-tint: #3a2029;
+  --surface-band: #331b23;
+  --surface-raised: #331b23;
   --border: #4a2830;
   --ink: #f5edee;
   --ink-muted: #c6aeb3;
@@ -102,6 +134,8 @@
     --surface-page: #241318;
     --surface-card: #331b23;
     --surface-tint: #3a2029;
+    --surface-band: #331b23;
+    --surface-raised: #331b23;
     --border: #4a2830;
     --ink: #f5edee;
     --ink-muted: #c6aeb3;
@@ -127,21 +161,24 @@
   box-sizing: border-box;
 }
 
-/* The pastel gradient is a light-mode asset — on the maroon-black dark palette
-   it reads as a washed-out haze, so dark mode keeps the flat surface instead. */
-:root[data-theme='dark'] {
-  background-image: none;
-}
+/* Horizontal containment on small screens.
+   `.tld-marketing` already sets `overflow-x: clip`, but that does not contain
+   a fixed-position descendant: a fixed element resolves against the viewport,
+   not against an ancestor with overflow, so the floating header escapes it.
+   Anything else that overruns on a narrow screen escapes with it.
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    background-image: none;
+   Scoped to <= 760px deliberately: root-level overflow can interfere with
+   `position: sticky` in descendants, and 760px is exactly where the Mascot
+   pin is already disabled, so the two can never overlap. */
+@media (max-width: 760px) {
+  html {
+    overflow-x: clip;
   }
 }
 
 body {
   margin: 0;
-  /* Transparent so the gradient on the root element shows through. */
+  /* Transparent so the surface colour on the root element shows through. */
   background: transparent;
 }
 
@@ -192,6 +229,6 @@ button {
 }
 
 .halftone {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1.5px, transparent 1.5px);
+  background-image: radial-gradient(color-mix(in srgb, var(--on-invert) 10%, transparent) 1.5px, transparent 1.5px);
   background-size: 18px 18px;
 }
