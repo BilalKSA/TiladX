@@ -5,9 +5,11 @@ import CourseLocked from '../components/CourseLocked'
 import Header from '../components/Header'
 import BackLink from '../components/BackLink'
 import Footer from '../components/Footer'
+import Skeleton from '../components/Skeleton'
+import YouTubePlayer from '../components/YouTubePlayer'
 import { getCourseBySlug, listLessons, type Course, type Lesson } from '../lib/content'
 import { canAccessCourse } from '../lib/enrollments'
-import { toEmbedUrl } from '../lib/video'
+import { getYouTubeId } from '../lib/video'
 import './CourseDetail.css'
 
 function CourseDetail() {
@@ -49,7 +51,33 @@ function CourseDetail() {
     load()
   }, [slug])
 
-  if (loading) return null
+  if (loading) {
+    return (
+      <div className="tld-home">
+        <AppHeader loading />
+
+        <section className="tld-section">
+          <div className="tld-course-player" aria-hidden="true">
+            <div className="tld-course-player__stage">
+              <Skeleton style={{ inlineSize: '100%', aspectRatio: '16/9' }} />
+              <Skeleton style={{ inlineSize: '60%', blockSize: 20 }} />
+            </div>
+
+            <ol className="tld-course-player__list">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <li key={i}>
+                  <div className="tld-course-player__item">
+                    <Skeleton style={{ inlineSize: 26, blockSize: 26, borderRadius: 'var(--radius-pill)', flexShrink: 0 }} />
+                    <Skeleton style={{ inlineSize: '70%', blockSize: 16 }} />
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+      </div>
+    )
+  }
 
   if (!course) {
     return (
@@ -68,7 +96,7 @@ function CourseDetail() {
   if (!allowed) return <CourseLocked course={course} />
 
   const active = lessons.find((lesson) => lesson.id === activeId) ?? null
-  const embedUrl = toEmbedUrl(active?.video_url)
+  const videoId = getYouTubeId(active?.video_url)
 
   return (
     <div className="tld-home">
@@ -80,14 +108,8 @@ function CourseDetail() {
         ) : (
           <div className="tld-course-player">
             <div className="tld-course-player__stage">
-              {embedUrl ? (
-                <iframe
-                  key={embedUrl}
-                  src={embedUrl}
-                  title={active?.title ?? ''}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
+              {videoId ? (
+                <YouTubePlayer key={videoId} videoId={videoId} title={active?.title ?? ''} />
               ) : (
                 <div className="tld-course-player__empty">ما فيه فيديو لهذا الدرس.</div>
               )}

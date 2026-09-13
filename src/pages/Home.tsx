@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import AppHeader from '../components/AppHeader'
+import Skeleton from '../components/Skeleton'
 import { getMyProfile } from '../lib/auth'
 import { listCourses, fileUrl, type Course } from '../lib/content'
 import { listMyEnrollments, lockStateFor, type Enrollment } from '../lib/enrollments'
@@ -44,7 +45,11 @@ function Home() {
   return (
     <div className="tld-home">
       {/* Same panel-as-nav-bar as the course pages; the greeting is its body. */}
-      <AppHeader title={`${greeting} ${firstName}`.trim()} subtitle="اختر البرنامج اللي ودّك تتابعه" />
+      <AppHeader
+        loading={loading}
+        title={`${greeting} ${firstName}`.trim()}
+        subtitle="اختر البرنامج اللي ودّك تتابعه"
+      />
 
       <section className="tld-section tld-programs">
         <div className="tld-programs__head">
@@ -55,8 +60,21 @@ function Home() {
           </p>
         </div>
 
-        <div className="tld-programs__grid">
-          {courses.map((course) => {
+        {loading ? (
+          <div className="tld-programs__grid" aria-hidden="true">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div className="tld-program-card" key={i}>
+                <Skeleton className="tld-program-card__media" style={{ borderRadius: 0 }} />
+                <div className="tld-program-card__body">
+                  <Skeleton style={{ inlineSize: '80%', blockSize: 20 }} />
+                  <Skeleton className="tld-program-card__cta" style={{ blockSize: 40 }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="tld-programs__grid">
+            {courses.map((course) => {
             const thumbnail = fileUrl('media', course.thumbnail_path)
             const lock = lockStateFor(course.id, enrollments, isAdmin)
             const open = lock === 'open'
@@ -110,6 +128,7 @@ function Home() {
             )
           })}
         </div>
+        )}
 
         {!loading && courses.length === 0 && (
           <p className="tld-programs__empty">ما فيه برامج متاحة حالياً.</p>

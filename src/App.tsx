@@ -7,6 +7,7 @@ import Landing from './pages/Landing'
 import About from './pages/About'
 import WhyTilad from './pages/WhyTilad'
 import Mentors from './pages/Mentors'
+import MentorProfile from './pages/MentorProfile'
 import Terms from './pages/Terms'
 import Privacy from './pages/Privacy'
 import Login from './pages/Login'
@@ -14,6 +15,7 @@ import Activate from './pages/Activate'
 import ResetPassword from './pages/ResetPassword'
 import ResetPasswordConfirm from './pages/ResetPasswordConfirm'
 import Home from './pages/Home'
+import Mentor from './pages/Mentor'
 import Courses from './pages/Courses'
 import Library from './pages/Library'
 import Videos from './pages/Videos'
@@ -32,6 +34,7 @@ import AdminLibrary from './pages/admin/AdminLibrary'
 import AdminMentors from './pages/admin/AdminMentors'
 import AdminRoster from './pages/admin/AdminRoster'
 import AdminEnrollments from './pages/admin/AdminEnrollments'
+import AdminAuditLog from './pages/admin/AdminAuditLog'
 
 function App() {
   return (
@@ -57,6 +60,8 @@ function App() {
         <Route path="/about" element={<About />} />
         <Route path="/why" element={<WhyTilad />} />
         <Route path="/mentors" element={<Mentors />} />
+        <Route path="/profiles" element={<Mentors />} />
+        <Route path="/profiles/:id" element={<MentorProfile />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/maintenance" element={<Maintenance />} />
@@ -79,6 +84,9 @@ function App() {
           {/* The library is per-program, so it lives under the course. */}
           <Route path="/courses/:slug/library" element={<Library />} />
 
+          {/* Mentors aren't students — separate landing, not /home. */}
+          <Route path="/mentor" element={<Mentor />} />
+
           {/* Admin panel. RequireAdmin is a convenience redirect — the actual
               authorization is the is_admin() RLS policy on every table. */}
           <Route element={<RequireAdmin />}>
@@ -90,6 +98,7 @@ function App() {
               <Route path="mentors" element={<AdminMentors />} />
               <Route path="roster" element={<AdminRoster />} />
               <Route path="enrollments" element={<AdminEnrollments />} />
+              <Route path="audit-log" element={<AdminAuditLog />} />
             </Route>
           </Route>
         </Route>

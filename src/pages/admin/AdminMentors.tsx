@@ -1,13 +1,22 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import Button from '../../components/Button'
 import { listMentors, fileUrl, type Mentor } from '../../lib/content'
-import { saveMentor, deleteMentor, uploadFile , errorMessage } from '../../lib/admin'
+import {
+  saveMentor,
+  deleteMentor,
+  uploadFile,
+  errorMessage,
+  listMentorAccounts,
+  addMentorAccount,
+  type MentorAccount,
+} from '../../lib/admin'
 import '../Login.css'
 import './Admin.css'
 
 type Editing = Mentor | 'new' | null
 
 const BLANK = { name: '', title: '', bio: '', track: '', position: 0, published: false }
+const BLANK_ACCOUNT = { mentorId: '', firstName: '', lastName: '' }
 
 function AdminMentors() {
   const [mentors, setMentors] = useState<Mentor[]>([])
@@ -17,6 +26,12 @@ function AdminMentors() {
   const [saving, setSaving] = useState(false)
   const [uploading, setUploading] = useState(false)
 
+  const [accounts, setAccounts] = useState<MentorAccount[]>([])
+  const [accountForm, setAccountForm] = useState(BLANK_ACCOUNT)
+  const [addingAccount, setAddingAccount] = useState(false)
+  const [accountError, setAccountError] = useState('')
+  const [justCreated, setJustCreated] = useState<{ username: string; password: string } | null>(null)
+
   async function refresh() {
     try {
       setMentors(await listMentors())
@@ -25,9 +40,43 @@ function AdminMentors() {
     }
   }
 
+  async function refreshAccounts() {
+    try {
+      setAccounts(await listMentorAccounts())
+    } catch (err) {
+      setAccountError(errorMessage(err))
+    }
+  }
+
   useEffect(() => {
     refresh()
+    refreshAccounts()
   }, [])
+
+  async function handleAddAccount(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    setAccountError('')
+    setJustCreated(null)
+    setAddingAccount(true)
+    try {
+      const username = await addMentorAccount({
+        mentorId: accountForm.mentorId || null,
+        firstName: accountForm.firstName,
+        lastName: accountForm.lastName,
+      })
+      setJustCreated({ username, password: `TILAD@${username}` })
+      setAccountForm(BLANK_ACCOUNT)
+      await refreshAccounts()
+    } catch (err) {
+      setAccountError(errorMessage(err))
+    } finally {
+      setAddingAccount(false)
+    }
+  }
+
+  function mentorNameFor(mentorId: string | null): string {
+    return mentors.find((m) => m.id === mentorId)?.name ?? '—'
+  }
 
   function startEdit(mentor: Editing) {
     setError('')
@@ -81,7 +130,7 @@ function AdminMentors() {
   async function handleDelete(mentor: Mentor) {
     if (!confirm(`حذف «${mentor.name}» من المرشدين؟`)) return
     try {
-      await deleteMentor(mentor.id)
+      await deleteMentor(mentor.id, mentor.photo_path)
       await refresh()
     } catch (err) {
       setError(errorMessage(err))
@@ -254,6 +303,105 @@ function AdminMentors() {
           </table>
 
           {mentors.length === 0 && <p className="tld-admin__empty">ما فيه مرشدين بعد.</p>}
+        </div>
+      </div>
+
+      <div className="tld-admin__panel">
+        <h2>حسابات دخول المرشدين</h2>
+        <p className="tld-admin__file-hint" style={{ marginBlockEnd: 'var(--space-4)' }}>
+          اسم المستخدم يتكوّن من الاسم الأول والأخير بالإنجليزي بدون مسافة، وكلمة المرور المبدئية هي
+          «TILAD@اسم_المستخدم» — المرشد لازم يغيّرها أول ما يدخل.
+        </p>
+
+        {accountError && <p className="tld-admin__error">{accountError}</p>}
+
+        {justCreated && (
+          <p className="tld-admin__file-hint" dir="ltr" style={{ marginBlockEnd: 'var(--space-4)' }}>
+            {justCreated.username} / {justCreated.password}
+          </p>
+        )}
+
+        <form className="tld-admin__form" onSubmit={handleAddAccount}>
+          <label className="tld-field">
+            <span className="tld-field__label">المرشد المرتبط (اختياري)</span>
+            <select
+              className="tld-field__input"
+              value={accountForm.mentorId}
+              onChange={(e) => setAccountForm({ ...accountForm, mentorId: e.target.value })}
+            >
+              <option value="">بدون ربط</option>
+              {mentors.map((mentor) => (
+                <option value={mentor.id} key={mentor.id}>
+                  {mentor.name}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <div />
+
+          <label className="tld-field">
+            <span className="tld-field__label">الاسم الأول (إنجليزي)</span>
+            <input
+              className="tld-field__input"
+              dir="ltr"
+              placeholder="Ahmed"
+              value={accountForm.firstName}
+              onChange={(e) => setAccountForm({ ...accountForm, firstName: e.target.value })}
+              required
+            />
+          </label>
+
+          <label className="tld-field">
+            <span className="tld-field__label">الاسم الأخير (إنجليزي)</span>
+            <input
+              className="tld-field__input"
+              dir="ltr"
+              placeholder="Ali"
+              value={accountForm.lastName}
+              onChange={(e) => setAccountForm({ ...accountForm, lastName: e.target.value })}
+              required
+            />
+          </label>
+
+          <div className="tld-admin__form-actions">
+            <Button type="submit" variant="primary" size="md" loading={addingAccount}>
+              إنشاء حساب
+            </Button>
+          </div>
+        </form>
+
+        <div className="tld-admin__table-wrap" style={{ marginBlockStart: 'var(--space-5)' }}>
+          <table className="tld-admin__table">
+            <thead>
+              <tr>
+                <th>اسم المستخدم</th>
+                <th>المرشد</th>
+                <th>مفعّل؟</th>
+                <th>يحتاج تغيير كلمة المرور؟</th>
+              </tr>
+            </thead>
+            <tbody>
+              {accounts.map((account) => (
+                <tr key={account.id}>
+                  <td className="tld-admin__row-title" dir="ltr">
+                    {account.username}
+                  </td>
+                  <td>{mentorNameFor(account.mentor_id)}</td>
+                  <td>
+                    <span
+                      className={`tld-admin__badge tld-admin__badge--${account.activated_at ? 'live' : 'draft'}`}
+                    >
+                      {account.activated_at ? 'نعم' : 'لا'}
+                    </span>
+                  </td>
+                  <td>{account.must_change_password ? 'نعم' : 'لا'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          {accounts.length === 0 && <p className="tld-admin__empty">ما فيه حسابات مرشدين بعد.</p>}
         </div>
       </div>
     </>

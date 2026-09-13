@@ -2,12 +2,6 @@ import { useState } from 'react'
 import { useT } from '../i18n'
 import './BoardMembers.css'
 
-/** Structural only — id and portrait are language-independent; name, title and
- *  word come from the message dictionary, keyed by id.
- *
- *  Portraits live in `public/assets/board/`. A missing file falls back to the
- *  dotted avatar below rather than a broken-image icon, so the section stays
- *  presentable until the real portraits land. */
 const board: { id: string; photo: string }[] = [
   { id: 'abdullah-alrashid', photo: '/assets/board/Abdullah.png' },
   { id: 'bilal-zaki', photo: '/assets/board/Bilal.png' },

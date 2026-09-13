@@ -1,0 +1,22 @@
+.tld-mentor-page {
+  max-inline-size: 720px;
+}
+
+.tld-mentor-page__bio {
+  font-size: 16px;
+  line-height: 1.9;
+  color: var(--ink-muted);
+}
+
+.tld-mentor-page__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-block-start: var(--space-5);
+  flex-wrap: wrap;
+}
+
+.tld-mentor-page__soon {
+  font-size: 13px;
+  color: var(--ink-faint);
+}

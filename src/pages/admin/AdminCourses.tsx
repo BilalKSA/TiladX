@@ -82,7 +82,7 @@ function AdminCourses() {
   async function handleDelete(course: Course) {
     if (!confirm(`حذف «${course.title}» وكل دروسها؟ ما تقدر تتراجع عن هذي الخطوة.`)) return
     try {
-      await deleteCourse(course.id)
+      await deleteCourse(course.id, course.thumbnail_path)
       await refresh()
     } catch (err) {
       setError(errorMessage(err))

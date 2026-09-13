@@ -67,7 +67,8 @@ src/
     auth.ts             auth helpers wrapping Supabase Auth + the RPCs in supabase/schema.sql
     content.ts          read side of the content model (courses/lessons/library/mentors)
     admin.ts            write side + storage uploads + roster RPCs
-    video.ts            YouTube/Vimeo URL → embed URL
+    video.ts            YouTube URL → video ID
+    youtubeApi.ts       Loads the YouTube IFrame Player API script once
     leads.ts            landing-page quiz submissions
 supabase/
   schema.sql             DB schema — run manually in the Supabase SQL Editor, no migration tooling
@@ -148,7 +149,7 @@ Courses, lessons, library files, and mentors live in Postgres and are edited thr
 | Table | Notes |
 |---|---|
 | `courses` | `slug` is the URL key (`/courses/isef`), plus `tag`, `title`, `description`, `thumbnail_path`, `position` |
-| `lessons` | Belongs to a course, `on delete cascade`. `video_url` holds a raw YouTube/Vimeo URL |
+| `lessons` | Belongs to a course, `on delete cascade`. `video_url` holds a raw YouTube URL |
 | `library_assets` | Belongs to a course via `course_id` — **the library is per-program**. `null` means general material shown in every program. `category` is one of `papers`/`posters`/`presentations`/`plans`/`templates`/`videos`. Either `file_path` (storage) or `external_url` |
 | `mentors` | Name, title, bio, `photo_path`, and `track` — free text, e.g. "بحث علمي". `/mentors` derives its filter chips from the distinct `track` values across published rows, so there is no enum to keep in step; the flip side is that spelling is what groups them, which is why the admin form offers the existing values as autocomplete. Empty on every row means no filter bar |
 
@@ -166,7 +167,7 @@ Gating library files behind a subscription tier later means flipping `library` t
 
 ### Video embedding
 
-`src/lib/video.ts` converts pasted YouTube/Vimeo URLs into embed URLs. Videos are **not** hosted by Tilad — only the URL is stored.
+`src/lib/video.ts` extracts the video ID from a pasted YouTube URL. Videos are **not** hosted by Tilad — only the URL is stored. Playback is `src/components/YouTubePlayer.tsx`, built on the YouTube IFrame Player API (`src/lib/youtubeApi.ts` loads it once) with our own controls in place of YouTube's embed chrome — no Share button, no related-video grid. This doesn't add real access control: the video is still served from YouTube's CDN, and the ID is still present in the page's JS. Vimeo support was removed; only YouTube URLs are accepted.
 
 ## Admin panel (`/admin`)
 

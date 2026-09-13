@@ -61,9 +61,10 @@ export async function saveCourse(course: Partial<Course> & { id?: string }) {
   if (error) throw error
 }
 
-export async function deleteCourse(id: string) {
+export async function deleteCourse(id: string, thumbnailPath: string | null) {
   const { error } = await supabase.from('courses').delete().eq('id', id)
   if (error) throw error
+  await deleteFile('media', thumbnailPath)
 }
 
 // ---------------------------------------------------------------- lessons
@@ -116,9 +117,10 @@ export async function saveLibraryAsset(asset: Partial<LibraryAsset> & { id?: str
   if (error) throw error
 }
 
-export async function deleteLibraryAsset(id: string) {
+export async function deleteLibraryAsset(id: string, filePath: string | null) {
   const { error } = await supabase.from('library_assets').delete().eq('id', id)
   if (error) throw error
+  await deleteFile('library', filePath)
 }
 
 // ---------------------------------------------------------------- mentors
@@ -145,9 +147,10 @@ export async function saveMentor(mentor: Partial<Mentor> & { id?: string }) {
   if (error) throw error
 }
 
-export async function deleteMentor(id: string) {
+export async function deleteMentor(id: string, photoPath: string | null) {
   const { error } = await supabase.from('mentors').delete().eq('id', id)
   if (error) throw error
+  await deleteFile('media', photoPath)
 }
 
 // ----------------------------------------------------------------- roster
@@ -230,4 +233,58 @@ export async function setEnrollment(input: {
 export async function deleteEnrollment(id: string) {
   const { error } = await supabase.rpc('admin_delete_enrollment', { p_id: id })
   if (error) throw error
+}
+
+// ------------------------------------------------------- mentor accounts
+
+export interface MentorAccount {
+  id: string
+  username: string
+  mentor_id: string | null
+  auth_email: string
+  real_email: string | null
+  auth_user_id: string | null
+  must_change_password: boolean
+  activated_at: string | null
+  created_at: string
+}
+
+export async function listMentorAccounts(): Promise<MentorAccount[]> {
+  const { data, error } = await supabase.rpc('admin_list_mentor_accounts')
+  if (error) throw error
+  return data ?? []
+}
+
+/** Username is the two names joined with no separator, e.g. "Ahmed" + "Ali" → "AhmedAli". */
+export async function addMentorAccount(input: {
+  mentorId: string | null
+  firstName: string
+  lastName: string
+}): Promise<string> {
+  const username = `${input.firstName.trim()}${input.lastName.trim()}`
+  const { error } = await supabase.rpc('admin_add_mentor_account', {
+    p_mentor_id: input.mentorId,
+    p_username: username,
+  })
+  if (error) throw error
+  return username
+}
+
+// ------------------------------------------------------------- audit log
+
+export interface AuditLogEntry {
+  id: string
+  actor_id: string | null
+  actor_label: string | null
+  action: string
+  target_table: string
+  target_id: string | null
+  details: unknown
+  created_at: string
+}
+
+export async function listAuditLog(limit = 200): Promise<AuditLogEntry[]> {
+  const { data, error } = await supabase.rpc('admin_list_audit_log', { p_limit: limit })
+  if (error) throw error
+  return data ?? []
 }

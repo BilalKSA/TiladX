@@ -8,7 +8,8 @@
   margin: var(--space-6);
   padding: var(--space-7) var(--space-6);
   border-radius: var(--radius-hero);
-  background: var(--primary);
+  background: var(--gradient-primary);
+  box-shadow: var(--shadow-hero);
   color: var(--on-primary);
   text-align: center;
   display: flex;
@@ -43,7 +44,8 @@
   height: 32px;
   padding-inline: var(--space-2);
   border-radius: var(--radius-pill);
-  background: var(--maroon-700);
+  background: var(--gradient-accent);
+  box-shadow: var(--shadow-soft);
   color: var(--on-primary);
   font-family: var(--display);
   font-weight: 700;
@@ -86,8 +88,14 @@
   }
 }
 
+/* Static depth only — no hover lift here. .tld-card is also used as a plain
+   non-interactive wrapper (Videos, Courses, Library, Files pages) around an
+   inner link/button, so a whole-card hover affordance would be misleading.
+   The one place .tld-card sits on something actually clickable (the two
+   CourseDetail links) pairs it with .tld-course-section, which owns its own
+   hover lift. */
 .tld-card {
-  background: var(--surface-card);
+  background: var(--gradient-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-card);
   padding: var(--space-5);
@@ -96,6 +104,7 @@
   align-items: flex-start;
   gap: var(--space-2);
   text-align: start;
+  box-shadow: var(--shadow-soft);
 }
 
 .tld-card__icon {
@@ -111,7 +120,7 @@
   display: inline-flex;
   padding: 4px var(--space-3);
   border-radius: var(--radius-pill);
-  background: var(--maroon-700);
+  background: var(--gradient-accent);
   color: var(--on-primary);
   font-size: 12px;
   font-weight: 600;
@@ -207,6 +216,15 @@
   transform: translateY(-4px);
   box-shadow: var(--shadow-lg);
   border-color: var(--maroon-300);
+}
+
+/* Skeleton cards while loading (see Home.tsx) reuse this class for identical
+   sizing, but aren't clickable — the lift-on-hover would otherwise promise an
+   action that isn't there yet. */
+[aria-hidden='true'] .tld-program-card:hover {
+  transform: none;
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-strong);
 }
 
 @media (prefers-reduced-motion: reduce) {

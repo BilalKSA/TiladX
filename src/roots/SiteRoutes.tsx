@@ -4,6 +4,7 @@ import Landing from '../pages/Landing'
 import About from '../pages/About'
 import WhyTilad from '../pages/WhyTilad'
 import Mentors from '../pages/Mentors'
+import MentorProfile from '../pages/MentorProfile'
 import Terms from '../pages/Terms'
 import Privacy from '../pages/Privacy'
 import Maintenance from '../pages/Maintenance'
@@ -22,6 +23,10 @@ export function SiteRoutes() {
       <Route path="about" element={<About />} />
       <Route path="why" element={<WhyTilad />} />
       <Route path="mentors" element={<Mentors />} />
+      {/* Same directory as /mentors, under the name the profile pages are
+          actually reached by — see MentorProfile.tsx. */}
+      <Route path="profiles" element={<Mentors />} />
+      <Route path="profiles/:id" element={<MentorProfile />} />
       <Route path="terms" element={<Terms />} />
       <Route path="privacy" element={<Privacy />} />
       <Route path="maintenance" element={<Maintenance />} />
@@ -52,6 +57,8 @@ export function EnSiteRoutes() {
       <Route path="about" element={<About />} />
       <Route path="why" element={<WhyTilad />} />
       <Route path="mentors" element={<Mentors />} />
+      <Route path="profiles" element={<Mentors />} />
+      <Route path="profiles/:id" element={<MentorProfile />} />
       <Route path="*" element={<ToArabic />} />
     </Routes>
   )

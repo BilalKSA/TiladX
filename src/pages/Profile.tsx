@@ -4,6 +4,7 @@ import Header from '../components/Header'
 import BackLink from '../components/BackLink'
 import Footer from '../components/Footer'
 import Button from '../components/Button'
+import Skeleton from '../components/Skeleton'
 import { getMyProfile, updateMyName, type Profile as ProfileData } from '../lib/auth'
 import { errorMessage } from '../lib/errors'
 import { supabase } from '../lib/supabase'
@@ -76,7 +77,29 @@ function Profile() {
           <h2>الملف الشخصي</h2>
         </div>
 
-        {loading ? null : (
+        {loading ? (
+          <div className="tld-profile" aria-hidden="true">
+            <div className="tld-profile__card">
+              <Skeleton style={{ inlineSize: 64, blockSize: 64, borderRadius: 'var(--radius-pill)', flexShrink: 0 }} />
+              <div className="tld-profile__identity">
+                <Skeleton style={{ inlineSize: 140, blockSize: 20 }} />
+              </div>
+            </div>
+
+            <dl className="tld-profile__fields">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <div key={i}>
+                  <dt>
+                    <Skeleton style={{ inlineSize: 70, blockSize: 14 }} />
+                  </dt>
+                  <dd>
+                    <Skeleton style={{ inlineSize: 110, blockSize: 16 }} />
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        ) : (
           <div className="tld-profile">
             <div className="tld-profile__card">
               <div className="tld-profile__avatar" aria-hidden="true">

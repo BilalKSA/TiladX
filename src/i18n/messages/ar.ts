@@ -6,6 +6,7 @@
 export const ar = {
   header: {
     brandAria: 'تلاد',
+    profiles: 'مرشدونا',
     signIn: 'تسجيل الدخول',
     register: 'أصنع معنا',
     // The switch always points at the *other* language.
@@ -167,6 +168,16 @@ export const ar = {
     emptyTrack: 'ما فيه مرشدين في هذا المسار حالياً.',
     ctaHeading: 'تبي واحد منهم يمشي معك؟',
     ctaBody: 'سجّل حسابك واختر برنامجك، والجلسات المباشرة تجيك ضمنه.',
+  },
+
+  mentorProfilePage: {
+    eyebrow: 'ملف مرشد',
+    backLink: 'الرجوع لكل المرشدين',
+    messageButton: 'مراسلة',
+    messageComingSoon: 'ميزة المراسلة قريباً',
+    loading: 'جاري تحميل الملف…',
+    notFoundTitle: 'ما لقينا هذا المرشد',
+    notFoundBody: 'الرابط غير صحيح، أو المرشد ما عاد معروضاً.',
   },
 
   quiz: {

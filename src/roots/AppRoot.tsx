@@ -6,6 +6,7 @@ import Activate from '../pages/Activate'
 import ResetPassword from '../pages/ResetPassword'
 import ResetPasswordConfirm from '../pages/ResetPasswordConfirm'
 import Home from '../pages/Home'
+import Mentor from '../pages/Mentor'
 import Courses from '../pages/Courses'
 import Library from '../pages/Library'
 import Videos from '../pages/Videos'
@@ -24,6 +25,7 @@ import AdminLibrary from '../pages/admin/AdminLibrary'
 import AdminMentors from '../pages/admin/AdminMentors'
 import AdminRoster from '../pages/admin/AdminRoster'
 import AdminEnrollments from '../pages/admin/AdminEnrollments'
+import AdminAuditLog from '../pages/admin/AdminAuditLog'
 
 /** Root for the signed-in app (app.tilad.org). */
 function AppRoot() {
@@ -55,6 +57,9 @@ function AppRoot() {
           {/* The library is per-program, so it lives under the course. */}
           <Route path="/courses/:slug/library" element={<Library />} />
 
+          {/* Mentors aren't students — separate landing, not /home. */}
+          <Route path="/mentor" element={<Mentor />} />
+
           {/* Admin panel. RequireAdmin is a convenience redirect — the actual
               authorization is the is_admin() RLS policy on every table. */}
           <Route element={<RequireAdmin />}>
@@ -66,6 +71,7 @@ function AppRoot() {
               <Route path="mentors" element={<AdminMentors />} />
               <Route path="roster" element={<AdminRoster />} />
               <Route path="enrollments" element={<AdminEnrollments />} />
+              <Route path="audit-log" element={<AdminAuditLog />} />
             </Route>
           </Route>
         </Route>

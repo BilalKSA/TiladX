@@ -65,6 +65,20 @@
   --shadow-lg: 0 4px 8px rgba(63, 10, 22, 0.09), 0 24px 48px rgba(63, 10, 22, 0.14);
   --shadow-hero: 0 18px 48px rgba(63, 10, 22, 0.26);
 
+  /* Brand gradients. Built entirely from tokens that already flip with the
+     theme (or, for the maroon ramp, are already theme-invariant — see
+     --on-disabled above), so these need no dark-mode redefinition of their
+     own: resolving the var()s at use-time is enough.
+     --gradient-primary: full-bleed hero/band surfaces (was a one-off literal
+     in AppHeader.css; now the single source of truth).
+     --gradient-accent: small maroon fills that want to lift off the page —
+     primary buttons, pills, icon chips, avatars.
+     --gradient-card: a near-invisible lift on card surfaces so they read as
+     raised glass rather than flat rectangles. */
+  --gradient-primary: linear-gradient(155deg, var(--maroon-800) 0%, var(--maroon-700) 45%, var(--maroon-900) 100%);
+  --gradient-accent: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+  --gradient-card: linear-gradient(165deg, var(--surface-card) 0%, color-mix(in srgb, var(--surface-card) 92%, var(--primary) 8%) 100%);
+
   --radius-input: 8px;
   --radius-panel: 12px;
   --radius-card: 14px;

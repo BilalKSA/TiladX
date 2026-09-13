@@ -1,7 +1,10 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Logo from '../components/Logo'
 import ThemeToggle from '../components/ThemeToggle'
 import Footer from '../components/Footer'
+import Button from '../components/Button'
+import { openFileInNewTab } from '../lib/download'
 import './Home.css'
 import './Files.css'
 
@@ -47,14 +50,33 @@ const mrepPosters = mrepFilenames.map((name) => ({
   file: `/assets/posters/${name}.pdf`,
 }))
 
+function FileOpenButton({ file }: { file: string }) {
+  const [opening, setOpening] = useState(false)
+
+  async function handleOpen() {
+    setOpening(true)
+    try {
+      await openFileInNewTab(file)
+    } catch (err) {
+      console.warn('[files] file open failed:', err)
+    } finally {
+      setOpening(false)
+    }
+  }
+
+  return (
+    <Button type="button" variant="ghost" size="sm" loading={opening} onClick={handleOpen}>
+      عرض الملف
+    </Button>
+  )
+}
+
 function PosterCard({ poster }: { poster: { icon: string; title: string; file: string } }) {
   return (
     <div className="tld-card" key={poster.title}>
       <div className="tld-card__icon">{poster.icon}</div>
       <h3>{poster.title}</h3>
-      <a href={poster.file} target="_blank" rel="noopener noreferrer" className="tld-button tld-button--ghost tld-button--sm">
-        عرض الملف
-      </a>
+      <FileOpenButton file={poster.file} />
     </div>
   )
 }
@@ -85,9 +107,7 @@ function Files() {
         <div className="tld-wide-card">
           <div className="tld-card__icon">{guidelines.icon}</div>
           <h3 className="tld-wide-card__title">{guidelines.title}</h3>
-          <a href={guidelines.file} target="_blank" rel="noopener noreferrer" className="tld-button tld-button--ghost tld-button--sm">
-            عرض الملف
-          </a>
+          <FileOpenButton file={guidelines.file} />
         </div>
 
         <div className="tld-grid tld-grid--3">

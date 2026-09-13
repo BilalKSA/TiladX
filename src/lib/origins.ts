@@ -13,7 +13,6 @@ export const SITE_ORIGIN: string = import.meta.env.VITE_SITE_ORIGIN || current()
 export const APP_ORIGIN: string = import.meta.env.VITE_APP_ORIGIN || current()
 
 export const appUrl = (path: string) => `${APP_ORIGIN}${path}`
-export const siteUrl = (path: string) => `${SITE_ORIGIN}${path}`
 
 /** True when that origin is the one we're currently served from. */
 export const isCurrentOrigin = (origin: string) => origin === current()

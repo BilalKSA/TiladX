@@ -55,7 +55,9 @@ function SiteLayout({ title, flush = false, children }: SiteLayoutProps) {
 
   return (
     <div className="tld-marketing">
-      <SiteHeader />
+      {/* flush is landing-only today, which is also the one page whose header
+          should skip the /profiles link — same signal, no new prop plumbing. */}
+      <SiteHeader hideProfilesLink={flush} />
       <main className={flush ? undefined : 'tld-site-main'}>{children}</main>
       <Footer />
     </div>

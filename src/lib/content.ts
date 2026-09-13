@@ -126,3 +126,9 @@ export async function listMentors(): Promise<Mentor[]> {
   if (error) throw error
   return data ?? []
 }
+
+export async function getMentorById(id: string): Promise<Mentor | null> {
+  const { data, error } = await supabase.from('mentors').select('*').eq('id', id).maybeSingle()
+  if (error) throw error
+  return data
+}

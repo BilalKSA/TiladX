@@ -10,6 +10,7 @@ const links = [
   { to: '/admin/mentors', label: 'المرشدون' },
   { to: '/admin/roster', label: 'الطلاب' },
   { to: '/admin/enrollments', label: 'الاشتراكات' },
+  { to: '/admin/audit-log', label: 'سجل النشاط' },
 ]
 
 function AdminLayout() {

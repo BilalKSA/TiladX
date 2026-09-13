@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom'
 import Button from '../../components/Button'
 import { listLessons, listCourses, type Lesson, type Course } from '../../lib/content'
 import { saveLesson, deleteLesson , errorMessage } from '../../lib/admin'
-import { toEmbedUrl, isEmbeddable } from '../../lib/video'
+import { getYouTubeId, isEmbeddable } from '../../lib/video'
 import '../Login.css'
 import './Admin.css'
 
@@ -86,7 +86,7 @@ function AdminLessons() {
     }
   }
 
-  const embedPreview = toEmbedUrl(form.video_url)
+  const embedPreview = getYouTubeId(form.video_url)
   const badLink = form.video_url.length > 0 && !isEmbeddable(form.video_url)
 
   return (
@@ -133,7 +133,7 @@ function AdminLessons() {
             </label>
 
             <label className="tld-field tld-field--full">
-              <span className="tld-field__label">رابط الفيديو (YouTube أو Vimeo)</span>
+              <span className="tld-field__label">رابط فيديو YouTube</span>
               <input
                 className="tld-field__input"
                 dir="ltr"
@@ -143,7 +143,7 @@ function AdminLessons() {
               />
               {badLink && (
                 <span className="tld-admin__file-hint">
-                  ما قدرنا نتعرّف على الرابط. الصق رابط فيديو من YouTube أو Vimeo.
+                  ما قدرنا نتعرّف على الرابط. الصق رابط فيديو من YouTube.
                 </span>
               )}
               {embedPreview && <span className="tld-admin__file-hint">✓ الرابط جاهز للعرض</span>}
@@ -208,7 +208,7 @@ function AdminLessons() {
                   <td>{index + 1}</td>
                   <td className="tld-admin__row-title">{lesson.title}</td>
                   <td>{lesson.duration_minutes ? `${lesson.duration_minutes} د` : '—'}</td>
-                  <td>{toEmbedUrl(lesson.video_url) ? '✓' : '—'}</td>
+                  <td>{getYouTubeId(lesson.video_url) ? '✓' : '—'}</td>
                   <td>
                     <span className={`tld-admin__badge tld-admin__badge--${lesson.published ? 'live' : 'draft'}`}>
                       {lesson.published ? 'منشور' : 'مسودة'}

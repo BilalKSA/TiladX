@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { KeyboardEvent } from 'react'
+import { Link } from 'react-router-dom'
 import CrossLink from '../components/CrossLink'
 import { APP_ORIGIN } from '../lib/origins'
 import SiteLayout from '../components/SiteLayout'
@@ -148,7 +149,7 @@ function Mentors() {
             const photo = missing.includes(mentor.id) ? null : fileUrl('media', mentor.photo_path)
 
             return (
-              <article className="tld-mentor-profile" key={mentor.id}>
+              <Link to={`/profiles/${mentor.id}`} className="tld-mentor-profile" key={mentor.id}>
                 <div className="tld-mentor-profile__portrait">
                   {photo ? (
                     <img
@@ -173,7 +174,7 @@ function Mentors() {
                   {mentor.title && <p className="tld-mentor-profile__title">{mentor.title}</p>}
                   {mentor.bio && <p className="tld-mentor-profile__bio">{mentor.bio}</p>}
                 </div>
-              </article>
+              </Link>
             )
           })}
         </div>

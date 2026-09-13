@@ -5,6 +5,7 @@ import { ar } from './ar'
 export const en: typeof ar = {
   header: {
     brandAria: 'Tilad',
+    profiles: 'Our Mentors',
     signIn: 'Sign in',
     register: 'Build with us',
     langLabel: 'ع',
@@ -154,6 +155,16 @@ export const en: typeof ar = {
     emptyTrack: 'No mentors in this track right now.',
     ctaHeading: 'Want one of them walking with you?',
     ctaBody: 'Create your account and pick your program — the live sessions come with it.',
+  },
+
+  mentorProfilePage: {
+    eyebrow: 'Mentor profile',
+    backLink: 'Back to all mentors',
+    messageButton: 'Message',
+    messageComingSoon: 'Messaging is coming soon',
+    loading: 'Loading profile…',
+    notFoundTitle: "We couldn't find this mentor",
+    notFoundBody: "The link isn't right, or this mentor isn't listed anymore.",
   },
 
   quiz: {

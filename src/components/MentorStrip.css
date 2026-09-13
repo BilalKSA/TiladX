@@ -45,12 +45,13 @@
   align-items: center;
   justify-content: center;
   border: 2px solid var(--maroon-300);
-  /* Same dotted-tint treatment as the gallery placeholders, so an avatar
-     without a photo still reads as branded rather than broken. */
+  /* Same brand gradient as the CTA band, so an avatar without a photo still
+     reads as branded rather than broken. Only ever visible on a mentor with
+     no photo — the img below fills the circle completely once one loads. */
   background:
-    radial-gradient(color-mix(in srgb, var(--primary) 16%, transparent) 1.5px, transparent 1.5px) 0 0 / 12px 12px,
-    linear-gradient(150deg, var(--surface-tint), var(--maroon-100));
-  color: color-mix(in srgb, var(--primary) 60%, transparent);
+    radial-gradient(110% 90% at 22% 0%, color-mix(in srgb, var(--maroon-500) 45%, transparent), transparent 62%),
+    linear-gradient(155deg, var(--maroon-700) 0%, var(--maroon-900) 100%);
+  color: var(--on-invert);
 }
 
 .tld-mentor__avatar img {

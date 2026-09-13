@@ -115,7 +115,7 @@ function AdminLibrary() {
   async function handleDelete(asset: LibraryAsset) {
     if (!confirm(`حذف «${asset.title}» من المكتبة؟`)) return
     try {
-      await deleteLibraryAsset(asset.id)
+      await deleteLibraryAsset(asset.id, asset.file_path)
       await refresh()
     } catch (err) {
       setError(errorMessage(err))

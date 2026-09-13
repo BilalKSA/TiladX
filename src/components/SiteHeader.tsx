@@ -5,12 +5,18 @@ import { APP_ORIGIN } from '../lib/origins'
 import { useLocale, useLocalePath, useT, localePath, stripLocale } from '../i18n'
 import Logo from './Logo'
 
+interface SiteHeaderProps {
+  /** The landing page keeps the nav bar to just sign-in/register/language —
+   *  SiteLayout passes this as true for that page only. */
+  hideProfilesLink?: boolean
+}
+
 /** The floating bar every marketing-site page carries.
  *
  *  Lifted out of Landing when the site grew past one page, so the header is
  *  defined once. Fixed-position, so pages other than the landing need top
  *  padding to clear it — SiteLayout supplies that. */
-function SiteHeader() {
+function SiteHeader({ hideProfilesLink = false }: SiteHeaderProps) {
   const t = useT()
   const locale = useLocale()
   const withLocale = useLocalePath()
@@ -31,6 +37,14 @@ function SiteHeader() {
         {/* Wordmark, the two auth actions, and the language switch. Order
             matters: under dir="rtl" the last flex child sits furthest left. */}
         <div className="tld-marketing__header-actions">
+          {/* Hidden on phones too, same reasoning as sign-in below — the
+              footer still reaches /profiles there. */}
+          {!hideProfilesLink && (
+            <Link to={withLocale('/profiles')} className="tld-marketing__navlink">
+              {t.header.profiles}
+            </Link>
+          )}
+
           {/* Hidden on phones — see marketing.css. The hero's own CTA and the
               footer both still reach sign-in there. The app is Arabic-only, so
               these keep their bare (unprefixed) paths. */}

@@ -31,7 +31,6 @@
   min-inline-size: 0;
 }
 
-.tld-course-player__stage iframe,
 .tld-course-player__empty {
   inline-size: 100%;
   aspect-ratio: 16 / 9;
@@ -39,10 +38,6 @@
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-md);
   background: var(--surface-tint);
-  display: block;
-}
-
-.tld-course-player__empty {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -89,6 +84,18 @@
   background: var(--maroon-50);
 }
 
+/* Skeleton rows while loading (see CourseDetail.tsx) reuse this class as a
+   plain, non-interactive <div> — drop the pointer cursor and hover state that
+   only make sense on the real <button>. */
+[aria-hidden='true'] .tld-course-player__item {
+  cursor: default;
+}
+
+[aria-hidden='true'] .tld-course-player__item:hover {
+  border-color: var(--border);
+  background: var(--surface-card);
+}
+
 .tld-course-player__item.is-active {
   border-color: var(--primary);
   background: var(--maroon-50);
@@ -100,7 +107,7 @@
   block-size: 26px;
   flex-shrink: 0;
   border-radius: var(--radius-pill);
-  background: var(--primary);
+  background: var(--gradient-accent);
   color: var(--on-primary);
   display: inline-flex;
   align-items: center;
@@ -165,7 +172,8 @@
   block-size: 48px;
   flex-shrink: 0;
   border-radius: var(--radius-panel);
-  background: var(--primary);
+  background: var(--gradient-accent);
+  box-shadow: var(--shadow-soft);
   color: var(--on-primary);
   display: inline-flex;
   align-items: center;

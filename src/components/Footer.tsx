@@ -37,7 +37,7 @@ const columns: { title: ColKey; links: FooterLink[] }[] = [
     links: [
       { key: 'about', href: '/about', origin: SITE_ORIGIN },
       { key: 'why', href: '/why', origin: SITE_ORIGIN },
-      { key: 'mentors', href: '/mentors', origin: SITE_ORIGIN },
+      { key: 'mentors', href: '/profiles', origin: SITE_ORIGIN },
     ],
   },
   {
@@ -70,6 +70,8 @@ function Footer() {
               <a
                 key={social.label}
                 href={social.href}
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label={social.label}
                 className="tld-footer__social"
               >

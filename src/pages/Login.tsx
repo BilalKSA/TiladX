@@ -3,10 +3,10 @@ import { Link, useNavigate } from 'react-router-dom'
 import Button from '../components/Button'
 import Logo from '../components/Logo'
 import ThemeToggle from '../components/ThemeToggle'
-import { signInWithStudentId, signInWithEmail } from '../lib/auth'
+import { signInWithStudentId, signInWithEmail, signInOrActivateMentor } from '../lib/auth'
 import './Login.css'
 
-type Mode = 'organization' | 'individual'
+type Mode = 'organization' | 'individual' | 'mentor'
 
 function Login() {
   const navigate = useNavigate()
@@ -14,6 +14,7 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false)
   const [studentNumber, setStudentNumber] = useState('')
   const [email, setEmail] = useState('')
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -33,10 +34,14 @@ function Login() {
     try {
       if (mode === 'organization') {
         await signInWithStudentId(studentNumber, password)
+        navigate('/home')
+      } else if (mode === 'mentor') {
+        await signInOrActivateMentor(username, password)
+        navigate('/mentor')
       } else {
         await signInWithEmail(email, password)
+        navigate('/home')
       }
-      navigate('/home')
     } catch (err) {
       setError(err instanceof Error ? err.message : 'حدث خطأ غير متوقع، حاول مرة أخرى.')
     } finally {
@@ -59,7 +64,9 @@ function Login() {
         <p className="tld-login__subtitle">
           {mode === 'organization'
             ? 'سجّل الدخول عبر مؤسستك للوصول إلى برامجك'
-            : 'سجّل الدخول ببريدك الإلكتروني وكلمة المرور'}
+            : mode === 'mentor'
+              ? 'سجّل الدخول باسم المستخدم وكلمة المرور اللي أعطاك إياها المشرف'
+              : 'سجّل الدخول ببريدك الإلكتروني وكلمة المرور'}
         </p>
 
         <div className="tld-login__modes" role="tablist" aria-label="طريقة تسجيل الدخول">
@@ -85,6 +92,17 @@ function Login() {
           >
             حساب فردي
           </button>
+          <button
+            type="button"
+            role="tab"
+            id="tld-login-tab-mentor"
+            aria-selected={mode === 'mentor'}
+            aria-controls="tld-login-panel"
+            className={`tld-login__mode${mode === 'mentor' ? ' tld-login__mode--active' : ''}`}
+            onClick={() => switchMode('mentor')}
+          >
+            مرشد
+          </button>
         </div>
 
         <form
@@ -92,7 +110,13 @@ function Login() {
           onSubmit={handleSubmit}
           id="tld-login-panel"
           role="tabpanel"
-          aria-labelledby={mode === 'organization' ? 'tld-login-tab-organization' : 'tld-login-tab-individual'}
+          aria-labelledby={
+            mode === 'organization'
+              ? 'tld-login-tab-organization'
+              : mode === 'mentor'
+                ? 'tld-login-tab-mentor'
+                : 'tld-login-tab-individual'
+          }
         >
           {mode === 'organization' ? (
             <>
@@ -116,6 +140,20 @@ function Login() {
                 />
               </label>
             </>
+          ) : mode === 'mentor' ? (
+            <label className="tld-field">
+              <span className="tld-field__label">اسم المستخدم</span>
+              <input
+                className="tld-field__input"
+                type="text"
+                autoComplete="username"
+                dir="ltr"
+                placeholder="AhmedAli"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+            </label>
           ) : (
             <label className="tld-field">
               <span className="tld-field__label">البريد الإلكتروني</span>
@@ -160,9 +198,11 @@ function Login() {
               <input type="checkbox" />
               تذكرني
             </label>
-            <Link className="tld-login__forgot" to="/reset-password">
-              نسيت كلمة المرور؟
-            </Link>
+            {mode !== 'mentor' && (
+              <Link className="tld-login__forgot" to="/reset-password">
+                نسيت كلمة المرور؟
+              </Link>
+            )}
           </div>
 
           {error && <p className="tld-login__error">{error}</p>}
@@ -172,20 +212,26 @@ function Login() {
           </Button>
         </form>
 
-        <div className="tld-login__divider">
-          <span>أو</span>
-        </div>
+        {mode !== 'mentor' && (
+          <>
+            <div className="tld-login__divider">
+              <span>أو</span>
+            </div>
 
-        <Link to="/register" className="tld-button tld-button--secondary tld-button--lg tld-login__submit">
-          أنشئ حساب جديد
-        </Link>
+            <Link to="/register" className="tld-button tld-button--secondary tld-button--lg tld-login__submit">
+              أنشئ حساب جديد
+            </Link>
+          </>
+        )}
 
-        <p className="tld-login__register">
-          عندك حساب من تلاد وما فعّلته؟{' '}
-          <Link to="/activate" className="tld-login__forgot">
-            فعّل حسابك
-          </Link>
-        </p>
+        {mode !== 'mentor' && (
+          <p className="tld-login__register">
+            عندك حساب من تلاد وما فعّلته؟{' '}
+            <Link to="/activate" className="tld-login__forgot">
+              فعّل حسابك
+            </Link>
+          </p>
+        )}
       </div>
 
       <p className="tld-login__terms">

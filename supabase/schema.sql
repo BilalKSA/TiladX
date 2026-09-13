@@ -820,3 +820,250 @@ end;
 $$;
 
 grant execute on function public.admin_delete_enrollment(uuid) to authenticated;
+
+
+-- ---------------------------------------------------------------------------
+-- Admin audit log
+-- ---------------------------------------------------------------------------
+-- Records who changed what in the admin-managed tables. No select/insert/
+-- update policies are defined on purpose — same reasoning as `students`: the
+-- only way in is through the SECURITY DEFINER function below.
+
+create table if not exists public.admin_audit_log (
+  id uuid primary key default gen_random_uuid(),
+  actor_id uuid references auth.users (id),
+  -- Denormalized so the log stays readable even if the actor's name changes
+  -- or their roster row is later removed.
+  actor_label text,
+  action text not null,
+  target_table text not null,
+  target_id text,
+  details jsonb,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists admin_audit_log_created_at_idx on public.admin_audit_log (created_at desc);
+
+alter table public.admin_audit_log enable row level security;
+
+-- One generic trigger function shared by every audited table, rather than one
+-- per table. SECURITY DEFINER because admin_audit_log has no insert policy.
+create or replace function public.audit_log_trigger()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_actor uuid := auth.uid();
+  v_label text;
+begin
+  select coalesce(full_name, student_number) into v_label
+  from public.students
+  where auth_user_id = v_actor;
+
+  insert into public.admin_audit_log (actor_id, actor_label, action, target_table, target_id, details)
+  values (
+    v_actor,
+    v_label,
+    lower(tg_op),
+    tg_table_name,
+    (case when tg_op = 'DELETE' then old.id else new.id end)::text,
+    case tg_op
+      when 'DELETE' then jsonb_build_object('old', to_jsonb(old))
+      when 'INSERT' then jsonb_build_object('new', to_jsonb(new))
+      else jsonb_build_object('old', to_jsonb(old), 'new', to_jsonb(new))
+    end
+  );
+
+  return coalesce(new, old);
+end;
+$$;
+
+do $$
+declare
+  t text;
+begin
+  foreach t in array array['courses', 'lessons', 'library_assets', 'mentors', 'students', 'enrollments', 'mentor_accounts'] loop
+    execute format('drop trigger if exists audit_log on public.%I', t);
+    execute format(
+      'create trigger audit_log after insert or update or delete on public.%I
+         for each row execute function public.audit_log_trigger()', t);
+  end loop;
+end $$;
+
+create or replace function public.admin_list_audit_log(p_limit integer default 200)
+returns setof public.admin_audit_log
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if not public.is_admin() then
+    raise exception 'not authorized' using errcode = 'P0001';
+  end if;
+
+  return query
+    select *
+    from public.admin_audit_log
+    order by created_at desc
+    limit greatest(1, least(coalesce(p_limit, 200), 1000));
+end;
+$$;
+
+grant execute on function public.admin_list_audit_log(integer) to authenticated;
+
+
+-- ---------------------------------------------------------------------------
+-- Mentor login accounts
+-- ---------------------------------------------------------------------------
+-- Mentors (`public.mentors`) are content rows only — name/bio/photo, no login.
+-- This table bridges a login username to an auth.users row, mirroring how
+-- `students` bridges an account number to an email, since Supabase Auth only
+-- knows how to sign in by email. A mentor with no real email yet gets a
+-- synthetic one derived from their username so the client never has to look
+-- it up separately.
+--
+-- SECURITY NOTE: the username is `firstNameLastName` from a public mentor
+-- name, and the initial password is the fixed formula `TILAD@<username>` —
+-- both guessable by anyone who knows the mentor's name. Whoever calls
+-- link_mentor_account() first claims the account; there is no shared secret
+-- proving the caller is the actual mentor. This is the same class of gap
+-- documented above for check_student_email/link_student_account_by_email.
+-- Forcing a password change on first login (must_change_password) limits the
+-- exposure window but does not close it — hand out credentials promptly.
+
+create table if not exists public.mentor_accounts (
+  id uuid primary key default gen_random_uuid(),
+  username text not null unique,
+  mentor_id uuid references public.mentors (id) on delete set null,
+  auth_email text not null unique,
+  real_email text,
+  auth_user_id uuid references auth.users (id),
+  must_change_password boolean not null default true,
+  activated_at timestamptz,
+  created_at timestamptz not null default now()
+);
+
+alter table public.mentor_accounts enable row level security;
+-- No select/insert/update policies on purpose — only reachable through the
+-- SECURITY DEFINER functions below, same as `students`.
+
+create or replace function public.check_mentor_username(p_username text)
+returns boolean
+language sql
+security definer
+set search_path = public
+as $$
+  select exists (
+    select 1 from public.mentor_accounts
+    where username = p_username
+      and activated_at is null
+  );
+$$;
+
+grant execute on function public.check_mentor_username(text) to anon;
+
+create or replace function public.resolve_mentor_login_email(p_username text)
+returns text
+language sql
+security definer
+set search_path = public
+as $$
+  select auth_email
+  from public.mentor_accounts
+  where username = p_username
+    and activated_at is not null;
+$$;
+
+grant execute on function public.resolve_mentor_login_email(text) to anon, authenticated;
+
+create or replace function public.link_mentor_account(p_username text)
+returns boolean
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  update public.mentor_accounts
+  set auth_user_id = auth.uid(),
+      activated_at = now()
+  where username = p_username
+    and activated_at is null;
+
+  return found;
+end;
+$$;
+
+grant execute on function public.link_mentor_account(text) to authenticated;
+
+create or replace function public.get_my_mentor_profile()
+returns table (username text, must_change_password boolean, mentor_name text)
+language sql
+security definer
+set search_path = public
+as $$
+  select ma.username, ma.must_change_password, m.name
+  from public.mentor_accounts ma
+  left join public.mentors m on m.id = ma.mentor_id
+  where ma.auth_user_id = auth.uid();
+$$;
+
+grant execute on function public.get_my_mentor_profile() to authenticated;
+
+create or replace function public.clear_mentor_must_change_password()
+returns void
+language sql
+security definer
+set search_path = public
+as $$
+  update public.mentor_accounts
+  set must_change_password = false
+  where auth_user_id = auth.uid();
+$$;
+
+grant execute on function public.clear_mentor_must_change_password() to authenticated;
+
+create or replace function public.admin_list_mentor_accounts()
+returns setof public.mentor_accounts
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  if not public.is_admin() then
+    raise exception 'not authorized' using errcode = 'P0001';
+  end if;
+
+  return query
+    select *
+    from public.mentor_accounts
+    order by created_at desc;
+end;
+$$;
+
+grant execute on function public.admin_list_mentor_accounts() to authenticated;
+
+create or replace function public.admin_add_mentor_account(p_mentor_id uuid, p_username text)
+returns uuid
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  new_id uuid;
+  v_username text := trim(p_username);
+begin
+  if not public.is_admin() then
+    raise exception 'not authorized';
+  end if;
+
+  insert into public.mentor_accounts (username, mentor_id, auth_email)
+  values (v_username, p_mentor_id, lower(v_username) || '@mentor.tilad.internal')
+  returning id into new_id;
+
+  return new_id;
+end;
+$$;
+
+grant execute on function public.admin_add_mentor_account(uuid, text) to authenticated;

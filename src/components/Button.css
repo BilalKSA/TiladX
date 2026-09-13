@@ -45,12 +45,30 @@
 }
 
 .tld-button--primary {
-  background: var(--primary);
+  background: var(--gradient-accent);
   color: var(--on-primary);
+  box-shadow: var(--shadow-soft);
+  transition: background-color 0.2s, border-color 0.2s, opacity 0.2s, transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .tld-button--primary:not(:disabled):hover {
-  background: var(--primary-hover);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.tld-button--primary:not(:disabled):active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tld-button--primary {
+    transition: opacity 0.2s;
+  }
+
+  .tld-button--primary:not(:disabled):hover {
+    transform: none;
+  }
 }
 
 .tld-button--secondary {
@@ -87,7 +105,7 @@
 }
 
 .tld-button--loading.tld-button--primary {
-  background: var(--primary);
+  background: var(--gradient-accent);
   color: var(--on-primary);
 }
 

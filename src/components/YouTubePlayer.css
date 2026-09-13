@@ -1,0 +1,135 @@
+.tld-yt-player {
+  position: relative;
+  inline-size: 100%;
+  aspect-ratio: 16 / 9;
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-md);
+  background: var(--surface-tint);
+  overflow: hidden;
+}
+
+.tld-yt-player__frame {
+  position: absolute;
+  inset: 0;
+}
+
+.tld-yt-player__loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Video content is arbitrary and uncontrolled, same as a photograph — the
+     documented legibility-scrim exception in DESIGN_SYSTEM.md applies here
+     too, which is why this is a literal black rather than a token. */
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.tld-yt-player__tap {
+  position: absolute;
+  inset: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+}
+
+.tld-yt-player__controls {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  /* Same fixed-black scrim exception as .tld-yt-player__loading — needs to
+     read over any video frame, light or dark, in either app theme. */
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0) 100%);
+}
+
+.tld-yt-player__btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 32px;
+  block-size: 32px;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--on-invert);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.tld-yt-player__btn:hover {
+  background: color-mix(in srgb, var(--on-invert) 18%, transparent);
+}
+
+.tld-yt-player__btn:focus-visible {
+  outline: 2px solid var(--on-invert);
+  outline-offset: 2px;
+}
+
+.tld-yt-player__btn svg {
+  inline-size: 20px;
+  block-size: 20px;
+}
+
+.tld-yt-player__seek {
+  flex: 1;
+  position: relative;
+  block-size: 14px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  touch-action: none;
+  /* A video timeline reads left-to-right by convention regardless of page
+     direction (same reasoning as .tld-yt-player__time's forced LTR below).
+     Without this, inset-inline-start on the fill bar resolves to the
+     physical right in this app's RTL, fighting the physical-left-based
+     pointer math in YouTubePlayer.tsx's seekToClientX. */
+  direction: ltr;
+}
+
+.tld-yt-player__seek::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  block-size: 4px;
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--on-invert) 30%, transparent);
+}
+
+.tld-yt-player__seek:focus-visible {
+  outline: 2px solid var(--on-invert);
+  outline-offset: 2px;
+}
+
+.tld-yt-player__seek-fill {
+  position: absolute;
+  inset-inline-start: 0;
+  block-size: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--on-invert);
+  pointer-events: none;
+}
+
+.tld-yt-player__time {
+  flex-shrink: 0;
+  font-size: 12.5px;
+  font-weight: 600;
+  /* Fixed opacity of the same theme-invariant white, not --on-invert-muted —
+     that token is calibrated for the maroon --surface-invert band, not this
+     player's neutral black scrim. */
+  color: color-mix(in srgb, var(--on-invert) 70%, transparent);
+  /* Elapsed/total time reads left-to-right regardless of page direction. */
+  direction: ltr;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tld-yt-player__btn {
+    transition: none;
+  }
+}

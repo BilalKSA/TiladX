@@ -1,22 +1,14 @@
-// Admins paste whatever URL they copied from the browser bar. This turns the
-// common YouTube/Vimeo shapes into an embeddable player URL.
+// Admins paste whatever URL they copied from the YouTube address bar. This
+// pulls the 11-character video ID out of the common URL shapes.
 
 const YOUTUBE_ID = /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/
-const VIMEO_ID = /vimeo\.com\/(?:video\/)?(\d+)/
 
-export function toEmbedUrl(url: string | null | undefined): string | null {
+export function getYouTubeId(url: string | null | undefined): string | null {
   if (!url) return null
-
-  const youtube = url.match(YOUTUBE_ID)
-  if (youtube) return `https://www.youtube.com/embed/${youtube[1]}`
-
-  const vimeo = url.match(VIMEO_ID)
-  if (vimeo) return `https://player.vimeo.com/video/${vimeo[1]}`
-
-  return null
+  return url.match(YOUTUBE_ID)?.[1] ?? null
 }
 
-/** True if the URL is one we know how to embed — used to warn in the admin form. */
+/** True if the URL is one we know how to play — used to warn in the admin form. */
 export function isEmbeddable(url: string): boolean {
-  return toEmbedUrl(url) !== null
+  return getYouTubeId(url) !== null
 }

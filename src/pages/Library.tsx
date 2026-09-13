@@ -5,6 +5,8 @@ import CourseLocked from '../components/CourseLocked'
 import Header from '../components/Header'
 import BackLink from '../components/BackLink'
 import Footer from '../components/Footer'
+import Skeleton from '../components/Skeleton'
+import Button from '../components/Button'
 import {
   getCourseBySlug,
   listLibraryAssets,
@@ -15,6 +17,7 @@ import {
   type LibraryCategory,
 } from '../lib/content'
 import { canAccessCourse } from '../lib/enrollments'
+import { openFileInNewTab } from '../lib/download'
 import './Home.css'
 
 // The library belongs to a program — this page only ever shows the files for
@@ -26,6 +29,7 @@ function Library() {
   const [active, setActive] = useState<LibraryCategory | 'all'>('all')
   const [allowed, setAllowed] = useState(true)
   const [loading, setLoading] = useState(true)
+  const [openingId, setOpeningId] = useState<string | null>(null)
 
   useEffect(() => {
     async function load() {
@@ -64,7 +68,47 @@ function Library() {
     return asset.external_url ?? fileUrl('library', asset.file_path) ?? '#'
   }
 
-  if (loading) return null
+  // Our own storage files (as opposed to an external link) get a real loading
+  // state: fetch the bytes, then hand a new tab a blob URL once they're in. A
+  // bare <a target="_blank"> gives no feedback while a large PDF is in
+  // flight, and the tab it opens can sit blank for a moment with no spinner.
+  async function handleOpenFile(asset: LibraryAsset) {
+    const url = fileUrl('library', asset.file_path)
+    if (!url) return
+
+    setOpeningId(asset.id)
+    try {
+      await openFileInNewTab(url)
+    } catch (err) {
+      console.warn('[library] file open failed:', err)
+    } finally {
+      setOpeningId(null)
+    }
+  }
+
+  if (loading) {
+    return (
+      <div className="tld-home">
+        <AppHeader loading />
+
+        <section className="tld-section">
+          <div className="tld-section__heading">
+            <h2>مكتبة البرنامج</h2>
+          </div>
+
+          <div className="tld-grid tld-grid--3" aria-hidden="true">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div className="tld-card" key={i}>
+                <Skeleton style={{ inlineSize: 90, blockSize: 20, borderRadius: 'var(--radius-pill)' }} />
+                <Skeleton style={{ inlineSize: '85%', blockSize: 20 }} />
+                <Skeleton style={{ inlineSize: 100, blockSize: 28, borderRadius: 'var(--radius-pill)' }} />
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
+    )
+  }
 
   if (!course) {
     return (
@@ -122,14 +166,26 @@ function Library() {
               </span>
               <h3>{asset.title}</h3>
               {asset.description && <p>{asset.description}</p>}
-              <a
-                href={assetHref(asset)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="tld-button tld-button--ghost tld-button--sm"
-              >
-                عرض الملف
-              </a>
+              {!asset.external_url && asset.file_path ? (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  loading={openingId === asset.id}
+                  onClick={() => handleOpenFile(asset)}
+                >
+                  عرض الملف
+                </Button>
+              ) : (
+                <a
+                  href={assetHref(asset)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="tld-button tld-button--ghost tld-button--sm"
+                >
+                  عرض الملف
+                </a>
+              )}
             </div>
           ))}
         </div>

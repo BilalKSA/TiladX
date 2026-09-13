@@ -2,21 +2,25 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Logo from './Logo'
 import ThemeToggle from './ThemeToggle'
+import Skeleton from './Skeleton'
 import { signOut } from '../lib/auth'
 import { socials } from '../data/social'
 import './AppHeader.css'
 
 interface AppHeaderProps {
   /** Headline for the panel — a course title, or the home greeting. */
-  title: string
+  title?: string
   /** Optional pill above the title (a course tag). */
   tag?: string
   subtitle?: string
+  /** Body content (tag/title/subtitle) isn't known yet — show placeholder
+   *  bars in its place. The nav bar (logo, menu) stays fully interactive. */
+  loading?: boolean
 }
 
 // The maroon panel doubles as the nav bar across the signed-in app: there's no
 // separate top strip. Everything that used to live in one is inside the menu.
-function AppHeader({ title, tag, subtitle }: AppHeaderProps) {
+function AppHeader({ title, tag, subtitle, loading = false }: AppHeaderProps) {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [signingOut, setSigningOut] = useState(false)
@@ -120,9 +124,19 @@ function AppHeader({ title, tag, subtitle }: AppHeaderProps) {
       </div>
 
       <div className="tld-app-header__body">
-        {tag && <span className="tld-pill-tag tld-app-header__tag">{tag}</span>}
-        <h1>{title}</h1>
-        {subtitle && <p>{subtitle}</p>}
+        {loading ? (
+          <>
+            <Skeleton invert className="tld-app-header__tag" style={{ inlineSize: 96, blockSize: 22 }} />
+            <Skeleton invert style={{ inlineSize: 'min(420px, 70%)', blockSize: 38 }} />
+            <Skeleton invert style={{ inlineSize: 'min(320px, 55%)', blockSize: 16 }} />
+          </>
+        ) : (
+          <>
+            {tag && <span className="tld-pill-tag tld-app-header__tag">{tag}</span>}
+            <h1>{title}</h1>
+            {subtitle && <p>{subtitle}</p>}
+          </>
+        )}
       </div>
     </header>
   )
